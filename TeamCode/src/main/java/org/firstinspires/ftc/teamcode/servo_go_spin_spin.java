@@ -63,8 +63,6 @@ public class servo_go_spin_spin extends LinearOpMode {
 
     // Declare OpMode members.
     private ElapsedTime runtime = new ElapsedTime();
-    private DcMotor leftDrive = null;
-    private DcMotor rightDrive = null;
     private CRServo servo;
 
     public static double servoPower;
@@ -80,7 +78,7 @@ public class servo_go_spin_spin extends LinearOpMode {
         servoPower = 1;
         servo = hardwareMap.get(CRServo.class,"servo");
 
-        leftDrive = hardwareMap.get(DcMotor.class, "leftDrive");
+
 
 
 
