@@ -5,6 +5,7 @@ repositories {
     maven { url = "https://mymaven.bylazar.com/releases" }
     maven { url = "https://maven.rowanmcalpin.com/" }
     maven { url = "https://maven.pedropathing.com/" } // Remove if you don't intend to use PedroPathing}
+}
 
 dependencies {
     implementation 'org.firstinspires.ftc:Inspection:11.0.0'
