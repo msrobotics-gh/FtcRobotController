@@ -28,10 +28,9 @@
  */
 
 package org.firstinspires.ftc.teamcode;
+
 import com.acmerobotics.dashboard.FtcDashboard;
 import com.acmerobotics.dashboard.config.Config;
-
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
@@ -51,15 +50,14 @@ import org.firstinspires.ftc.robotcore.external.Telemetry;
  * Use Android Studio to Copy this Class, and Paste it into your team's code folder with a new name.
  * Remove or comment out the @Disabled line to add this OpMode to the Driver Station OpMode list
  */
-@TeleOp(name = "Motor Speed with Velocity", group = "Concept")
+@TeleOp(name = "ViperSlide Lift Control Using D-Pad", group = "Concept")
 @Config
-public class ConceptRampMotorSpeed extends LinearOpMode {
+public class ViperslideGamepad extends LinearOpMode {
 
-    public static double VELOCITY_1 = 500;
-    public static double VELOCITY_2 = 500;
+    public static double POWER = 0.5;
 
-    double TPS_1;
-    double TPS_2;
+    public static int MOTOR_1_MULT = -1;
+    public static int MOTOR_2_MULT = -1;
 
 
     // Define class members
@@ -77,49 +75,53 @@ public class ConceptRampMotorSpeed extends LinearOpMode {
 //        set first motor name to "motor"
 //        set second motor name to "lowter"
 
-        motor_1 = hardwareMap.get(DcMotorEx.class, "test_1");
-        motor_2 = hardwareMap.get(DcMotorEx.class, "test_2");
+        motor_1 = hardwareMap.get(DcMotorEx.class, "fastboi"); // 0
+        motor_2 = hardwareMap.get(DcMotorEx.class, "slowboi"); // 1
 
         // Wait for the start button
-        telemetry.addData(">", "Press Start to run Motors." );
+        telemetry.addData("> ", "press start pls ty" );
         telemetry.update();
-        dashboardTelemetry.addData(">","press start to run motors");
+        dashboardTelemetry.addData("> ","press start pls ty");
         dashboardTelemetry.update();
         waitForStart();
 
-        motor_1.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        motor_2.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        motor_1.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        motor_2.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
+        motor_1.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        motor_2.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
         // Ramp motor speeds till stop pressed.
         while(opModeIsActive()) {
 //            motor_1.setVelocity(VELOCITY_1);
 //            motor_2.setVelocity(VELOCITY_2);
 
-            TPS_1 = (VELOCITY_1 / 60) * 28;
-            TPS_2 = (VELOCITY_2 / 60) * 28;
-
-            motor_1.setVelocity(gamepad1.right_trigger * TPS_1);
-            motor_2.setVelocity(gamepad1.left_trigger * TPS_2);
-
-
-            double motor_1_velo = motor_1.getVelocity();
-            double motor_2_velo = motor_2.getVelocity();
-
-            telemetry.addData("motor 1 velocity",motor_1_velo);
-            telemetry.addData("motor 2 velocity",motor_2_velo);
+            if (gamepad1.dpad_up) {
+                motor_1.setPower(POWER * MOTOR_1_MULT);
+                motor_2.setPower(POWER * MOTOR_2_MULT);
+                telemetry.addData("> ","goin up");
+                dashboardTelemetry.addData("> ","goin up");
+            } else if (gamepad1.dpad_down) {
+                motor_1.setPower(POWER * -MOTOR_1_MULT);
+                motor_2.setPower(POWER * -MOTOR_2_MULT);
+                telemetry.addData("> ","goin down");
+                dashboardTelemetry.addData("> ","goin down");
+            } else {
+                motor_1.setPower(0);
+                motor_2.setPower(0);
+                telemetry.addData("> ", "chillin");
+                dashboardTelemetry.addData("> ","chillin");
+            }
             telemetry.update();
-            dashboardTelemetry.addData("motor 1 velocity",motor_1_velo);
-            dashboardTelemetry.addData("motor 2 velocity",motor_2_velo);
             dashboardTelemetry.update();
         }
 
         // Turn off motor and signal done;
         motor_1.setPower(0);
         motor_2.setPower(0);
-        telemetry.addData(">", "Done");
+        telemetry.addData("> ", "finished");
         telemetry.update();
-        dashboardTelemetry.addData(">","Done");
+        dashboardTelemetry.addData("> ","finsihed");
         dashboardTelemetry.update();
 
     }

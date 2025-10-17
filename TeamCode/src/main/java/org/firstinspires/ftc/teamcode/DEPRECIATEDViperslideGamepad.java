@@ -1,12 +1,11 @@
 package org.firstinspires.ftc.teamcode;
 
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
-import org.firstinspires.ftc.robotcore.external.Telemetry;
+
 @TeleOp(name="Concept: Gamepad Touchpad", group ="Concept")
-public class ConceptGamepadTouchpad extends LinearOpMode
+public class DEPRECIATEDViperslideGamepad extends LinearOpMode
 {
 
     DcMotor lift1;
