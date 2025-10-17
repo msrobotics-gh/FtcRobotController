@@ -14,9 +14,9 @@ import dev.nextftc.ftc.components.BulkReadComponent;
 import dev.nextftc.hardware.driving.MecanumDriverControlled;
 import dev.nextftc.hardware.impl.MotorEx;
 
-@TeleOp(name = "NextFTC TeleOp Program Java")
-public class Teleopl extends NextFTCOpMode {
-    public Teleopl() {
+@TeleOp(name = "lift drive launch")
+public class LiftDriveLaunch extends NextFTCOpMode {
+    public LiftDriveLaunch() {
         addComponents(
                 new SubsystemComponent(Lift.INSTANCE),
                 BulkReadComponent.INSTANCE,
@@ -45,9 +45,6 @@ public class Teleopl extends NextFTCOpMode {
 
         Gamepads.gamepad2().dpadUp()
                 .whenBecomesTrue(Lift.INSTANCE.toHigh);
-
-
-
 
         Gamepads.gamepad2().dpadUp()
                 .whenBecomesTrue(Lift.INSTANCE.toLow);
