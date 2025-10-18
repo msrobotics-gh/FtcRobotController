@@ -51,15 +51,22 @@ public class LiftDriveLaunch extends NextFTCOpMode {
         driverControlled.schedule();
 
         Gamepads.gamepad2().dpadUp()
-                .whenBecomesTrue(Lift.INSTANCE.toHigh(height));
+                .whenBecomesTrue(Lift.INSTANCE.toHigh(40));
 
         Gamepads.gamepad2().dpadDown()
                 .whenBecomesTrue(Lift.INSTANCE.toLow);
 
         Gamepads.gamepad2().y()
                 .whenBecomesTrue(Launcher.INSTANCE.move);
+
+    }
+
+    @Override
+    public void onUpdate() {
+
         dashboardTelemetry.addData("height",height);
         dashboardTelemetry.update();
-
+        telemetry.addLine("test");
+        telemetry.update();
     }
 }
