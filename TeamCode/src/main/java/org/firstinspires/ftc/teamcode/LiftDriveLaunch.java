@@ -37,6 +37,8 @@ public class LiftDriveLaunch extends NextFTCOpMode {
 
     FtcDashboard dashboard = FtcDashboard.getInstance();
     Telemetry dashboardTelemetry = dashboard.getTelemetry();
+
+
     @Override
     public void onStartButtonPressed() {
         Command driverControlled = new MecanumDriverControlled(
@@ -55,6 +57,9 @@ public class LiftDriveLaunch extends NextFTCOpMode {
 
         Gamepads.gamepad2().dpadDown()
                 .whenBecomesTrue(Lift.INSTANCE.toLow);
+
+        Gamepads.gamepad2().dpadLeft()
+                .whenBecomesTrue(()->{telemetry.addData("he","he");});
 
         Gamepads.gamepad2().y()
                 .whenBecomesTrue(Launcher.INSTANCE.move);
