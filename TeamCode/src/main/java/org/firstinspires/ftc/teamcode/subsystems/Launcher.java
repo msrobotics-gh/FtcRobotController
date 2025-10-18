@@ -5,6 +5,8 @@ import dev.nextftc.control.ControlSystem;
 import dev.nextftc.core.commands.Command;
 import dev.nextftc.core.subsystems.Subsystem;
 import dev.nextftc.hardware.controllable.RunToPosition;
+import dev.nextftc.hardware.controllable.RunToVelocity;
+import dev.nextftc.hardware.driving.HolonomicDrivePowers;
 import dev.nextftc.hardware.impl.MotorEx;
 import dev.nextftc.hardware.powerable.Powerable;
 import dev.nextftc.hardware.powerable.SetPower;
@@ -21,7 +23,10 @@ public class Launcher implements Subsystem {
             .elevatorFF(0)
             .build();
 
-    public Command move = new SetPower(launch,1).requires(this);
+
+    public Command move = new RunToVelocity(controlSystem,80);
+
+
     public Command move2 = new SetPower(launch2,1).requires(this);
 
     @Override
