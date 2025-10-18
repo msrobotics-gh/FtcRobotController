@@ -10,7 +10,9 @@ public class Lift implements Subsystem {
     public static final Lift INSTANCE = new Lift();
     private Lift() { }
 
-    private MotorEx motor = new MotorEx("lift_motor");
+    private MotorEx lift_motor = new MotorEx("lift_motor");
+
+    private MotorEx lift_motor2 = new MotorEx("lift_motor2");
 
     private ControlSystem controlSystem = ControlSystem.builder()
             .posPid(0.005, 0, 0)
@@ -22,6 +24,7 @@ public class Lift implements Subsystem {
 
     @Override
     public void periodic() {
-        motor.setPower(controlSystem.calculate(motor.getState()));
+        lift_motor.setPower(controlSystem.calculate(lift_motor.getState()));
+        lift_motor2.setPower(controlSystem.calculate(lift_motor2.getState()));
     }
 }

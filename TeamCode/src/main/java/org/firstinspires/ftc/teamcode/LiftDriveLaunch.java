@@ -47,11 +47,10 @@ public class LiftDriveLaunch extends NextFTCOpMode {
         Gamepads.gamepad2().dpadUp()
                 .whenBecomesTrue(Lift.INSTANCE.toHigh);
 
-        Gamepads.gamepad2().dpadUp()
+        Gamepads.gamepad2().dpadDown()
                 .whenBecomesTrue(Lift.INSTANCE.toLow);
 
         Gamepads.gamepad2().y()
-                .whenBecomesTrue(Launcher.INSTANCE.move)
-                .whenBecomesTrue(Launcher.INSTANCE.move2);
+                .whenBecomesTrue(Launcher.INSTANCE.move);
     }
 }

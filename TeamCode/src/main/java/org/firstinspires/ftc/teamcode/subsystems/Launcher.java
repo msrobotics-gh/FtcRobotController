@@ -26,9 +26,6 @@ public class Launcher implements Subsystem {
 
     public Command move = new RunToVelocity(controlSystem,80);
 
-
-    public Command move2 = new SetPower(launch2,1).requires(this);
-
     @Override
     public void periodic() {
         launch.setPower(controlSystem.calculate(launch.getState()));
