@@ -1,7 +1,10 @@
 package org.firstinspires.ftc.teamcode;
 
+import com.acmerobotics.dashboard.FtcDashboard;
+import com.acmerobotics.dashboard.config.Config;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
+import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.teamcode.subsystems.Launcher;
 import org.firstinspires.ftc.teamcode.subsystems.Lift;
 
@@ -15,6 +18,7 @@ import dev.nextftc.hardware.driving.MecanumDriverControlled;
 import dev.nextftc.hardware.impl.MotorEx;
 
 @TeleOp(name = "lift drive launch")
+@Config
 public class LiftDriveLaunch extends NextFTCOpMode {
     public LiftDriveLaunch() {
         addComponents(
@@ -29,8 +33,9 @@ public class LiftDriveLaunch extends NextFTCOpMode {
     private final MotorEx frontRightMotor = new MotorEx("front_right").reversed();
     private final MotorEx backLeftMotor = new MotorEx("back_left");
     private final MotorEx backRightMotor = new MotorEx("back_right").reversed();
-
-
+    public  static double height;
+    FtcDashboard dashboard;
+    Telemetry dashboardTelemetry;
     @Override
     public void onStartButtonPressed() {
         Command driverControlled = new MecanumDriverControlled(
@@ -45,12 +50,13 @@ public class LiftDriveLaunch extends NextFTCOpMode {
         driverControlled.schedule();
 
         Gamepads.gamepad2().dpadUp()
-                .whenBecomesTrue(Lift.INSTANCE.toHigh);
+                .whenBecomesTrue(Lift.INSTANCE.toHigh(height));
 
         Gamepads.gamepad2().dpadDown()
                 .whenBecomesTrue(Lift.INSTANCE.toLow);
 
         Gamepads.gamepad2().y()
                 .whenBecomesTrue(Launcher.INSTANCE.move);
+
     }
 }
