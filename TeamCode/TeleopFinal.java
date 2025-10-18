@@ -45,12 +45,10 @@ package org.firstinspires.ftc.teamcode.Mechanisms;
 
 import static com.qualcomm.robotcore.util.Range.*;
 
-import com.acmerobotics.dashboard.config.Config;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.util.ElapsedTime;
-import com.qualcomm.robotcore.util.Range;
 
 
 
@@ -87,14 +85,8 @@ import com.qualcomm.robotcore.util.Range;
 
 
 
-@TeleOp(name="Drive", group="Linear OpMode")
+@TeleOp(name="Drivenations", group="Linear OpMode")
 public class Teleop_26266_2025_2026 extends LinearOpMode {
-
-
-
-
-
-
 
 
     // Declare OpMode members.
@@ -109,16 +101,11 @@ public class Teleop_26266_2025_2026 extends LinearOpMode {
     double leftPower;
     double rightPower;
     boolean press = false;
-    boolean drive = gamepad1.y;
-    boolean turn  =  gamepad1.y;
+    boolean drive1 = gamepad1.y;
+    boolean turn = gamepad1.y;
     public static double speed = 0.7;
-
-
-
-
-
-
-
+    private DcMotor leftLauncher = null;
+    private DcMotor rightLauncher = null;
 
 
     @Override
@@ -127,31 +114,18 @@ public class Teleop_26266_2025_2026 extends LinearOpMode {
         telemetry.update();
 
 
-
-
-
-
-
-
-
         // Initialize the hardware variables. Note that the strings used here as parameters
         // to 'get' must correspond to the names assigned during the robot configuration
         // step (using the FTC Robot Controller app on the phone).
-        leftDrive  = hardwareMap.get(DcMotor.class, "left_bottom");
+        leftDrive = hardwareMap.get(DcMotor.class, "left_bottom");
         rightDrive = hardwareMap.get(DcMotor.class, "right_bottom");
         frontLeftDrive = hardwareMap.get(DcMotor.class, "left_top");
         frontRightDrive = hardwareMap.get(DcMotor.class, "right_top");
 
 
-
-
-
-
-
-
-        // Pushing the left stick forward MUST make robot go forward. So a       // To drive forward, most robots need the motor on one side to be reversed, because the axles point in opposite directions.
-        //djust these two lines based on your first test drive.
-        // Note: The settings here assume direct drive on left and right wheels.  Gear Reduction or 90 Deg drives may require direction flips
+        // Pushing the left stick forward MUST make robot go forward. So a       // To drive1 forward, most robots need the motor on one side to be reversed, because the axles point in opposite directions.
+        //djust these two lines based on your first test drive1.
+        // Note: The settings here assume direct drive1 on left and right wheels.  Gear Reduction or 90 Deg drives may require direction flips
         leftDrive.setDirection(DcMotor.Direction.FORWARD);
         rightDrive.setDirection(DcMotor.Direction.FORWARD);
         frontLeftDrive.setDirection(DcMotor.Direction.REVERSE);
@@ -159,101 +133,34 @@ public class Teleop_26266_2025_2026 extends LinearOpMode {
         // Wait for the game to start (driver presses START)
         waitForStart();
         runtime.reset();
-
-
-
-
-
-
-
-
         // run until the end of the match (driver presses STOP)
         while (opModeIsActive()) {
 
-
-
-
-
-
-
-
-            // Setup a variable for each drive wheel to save power level for telemetry
-            // Choose to drive using either Tank Mode, or POV Mode
+            // Setup a variable for each drive1 wheel to save power level for telemetry
+            // Choose to drive1 using either Tank Mode, or POV Mode
             // Comment out the method that's not used.  The default below is POV.
-
-
-
-
-
-
-
-
             // POV Mode uses left stick to go forward, and right stick to turn.
-            // - This uses basic math to combine motions and is easier to drive straight.
-            double drive = -gamepad1.left_stick_y;
+            // - This uses basic math to combine motions and is easier to drive1 straight.
+            double drive2 = -gamepad1.left_stick_y;
             double strafe = gamepad1.left_stick_x;
-            double turn  =  gamepad1.right_stick_x;
-
-
-            double leftPower = clip(drive + turn, -0.4, 0.4);
-            double rightPower = clip(drive - turn, -0.4, 0.4);
+            double turn = gamepad1.right_stick_x;
+            double leftPower = clip(drive2 + turn, -0.4, 0.4);
+            double rightPower = clip(drive2 - turn, -0.4, 0.4);
             double strafeLeftPower = clip(strafe, -0.4, 0.4);
             double strafeRightPower = clip(strafe, -0.4, 0.4);
 
 
-
-
-
-
-
-
             // Tank Mode uses one stick to control each wheel.
-            // - This requires no math, but it is hard to drive forward slowly and keep straight.
+            // - This requires no math, but it is hard to drive1 forward slowly and keep straight.
             // leftPower  = -gamepad1.left_stick_y ;
             // rightPower = -gamepad1.right_stick_y ;
 
 
-
-
-
-
-
-
             // Send calculated power to wheels
-            leftDrive.setPower(leftPower-strafeLeftPower);
-            rightDrive.setPower(rightPower+strafeRightPower);
-            frontLeftDrive.setPower(leftPower+strafeLeftPower);
-            frontRightDrive.setPower(rightPower-strafeRightPower);
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+            leftDrive.setPower(leftPower - strafeLeftPower);
+            rightDrive.setPower(rightPower + strafeRightPower);
+            frontLeftDrive.setPower(leftPower + strafeLeftPower);
+            frontRightDrive.setPower(rightPower - strafeRightPower);
 
 
             // Show the elapsed game time and wheel power.
@@ -266,12 +173,12 @@ public class Teleop_26266_2025_2026 extends LinearOpMode {
             // Initialize the hardware variables. Note that the strings used here as parameters
             // to 'get' must correspond to the names assigned during the robot configuration
             // step (using the FTC Robot Controller app on the phone).
-            DcMotor leftIntake = hardwareMap.get(DcMotor.class, "up");
-            DcMotor rightIntake = hardwareMap.get(DcMotor.class, "down");
+            DcMotor leftIntake = hardwareMap.get(DcMotor.class, "rightt");
+            DcMotor rightIntake = hardwareMap.get(DcMotor.class, "leftt");
 
-            // To drive forward, most robots need the motor on one side to be reversed, because the axles point in opposite directions.
-            // Pushing the left stick forward MUST make robot go forward. So adjust these two lines based on your first test drive.
-            // Note: The settings here assume direct drive on left and right wheels.  Gear Reduction or 90 Deg drives may require direction flips
+            // To drive1 forward, most robots need the motor on one side to be reversed, because the axles point in opposite directions.
+            // Pushing the left stick forward MUST make robot go forward. So adjust these two lines based on your first test drive1.
+            // Note: The settings here assume direct drive1 on left and right wheels.  Gear Reduction or 90 Deg drives may require direction flips
             leftIntake.setDirection(DcMotor.Direction.REVERSE);
             rightIntake.setDirection(DcMotor.Direction.FORWARD);
 
@@ -282,35 +189,33 @@ public class Teleop_26266_2025_2026 extends LinearOpMode {
             // run until the end of the match (driver presses STOP)
             while (opModeIsActive()) {
 
-                // Setup a variable for each drive wheel to save power level for telemetry
+                // Setup a variable for each drive1 wheel to save power level for telemetry
 
 
-                // Choose to drive using either Tank Mode, or POV Mode
+                // Choose to drive1 using either Tank Mode, or POV Mode
                 // Comment out the method that's not used.  The default below is POV.
 
                 // POV Mode uses left stick to go forward, and right stick to turn.
-                // - This uses basic math to combine motions and is easier to drive straight.
+                // - This uses basic math to combine motions and is easier to drive1 straight.
 
                 double move = 0;
-                if (drive) {
+                if (drive2 > 0 || drive2 < 0) {
                     if (press == true) {
                         press = false;
-                    }
-                    else {
+                    } else {
                         press = true;
                     }
 
                     move = 1 * speed;
-                }
-                else if (true){
+                } else if (true) {
                     move = 0;
                 }
 
-                //leftPower    = Range.clip(drive + turn, -speed, speed) ;
-                //rightPower   = Range.clip(drive - turn, -speed, speed) ;
+                //leftPower    = Range.clip(drive1 + turn, -speed, speed) ;
+                //rightPower   = Range.clip(drive1 - turn, -speed, speed) ;
 
                 // Tank Mode uses one stick to control each wheel.
-                // - This requires no math, but it is hard to drive forward slowly and keep straight.
+                // - This requires no math, but it is hard to drive1 forward slowly and keep straight.
                 // leftPower  = -gamepad1.left_stick_y ;
                 // rightPower = -gamepad1.right_stick_y ;
 
@@ -322,22 +227,70 @@ public class Teleop_26266_2025_2026 extends LinearOpMode {
                 telemetry.addData("Status", "Run Time: " + runtime.toString());
                 telemetry.addData("Motors", "left (%.2f), right (%.2f)");
                 telemetry.update();
+                telemetry.addData("Status", "Initialized");
+                telemetry.update();
 
+                // Initialize the hardware variables. Note that the strings used here as parameters
+                // to 'get' must correspond to the names assigned during the robot configuration
+                // step (using the FTC Robot Controller app on the phone).
+                leftDrive = hardwareMap.get(DcMotor.class, "up");
+                rightDrive = hardwareMap.get(DcMotor.class, "down");
+
+                // To drive1 forward, most robots need the motor on one side to be reversed, because the axles point in opposite directions.
+                // Pushing the left stick forward MUST make robot go forward. So adjust these two lines based on your first test drive1.
+                // Note: The settings here assume direct drive1 on left and right wheels.  Gear Reduction or 90 Deg drives may require direction flips
+                leftDrive.setDirection(DcMotor.Direction.FORWARD);
+                rightDrive.setDirection(DcMotor.Direction.FORWARD);
+
+                // Wait for the game to start (driver presses START)
+                waitForStart();
+                runtime.reset();
+
+                // run until the end of the match (driver presses STOP)
+                while (opModeIsActive()) {
+
+                    // Setup a variable for each drive1 wheel to save power level for telemetry
+                    double leftLauncher;
+                    double rightLauncher;
+
+                    // Choose to drive1 using either Tank Mode, or POV Mode
+                    // Comment out the method that's not used.  The default below is POV.
+
+                    // POV Mode uses left stick to go forward, and right stick to turn.
+                    // - This uses basic math to combine motions and is easier to drive1 straight.
+                    boolean press = false;
+                    boolean drive = gamepad1.a;
+                    move = 0;
+                    if (drive == true) {
+                        if (press == true) {
+                            press = false;
+                        } else {
+                            press = true;
+                        }
+
+                        move = 1 * speed;
+                    } else if (true) {
+                        move = 0;
+                    }
+
+                    //leftPower    = Range.clip(drive1 + turn, -speed, speed) ;
+                    //rightPower   = Range.clip(drive1 - turn, -speed, speed) ;
+
+                    // Tank Mode uses one stick to control each wheel.
+                    // - This requires no math, but it is hard to drive1 forward slowly and keep straight.
+                    // leftPower  = -gamepad1.left_stick_y ;
+                    // rightPower = -gamepad1.right_stick_y ;
+
+                    // Send calculated power to wheels
+                    leftDrive.setPower(move);
+                    rightDrive.setPower(move);
+
+
+                }
             }
+
+        }
+
+
     }
-
-    }
-
-
-
 }
-
-
-
-
-
-
-
-
-
-
