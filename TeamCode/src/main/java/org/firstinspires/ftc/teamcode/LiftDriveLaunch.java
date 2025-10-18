@@ -34,8 +34,9 @@ public class LiftDriveLaunch extends NextFTCOpMode {
     private final MotorEx backLeftMotor = new MotorEx("back_left");
     private final MotorEx backRightMotor = new MotorEx("back_right").reversed();
     public  static double height;
-    FtcDashboard dashboard;
-    Telemetry dashboardTelemetry;
+
+    FtcDashboard dashboard = FtcDashboard.getInstance();
+    Telemetry dashboardTelemetry = dashboard.getTelemetry();
     @Override
     public void onStartButtonPressed() {
         Command driverControlled = new MecanumDriverControlled(
@@ -57,6 +58,8 @@ public class LiftDriveLaunch extends NextFTCOpMode {
 
         Gamepads.gamepad2().y()
                 .whenBecomesTrue(Launcher.INSTANCE.move);
+        dashboardTelemetry.addData("height",height);
+        dashboardTelemetry.update();
 
     }
 }
