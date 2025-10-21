@@ -23,9 +23,6 @@ dependencies {
     implementation 'com.pedropathing:telemetry:1.0.0' // pp
     implementation 'com.bylazar:fullpanels:1.0.6' // needed for pp
 
-    implementation 'com.rowanmcalpin.nextftc:core:0.6.2'
-    implementation 'com.rowanmcalpin.nextftc:ftc:0.6.2'
-    implementation 'com.rowanmcalpin.nextftc:pedro:0.6.2' // Remove if you don't intend to use PedroPathing
     implementation 'dev.nextftc:ftc:1.0.0'
     implementation 'dev.nextftc:hardware:1.0.0' // If you would like to use the hardware module
     implementation 'dev.nextftc:bindings:1.0.1'

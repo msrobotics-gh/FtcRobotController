@@ -6,7 +6,9 @@ import org.firstinspires.ftc.robotcore.external.Telemetry;
 
 import dev.nextftc.control.ControlSystem;
 import dev.nextftc.core.commands.Command;
+import dev.nextftc.core.commands.CommandManager;
 import dev.nextftc.core.subsystems.Subsystem;
+import dev.nextftc.ftc.ActiveOpMode;
 import dev.nextftc.hardware.controllable.RunToPosition;
 import dev.nextftc.hardware.impl.MotorEx;
 
@@ -36,5 +38,6 @@ public class Lift implements Subsystem {
     public void periodic() {
         lift_motor.setPower(controlSystem.calculate(lift_motor.getState()));
         lift_motor2.setPower(controlSystem.calculate(lift_motor2.getState()));
+        ActiveOpMode.telemetry().addData("lift_motor power: ", lift_motor.getPower());
     }
 }

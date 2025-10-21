@@ -9,6 +9,7 @@ import org.firstinspires.ftc.teamcode.subsystems.Launcher;
 import org.firstinspires.ftc.teamcode.subsystems.Lift;
 
 import dev.nextftc.core.commands.Command;
+import dev.nextftc.core.commands.CommandManager;
 import dev.nextftc.core.components.BindingsComponent;
 import dev.nextftc.core.components.SubsystemComponent;
 import dev.nextftc.ftc.Gamepads;
@@ -59,7 +60,11 @@ public class LiftDriveLaunch extends NextFTCOpMode {
         Gamepads.gamepad2().y()
                 .whenBecomesTrue(Launcher.INSTANCE.move);
         dashboardTelemetry.addData("height",height);
+        for (String message : CommandManager.INSTANCE.snapshot()
+             ) {
+            telemetry.addLine(message);
+        }
         dashboardTelemetry.update();
-
+        telemetry.update();
     }
 }
