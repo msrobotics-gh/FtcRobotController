@@ -17,10 +17,10 @@ public class Constants {
 
     public static MecanumConstants driveConstants = new MecanumConstants()
             .maxPower(1)
-            .rightFrontMotorName("rf")
-            .rightRearMotorName("rr")
-            .leftRearMotorName("lr")
-            .leftFrontMotorName("lf")
+            .rightFrontMotorName("front_right")
+            .rightRearMotorName("back_right")
+            .leftRearMotorName("back_left")
+            .leftFrontMotorName("front_left")
             .leftFrontMotorDirection(DcMotorSimple.Direction.REVERSE)
             .leftRearMotorDirection(DcMotorSimple.Direction.REVERSE)
             .rightFrontMotorDirection(DcMotorSimple.Direction.FORWARD)
@@ -44,6 +44,7 @@ public class Constants {
             .rightRearEncoderDirection(Encoder.REVERSE)
             .robotWidth(6.5)
             .robotLength(10.25);
-//            .forwardTicksToInches(multiplier);
-
+//            .forwardTicksToInches(1.6057957869810633);
+//            .strafeTicksToInches(multiplier);
+//            .turnTicksToInches(multiplier);
 }
