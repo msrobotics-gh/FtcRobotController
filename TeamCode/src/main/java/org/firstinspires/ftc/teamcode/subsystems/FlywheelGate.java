@@ -18,7 +18,6 @@ public class FlywheelGate implements Subsystem {
 
     public String name = "gate_servo";
 
-
     @Override
     public void initialize() {
         gateServo = ActiveOpMode.hardwareMap().get(Servo.class, name);
@@ -30,11 +29,11 @@ public class FlywheelGate implements Subsystem {
         ActiveOpMode.telemetry().addLine("Opening");
         ActiveOpMode.telemetry().update();
         return new SetPosition(gateServoEx, // SERVO TO MOVE
-                0.0 ); // IMPLEMENTED SUBSYSTEM
+                0.0); // IMPLEMENTED SUBSYSTEM
     }
 
     public Command close() {
         return new SetPosition(gateServoEx, // SERVO TO MOVE
-                0.5); // IMPLEMENTED SUBSYSTEM
+                0.3); // IMPLEMENTED SUBSYSTEM
     }
 }

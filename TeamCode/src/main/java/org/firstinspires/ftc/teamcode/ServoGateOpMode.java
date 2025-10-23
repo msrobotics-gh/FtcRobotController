@@ -38,10 +38,10 @@ public class ServoGateOpMode extends NextFTCOpMode {
     public void onStartButtonPressed() {
 
         Button gamepad2DpadUp = button(() -> gamepad2.dpad_up);
-        gamepad2DpadUp.whenBecomesTrue(FlywheelGate.INSTANCE::open);
+        gamepad2DpadUp.whenBecomesTrue(FlywheelGate.INSTANCE.open());
 
         Button gamepad2DpadDown = button(() -> gamepad2.dpad_down);
-        gamepad2DpadDown.whenBecomesTrue(FlywheelGate.INSTANCE::close);
+        gamepad2DpadDown.whenBecomesTrue(FlywheelGate.INSTANCE.close());
 
 
 
