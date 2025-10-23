@@ -24,8 +24,8 @@ public class Launcher implements Subsystem {
             .build();
 
 
-    public Command move = new SetPower(launch,.6);
-    public Command move2 = new SetPower(launch2,.6);
+    public Command move = new SetPower(launch,.7);
+    public Command move2 = new SetPower(launch2,.7);
 
     public Command dontmove = new SetPower(launch,0);
     public Command dontmove2 = new SetPower(launch2,0);

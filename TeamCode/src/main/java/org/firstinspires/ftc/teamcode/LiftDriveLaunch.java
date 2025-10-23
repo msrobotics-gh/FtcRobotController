@@ -1,10 +1,10 @@
 package org.firstinspires.ftc.teamcode;
 
-import com.acmerobotics.dashboard.FtcDashboard;
-import com.acmerobotics.dashboard.config.Config;
+
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
+import org.firstinspires.ftc.teamcode.subsystems.FlywheelGate;
 import org.firstinspires.ftc.teamcode.subsystems.Intake;
 import org.firstinspires.ftc.teamcode.subsystems.Launcher;
 import org.firstinspires.ftc.teamcode.subsystems.Lift;
@@ -20,25 +20,23 @@ import dev.nextftc.hardware.driving.MecanumDriverControlled;
 import dev.nextftc.hardware.impl.MotorEx;
 
 @TeleOp(name = "lift drive launch")
-@Config
 public class LiftDriveLaunch extends NextFTCOpMode {
     public LiftDriveLaunch() {
         addComponents(
                 new SubsystemComponent(Lift.INSTANCE),
                 BulkReadComponent.INSTANCE,
-                BindingsComponent.INSTANCE
+                BindingsComponent.INSTANCE,
+                new SubsystemComponent(FlywheelGate.INSTANCE)
         );
     }
 
     // change the names and directions to suit your robot
-    private final MotorEx frontLeftMotor = new MotorEx("front_left").reversed();
-    private final MotorEx frontRightMotor = new MotorEx("front_right");
+    private final MotorEx frontLeftMotor = new MotorEx("front_left");
+    private final MotorEx frontRightMotor = new MotorEx("front_right").reversed();
     private final MotorEx backLeftMotor = new MotorEx("back_left").reversed();
-    private final MotorEx backRightMotor = new MotorEx("back_right");
+    private final MotorEx backRightMotor = new MotorEx("back_right").reversed();
     public  static double height;
 
-    FtcDashboard dashboard = FtcDashboard.getInstance();
-    Telemetry dashboardTelemetry = dashboard.getTelemetry();
     @Override
     public void onStartButtonPressed() {
         Command driverControlled = new MecanumDriverControlled(
@@ -74,12 +72,16 @@ public class LiftDriveLaunch extends NextFTCOpMode {
                 .whenBecomesTrue(Launcher.INSTANCE.dontmove)
                 .whenBecomesTrue(Launcher.INSTANCE.dontmove2);
 
-        dashboardTelemetry.addData("height",height);
+        Gamepads.gamepad2().leftBumper()
+                .whenBecomesTrue(FlywheelGate.INSTANCE.open());
+
+        Gamepads.gamepad2().rightBumper()
+                .whenBecomesTrue(FlywheelGate.INSTANCE.close());
+
         for (String message : CommandManager.INSTANCE.snapshot()
              ) {
             telemetry.addLine(message);
         }
-        dashboardTelemetry.update();
         telemetry.update();
     }
 }
