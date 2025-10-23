@@ -28,16 +28,12 @@ public class Lift implements Subsystem {
             .build();
 
     public Command toLow = new RunToPosition(controlSystem, 0).requires(this);
-    public Command toHigh = new RunToPosition(controlSystem, height).requires(this);
+    public Command toHigh = new RunToPosition(controlSystem, -11300).requires(this);
 
-    public Command toHigh(double targetHeight){
-        return new RunToPosition(controlSystem, targetHeight);
-    }
 
     @Override
     public void periodic() {
         lift_motor.setPower(controlSystem.calculate(lift_motor.getState()));
         lift_motor2.setPower(controlSystem.calculate(lift_motor2.getState()));
-        ActiveOpMode.telemetry().addData("lift_motor power: ", lift_motor.getPower());
     }
 }
