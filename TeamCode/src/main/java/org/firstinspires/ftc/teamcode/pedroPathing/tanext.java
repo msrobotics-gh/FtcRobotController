@@ -1,7 +1,5 @@
-package org.firstinspires.ftc.teamcode; // make sure this aligns with class location
+package org.firstinspires.ftc.teamcode.pedroPathing; // make sure this aligns with class location
 
-import com.acmerobotics.dashboard.FtcDashboard;
-import com.acmerobotics.dashboard.config.Config;
 import com.pedropathing.follower.Follower;
 import com.pedropathing.geometry.BezierLine;
 import com.pedropathing.geometry.Pose;
@@ -11,26 +9,18 @@ import com.pedropathing.util.Timer;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 
-import org.firstinspires.ftc.robotcore.external.Telemetry;
-
 @Autonomous(name = "drive in line", group = "PP")
-@Config
-public class ta extends OpMode {
-
-    FtcDashboard dashboard = FtcDashboard.getInstance();
-    Telemetry dashboardTelemetry = dashboard.getTelemetry();
+public class tanext extends OpMode {
 
     private Follower follower;
     private Timer pathTimer, actionTimer, opmodeTimer;
 
     private int pathState;
 
-    public int testDistance = 48;
-
     // POSES
 
     private final Pose pose1 = new Pose(0, 0, Math.toRadians(0)); // Start Pose of our robot.
-//    private final Pose pose2 = new Pose(0, testDistance, Math.toRadians(0)); // Scoring Pose of our robot. It is facing the goal at a 135 degree angle.
+    private final Pose pose2 = new Pose(0, 48, Math.toRadians(0)); // Scoring Pose of our robot. It is facing the goal at a 135 degree angle.
 
     private Path scorePreload;
     private PathChain pathOne;
@@ -44,9 +34,6 @@ public class ta extends OpMode {
 scorePreload.setConstantInterpolation(startPose.getHeading()); */
 
         /* This is our grabPickup1 PathChain. We are using a single path with a BezierLine, which is a straight line. */
-        final Pose pose2 = new Pose(0, testDistance, Math.toRadians(0)); // Scoring Pose of our robot. It is facing the goal at a 135 degree angle.
-
-
         pathOne = follower.pathBuilder()
                 .addPath(new BezierLine(pose1, pose2))
                 .setLinearHeadingInterpolation(pose1.getHeading(), pose2.getHeading())
@@ -101,12 +88,6 @@ scorePreload.setConstantInterpolation(startPose.getHeading()); */
         telemetry.addData("y", follower.getPose().getY());
         telemetry.addData("heading", follower.getPose().getHeading());
         telemetry.update();
-
-        dashboardTelemetry.addData("path state", pathState);
-        dashboardTelemetry.addData("x", follower.getPose().getX());
-        dashboardTelemetry.addData("y", follower.getPose().getY());
-        dashboardTelemetry.addData("heading", follower.getPose().getHeading());
-        dashboardTelemetry.update();
     }
 
     /** This method is called once at the init of the OpMode. **/
