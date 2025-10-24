@@ -80,8 +80,6 @@ public class AutonDrive extends LinearOpMode {
     public double rightPower;
     public double strafeLeftPower;
     public double strafeRightPower;
-
-
      public void resetRotations() {
         leftEncoderTicks = 0;
         rightEncoderTicks = 0;
