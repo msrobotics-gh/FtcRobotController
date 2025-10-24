@@ -11,19 +11,26 @@ import com.pedropathing.util.Timer;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 
+import org.firstinspires.ftc.robotcore.external.Telemetry;
+
 @Autonomous(name = "drive in line", group = "PP")
 @Config
 public class ta extends OpMode {
+
+    FtcDashboard dashboard = FtcDashboard.getInstance();
+    Telemetry dashboardTelemetry = dashboard.getTelemetry();
 
     private Follower follower;
     private Timer pathTimer, actionTimer, opmodeTimer;
 
     private int pathState;
 
+    public int testDistance = 48;
+
     // POSES
 
     private final Pose pose1 = new Pose(0, 0, Math.toRadians(0)); // Start Pose of our robot.
-    private final Pose pose2 = new Pose(0, 48, Math.toRadians(0)); // Scoring Pose of our robot. It is facing the goal at a 135 degree angle.
+//    private final Pose pose2 = new Pose(0, testDistance, Math.toRadians(0)); // Scoring Pose of our robot. It is facing the goal at a 135 degree angle.
 
     private Path scorePreload;
     private PathChain pathOne;
@@ -37,6 +44,9 @@ public class ta extends OpMode {
 scorePreload.setConstantInterpolation(startPose.getHeading()); */
 
         /* This is our grabPickup1 PathChain. We are using a single path with a BezierLine, which is a straight line. */
+        final Pose pose2 = new Pose(0, testDistance, Math.toRadians(0)); // Scoring Pose of our robot. It is facing the goal at a 135 degree angle.
+
+
         pathOne = follower.pathBuilder()
                 .addPath(new BezierLine(pose1, pose2))
                 .setLinearHeadingInterpolation(pose1.getHeading(), pose2.getHeading())
