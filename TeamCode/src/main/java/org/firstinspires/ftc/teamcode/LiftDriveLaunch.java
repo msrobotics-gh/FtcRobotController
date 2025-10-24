@@ -58,7 +58,9 @@ public class LiftDriveLaunch extends NextFTCOpMode {
 
         Gamepads.gamepad2().leftBumper()
                 .whenTrue(Launcher.INSTANCE.spinflywheel2)
-                .whenTrue(Launcher.INSTANCE.spinflywheel);
+                .whenTrue(Launcher.INSTANCE.spinflywheel)
+                .whenBecomesFalse(Launcher.INSTANCE.unspinflywheel)
+                .whenBecomesFalse(Launcher.INSTANCE.unspinflywheel2);
 
 
         Gamepads.gamepad2().rightBumper()
@@ -67,9 +69,15 @@ public class LiftDriveLaunch extends NextFTCOpMode {
                 .whenBecomesTrue(Intake.INSTANCE.intakesecond)
                 .whenBecomesFalse(Intake.INSTANCE.intakeoff)
                 .whenBecomesFalse(Intake.INSTANCE.intakeoff2)
-                .whenBecomesFalse(FlywheelGate.INSTANCE.close())
-                .whenBecomesFalse(Launcher.INSTANCE.unspinflywheel)
-                .whenBecomesFalse(Launcher.INSTANCE.unspinflywheel2);
+                .whenBecomesFalse(FlywheelGate.INSTANCE.close());
+
+        Gamepads.gamepad2().a()
+                .whenBecomesTrue(Intake.INSTANCE.intake)
+                .whenBecomesTrue(Intake.INSTANCE.intakesecond);
+
+        Gamepads.gamepad2().b()
+                .whenBecomesTrue(Intake.INSTANCE.intakeoff)
+                .whenBecomesTrue(Intake.INSTANCE.intakeoff2);
 
         for (String message : CommandManager.INSTANCE.snapshot()
              ) {
