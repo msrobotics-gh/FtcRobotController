@@ -12,9 +12,9 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
-
+//opskpomghilaisoaklsa oaopajyaopwsu ua9uhasao auyes oalaksdmoa opawasjkdn waiodsakdiauw
 @Autonomous(name = "drive in line", group = "PP")
-@Config
+@Config // 7.44688232853678 // 0.1357132846203596 // 0.09280719038382527
 public class ta extends OpMode {
 
     FtcDashboard dashboard = FtcDashboard.getInstance();
