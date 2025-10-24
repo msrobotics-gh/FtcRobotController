@@ -268,6 +268,9 @@ public class AutonDrive extends LinearOpMode {
             resetRotations();
         } while (leftRotations <= rotation && rightRotations <= rotation && frontLeftRotations <= rotation && frontRightRotations <= rotation);
         }
+        public void strafeForRotation() {
+
+        }
 
     }
 
