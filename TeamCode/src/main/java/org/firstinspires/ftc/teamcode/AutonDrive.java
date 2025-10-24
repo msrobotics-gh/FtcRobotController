@@ -315,6 +315,15 @@ public class AutonDrive extends LinearOpMode {
         rightDrive.setPower(rightPower+strafeRightPower);
         frontLeftDrive.setPower(-leftPower+strafeLeftPower);
         frontRightDrive.setPower(rightPower-strafeRightPower);
-        timer.wait((long) time);
+
+    }
+        else {
+            leftDrive.setPower(leftPower-strafeLeftPower);
+            rightDrive.setPower(-rightPower+strafeRightPower);
+            frontLeftDrive.setPower(leftPower+strafeLeftPower);
+            frontRightDrive.setPower(-rightPower-strafeRightPower);
+
+        }
+        }
     }
 }
