@@ -263,36 +263,6 @@ public class AutonDrive extends LinearOpMode {
             driveForRotations(2);
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
             // Show the elapsed game timer and wheel power.
             telemetry.addData("Status", "Run Time: " + runtime.toString());
             telemetry.addData("Motors", "left (%.2f)", leftPower);
