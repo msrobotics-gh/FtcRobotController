@@ -1,5 +1,7 @@
 package org.firstinspires.ftc.teamcode; // make sure this aligns with class location
 
+import com.acmerobotics.dashboard.FtcDashboard;
+import com.acmerobotics.dashboard.config.Config;
 import com.pedropathing.follower.Follower;
 import com.pedropathing.geometry.BezierLine;
 import com.pedropathing.geometry.Pose;
@@ -10,6 +12,7 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 
 @Autonomous(name = "drive in line", group = "PP")
+@Config
 public class ta extends OpMode {
 
     private Follower follower;
