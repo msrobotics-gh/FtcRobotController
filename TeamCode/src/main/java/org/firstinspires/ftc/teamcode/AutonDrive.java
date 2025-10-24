@@ -86,14 +86,6 @@ import com.qualcomm.robotcore.util.Range;
 
 @Autonomous(name="Drive", group="Linear OpMode")
 public class AutonDrive extends LinearOpMode {
-
-
-
-
-
-
-
-
     // Declare OpMode members.
     private ElapsedTime runtime = new ElapsedTime();
     private DcMotor leftDrive = null;
@@ -103,7 +95,6 @@ public class AutonDrive extends LinearOpMode {
     double drive = -1;
     double strafe = gamepad1.left_stick_x;
     double turn  =  gamepad1.right_stick_x;
-
     private ElapsedTime timer = new ElapsedTime();
     public int leftEncoderTicks = leftDrive.getCurrentPosition();
     public int rightEncoderTicks = rightDrive.getCurrentPosition();
@@ -277,10 +268,12 @@ public class AutonDrive extends LinearOpMode {
         frontRightDrive.setPower(rightPower-strafeRightPower);
         do {
             drive = 0;
+            resetRotations();
         } while (leftRotations <= rotations && rightRotations <= rotations && frontLeftRotations <= rotations && frontRightRotations <= rotations);
     }
     public void turnForRotation(double rotation, double direction) throws InterruptedException {
         if(direction<0){
+            resetRotations();
         leftDrive.setPower(-leftPower-strafeLeftPower);
         rightDrive.setPower(rightPower+strafeRightPower);
         frontLeftDrive.setPower(-leftPower+strafeLeftPower);
@@ -294,6 +287,11 @@ public class AutonDrive extends LinearOpMode {
             frontRightDrive.setPower(-rightPower-strafeRightPower);
 
         }
+        do {
+            drive = 0;
+            resetRotations();
+        } while (leftRotations <= rotation && rightRotations <= rotation && frontLeftRotations <= rotation && frontRightRotations <= rotation);
         }
+
     }
-}
+
