@@ -101,6 +101,12 @@ scorePreload.setConstantInterpolation(startPose.getHeading()); */
         telemetry.addData("y", follower.getPose().getY());
         telemetry.addData("heading", follower.getPose().getHeading());
         telemetry.update();
+
+        dashboardTelemetry.addData("path state", pathState);
+        dashboardTelemetry.addData("x", follower.getPose().getX());
+        dashboardTelemetry.addData("y", follower.getPose().getY());
+        dashboardTelemetry.addData("heading", follower.getPose().getHeading());
+        dashboardTelemetry.update();
     }
 
     /** This method is called once at the init of the OpMode. **/
