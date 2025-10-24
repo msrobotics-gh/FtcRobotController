@@ -15,8 +15,8 @@ public class Launcher implements Subsystem {
     public static final Launcher INSTANCE = new Launcher();
     private Launcher() { }
 
-    private MotorEx launch = new MotorEx("launch");
-    private MotorEx launch2 = new MotorEx("launch2");
+    private MotorEx launch = new MotorEx("launch").reversed();
+    private MotorEx launch2 = new MotorEx("launch2").reversed();
 
     private ControlSystem controlSystem = ControlSystem.builder()
             .posPid(0.005, 0, 0)
@@ -24,7 +24,11 @@ public class Launcher implements Subsystem {
             .build();
 
 
-    public Command move = new RunToVelocity(controlSystem,80);
+    public Command spinflywheel = new SetPower(launch,.7);
+    public Command spinflywheel2 = new SetPower(launch2,.7);
+
+    public Command unspinflywheel = new SetPower(launch,0);
+    public Command unspinflywheel2 = new SetPower(launch2,0);
 
     @Override
     public void periodic() {
