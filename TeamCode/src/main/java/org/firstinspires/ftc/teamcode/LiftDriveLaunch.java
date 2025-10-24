@@ -56,27 +56,20 @@ public class LiftDriveLaunch extends NextFTCOpMode {
         Gamepads.gamepad2().dpadDown()
                 .whenBecomesTrue(Lift.INSTANCE.toLow);
 
-        Gamepads.gamepad2().y()
-                .whenBecomesTrue(Launcher.INSTANCE.move2)
-                .whenBecomesTrue(Launcher.INSTANCE.move);
-
-        Gamepads.gamepad2().a()
-                .whenBecomesTrue(Intake.INSTANCE.intake)
-                .whenBecomesTrue(Intake.INSTANCE.intakesecond);
-
-        Gamepads.gamepad2().b()
-                .whenBecomesTrue(Intake.INSTANCE.intakeoff)
-                .whenBecomesTrue(Intake.INSTANCE.intakeoff2);
-
-        Gamepads.gamepad2().x()
-                .whenBecomesTrue(Launcher.INSTANCE.dontmove)
-                .whenBecomesTrue(Launcher.INSTANCE.dontmove2);
-
         Gamepads.gamepad2().leftBumper()
-                .whenBecomesTrue(FlywheelGate.INSTANCE.open());
+                .whenTrue(Launcher.INSTANCE.spinflywheel2)
+                .whenTrue(Launcher.INSTANCE.spinflywheel);
+
 
         Gamepads.gamepad2().rightBumper()
-                .whenBecomesTrue(FlywheelGate.INSTANCE.close());
+                .whenBecomesTrue(FlywheelGate.INSTANCE.open())
+                .whenBecomesTrue(Intake.INSTANCE.intake)
+                .whenBecomesTrue(Intake.INSTANCE.intakesecond)
+                .whenBecomesFalse(Intake.INSTANCE.intakeoff)
+                .whenBecomesFalse(Intake.INSTANCE.intakeoff2)
+                .whenBecomesFalse(FlywheelGate.INSTANCE.close())
+                .whenBecomesFalse(Launcher.INSTANCE.unspinflywheel)
+                .whenBecomesFalse(Launcher.INSTANCE.unspinflywheel2);
 
         for (String message : CommandManager.INSTANCE.snapshot()
              ) {
