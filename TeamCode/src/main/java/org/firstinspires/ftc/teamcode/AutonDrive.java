@@ -313,7 +313,7 @@ public class AutonDrive extends LinearOpMode {
         if(direction<0){
         leftDrive.setPower(-leftPower-strafeLeftPower);
         rightDrive.setPower(rightPower+strafeRightPower);
-        frontLeftDrive.setPower(leftPower+strafeLeftPower);
+        frontLeftDrive.setPower(-leftPower+strafeLeftPower);
         frontRightDrive.setPower(rightPower-strafeRightPower);
         timer.wait((long) time);
     }
