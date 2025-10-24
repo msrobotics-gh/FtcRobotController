@@ -309,8 +309,9 @@ public class AutonDrive extends LinearOpMode {
             drive = 0;
         } while (leftRotations <= rotations && rightRotations <= rotations && frontLeftRotations <= rotations && frontRightRotations <= rotations);
     }
-    public void turnForRotation(double rotation) throws InterruptedException {
-        leftDrive.setPower(leftPower-strafeLeftPower);
+    public void turnForRotation(double rotation, double direction) throws InterruptedException {
+        if(direction<0){
+        leftDrive.setPower(-leftPower-strafeLeftPower);
         rightDrive.setPower(rightPower+strafeRightPower);
         frontLeftDrive.setPower(leftPower+strafeLeftPower);
         frontRightDrive.setPower(rightPower-strafeRightPower);
