@@ -38,13 +38,16 @@ public class Velauncher implements Subsystem {
     private ControlSystem controlSystem = ControlSystem.builder()
             .feedback(pid)
             .build();
+    private ControlSystem controlSystem2 = ControlSystem.builder()
+            .feedback(pid)
+            .build();
 
     public Command velaunch = new RunToVelocity(controlSystem,velocity1);
-    public Command velaunch2 = new RunToVelocity(controlSystem,velocity2);
+    public Command velaunch2 = new RunToVelocity(controlSystem2,velocity2);
 
     public  Command kinelaunch = new RunToState(controlSystem,new KineticState(0.0, 65.0, 0.0), new KineticState(0.0, 2.0, 0.0));
 
-    public  Command kinelaunch2 = new RunToState(controlSystem,new KineticState(0.0, 65.0, 0.0), new KineticState(0.0, 2.0, 0.0));
+    public  Command kinelaunch2 = new RunToState(controlSystem2,new KineticState(0.0, 65.0, 0.0), new KineticState(0.0, 2.0, 0.0));
 
 
     @Override
