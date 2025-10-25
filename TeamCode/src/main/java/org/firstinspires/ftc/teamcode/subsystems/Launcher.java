@@ -2,6 +2,8 @@ package org.firstinspires.ftc.teamcode.subsystems;
 
 
 import dev.nextftc.control.ControlSystem;
+import dev.nextftc.control.feedback.FeedbackElement;
+import dev.nextftc.control.feedback.PIDElement;
 import dev.nextftc.core.commands.Command;
 import dev.nextftc.core.subsystems.Subsystem;
 import dev.nextftc.hardware.controllable.RunToPosition;
@@ -17,12 +19,10 @@ public class Launcher implements Subsystem {
 
     private MotorEx launch = new MotorEx("launch").reversed();
     private MotorEx launch2 = new MotorEx("launch2").reversed();
-
     private ControlSystem controlSystem = ControlSystem.builder()
             .posPid(0.005, 0, 0)
             .elevatorFF(0)
             .build();
-
 
     public Command spinflywheel = new SetPower(launch,.7);
     public Command spinflywheel2 = new SetPower(launch2,.7);
