@@ -1,6 +1,8 @@
 package org.firstinspires.ftc.teamcode;
 
 
+import com.acmerobotics.dashboard.FtcDashboard;
+import com.acmerobotics.dashboard.config.Config;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
@@ -8,6 +10,7 @@ import org.firstinspires.ftc.teamcode.subsystems.FlywheelGate;
 import org.firstinspires.ftc.teamcode.subsystems.Intake;
 import org.firstinspires.ftc.teamcode.subsystems.Launcher;
 import org.firstinspires.ftc.teamcode.subsystems.Lift;
+import org.firstinspires.ftc.teamcode.subsystems.Velauncher;
 
 import dev.nextftc.core.commands.Command;
 import dev.nextftc.core.commands.CommandManager;
@@ -20,6 +23,7 @@ import dev.nextftc.hardware.driving.MecanumDriverControlled;
 import dev.nextftc.hardware.impl.MotorEx;
 
 @TeleOp(name = "lift drive launch")
+@Config
 public class LiftDriveLaunch extends NextFTCOpMode {
     public LiftDriveLaunch() {
         addComponents(
@@ -29,6 +33,8 @@ public class LiftDriveLaunch extends NextFTCOpMode {
                 new SubsystemComponent(FlywheelGate.INSTANCE)
         );
     }
+    FtcDashboard dashboard = FtcDashboard.getInstance();
+    Telemetry dashboardTelemetry = dashboard.getTelemetry();
 
     // change the names and directions to suit your robot
     private final MotorEx frontLeftMotor = new MotorEx("front_left");
@@ -36,6 +42,10 @@ public class LiftDriveLaunch extends NextFTCOpMode {
     private final MotorEx backLeftMotor = new MotorEx("back_left").reversed();
     private final MotorEx backRightMotor = new MotorEx("back_right").reversed();
     public  static double height;
+
+    public double topmotorpower;
+
+    public double bottommotorpower;
 
     @Override
     public void onStartButtonPressed() {
@@ -57,8 +67,8 @@ public class LiftDriveLaunch extends NextFTCOpMode {
                 .whenBecomesTrue(Lift.INSTANCE.toLow);
 
         Gamepads.gamepad2().leftBumper()
-                .whenTrue(Launcher.INSTANCE.spinflywheel2)
-                .whenTrue(Launcher.INSTANCE.spinflywheel)
+                .whenTrue(Velauncher.INSTANCE.velaunch)
+                .whenTrue(Velauncher.INSTANCE.velaunch2)
                 .whenBecomesFalse(Launcher.INSTANCE.unspinflywheel)
                 .whenBecomesFalse(Launcher.INSTANCE.unspinflywheel2);
 
