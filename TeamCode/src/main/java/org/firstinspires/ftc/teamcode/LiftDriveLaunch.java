@@ -10,7 +10,7 @@ import org.firstinspires.ftc.teamcode.subsystems.FlywheelGate;
 import org.firstinspires.ftc.teamcode.subsystems.Intake;
 import org.firstinspires.ftc.teamcode.subsystems.Launcher;
 import org.firstinspires.ftc.teamcode.subsystems.Lift;
-import org.firstinspires.ftc.teamcode.subsystems.Velauncher;
+//import org.firstinspires.ftc.teamcode.subsystems.Velauncher;
 
 import dev.nextftc.core.commands.Command;
 import dev.nextftc.core.commands.CommandManager;
@@ -34,7 +34,6 @@ public class LiftDriveLaunch extends NextFTCOpMode {
         );
     }
     FtcDashboard dashboard = FtcDashboard.getInstance();
-    Telemetry dashboardTelemetry = dashboard.getTelemetry();
 
     // change the names and directions to suit your robot
     private final MotorEx frontLeftMotor = new MotorEx("front_left");
@@ -67,8 +66,11 @@ public class LiftDriveLaunch extends NextFTCOpMode {
                 .whenBecomesTrue(Lift.INSTANCE.toLow);
 
         Gamepads.gamepad2().leftBumper()
-                .whenTrue(Velauncher.INSTANCE.velaunch)
-                .whenTrue(Velauncher.INSTANCE.velaunch2);
+                .whenTrue(Launcher.INSTANCE.spinflywheel)
+                .whenTrue(Launcher.INSTANCE.spinflywheel2)
+                .whenBecomesTrue(Launcher.INSTANCE.unspinflywheel2)
+                .whenBecomesFalse(Launcher.INSTANCE.unspinflywheel);
+
 
 
         Gamepads.gamepad2().rightBumper()
