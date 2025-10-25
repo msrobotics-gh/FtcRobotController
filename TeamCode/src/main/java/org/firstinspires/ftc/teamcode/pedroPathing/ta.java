@@ -12,8 +12,8 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
-//opskpomghilaisoaklsa oaopajyaopwsu ua9uhasao auyes oalaksdmoa opawasjkdn waiodsakdiauw
-@Autonomous(name = "drive in line", group = "PP")
+
+@Autonomous(name = "bartholomew is back", group = "Autonomous")
 @Config // 7.44688232853678 // 0.1357132846203596 // 0.09280719038382527
 public class ta extends OpMode {
 
@@ -25,77 +25,83 @@ public class ta extends OpMode {
 
     private int pathState;
 
-    public int testDistance = 48;
+    public int poseOneX = 72;
+    public int poseOneY = 96;
+    public int poseTwoX = 96;
+    public int poseTwoY = 96;
+
+    public int poseOneT = 90;
+    public int poseTwoT = 90;
+
+    public int waitTime = 5;
 
     // POSES
 
-    private final Pose pose1 = new Pose(0, 0, Math.toRadians(0)); // Start Pose of our robot.
-//    private final Pose pose2 = new Pose(0, testDistance, Math.toRadians(0)); // Scoring Pose of our robot. It is facing the goal at a 135 degree angle.
+    private final Pose pose1 = new Pose(72, 72, Math.toRadians(90));
 
     private Path scorePreload;
     private PathChain pathOne;
+    private PathChain pathTwo;
+
 
     public void buildPaths() {
-        /* This is our scorePreload path. We are using a BezierLine, which is a straight line. */
-//        scorePreload = new Path(new BezierLine(pose1, pose2));
-//        scorePreload.setLinearHeadingInterpolation(pose1.getHeading(), pose2.getHeading());
-
-        /* Here is an example for Constant Interpolation
-scorePreload.setConstantInterpolation(startPose.getHeading()); */
-
-        /* This is our grabPickup1 PathChain. We are using a single path with a BezierLine, which is a straight line. */
-        final Pose pose2 = new Pose(0, testDistance, Math.toRadians(0)); // Scoring Pose of our robot. It is facing the goal at a 135 degree angle.
+        final Pose pose2 = new Pose(poseOneX, poseOneY, Math.toRadians(poseOneT)); // forward 48
+        final Pose pose3 = new Pose(poseTwoX, poseTwoY, Math.toRadians(poseTwoT)); // left 48
 
 
         pathOne = follower.pathBuilder()
                 .addPath(new BezierLine(pose1, pose2))
                 .setLinearHeadingInterpolation(pose1.getHeading(), pose2.getHeading())
                 .build();
+
+        pathTwo = follower.pathBuilder()
+                .addPath(new BezierLine(pose2, pose3))
+                .setLinearHeadingInterpolation(pose2.getHeading(), pose3.getHeading())
+                .build();
+
+        // pathThree = follower.pathBuilder()
+        //         .addPath(new BezierLine(pose1, pose2))
+        //         .setLinearHeadingInterpolation(pose1.getHeading(), pose2.getHeading())
+        //         .build();
     }
 
 
     public void autonomousPathUpdate() {
         switch (pathState) {
             case 0:
-                follower.followPath(pathOne);
+                follower.followPath(pathOne, true);
                 setPathState(1);
                 break;
-//            case 1:
-//
-//                    /* You could check for
+            case 1:
+                if (!follower.isBusy() && pathTimer.getElapsedTimeSeconds() > waitTime) {
+                    follower.followPath(pathTwo, true);
+                    setPathState(2);
+                }
+                break;
+            case 2:
+                break;
+
+
 //- Follower State: "if(!follower.isBusy()) {}"
 //- Time: "if(pathTimer.getElapsedTimeSeconds() > 1) {}"
 //- Robot Position: "if(follower.getPose().getX() > 36) {}"
-//*/
-//
-//            /* This case checks the robot's position and will wait until the robot position is close (1 inch away) from the scorePose's position */
-//            if(!follower.isBusy()) {
-//                /* Score Preload */
-//
-//                /* Since this is a pathChain, we can have Pedro hold the end point while we are grabbing the sample */
-//                follower.followPath(grabPickup1,true);
-//                setPathState(2);
-//            }
-//            break;
+
+
         }
     }
 
-    /** These change the states of the paths and actions. It will also reset the timers of the individual switches **/
     public void setPathState(int pState) {
         pathState = pState;
         pathTimer.resetTimer();
     }
 
 
-    /** This is the main loop of the OpMode, it will run repeatedly after clicking "Play". **/
+    // run repeatedly after clicking Start
     @Override
     public void loop() {
-
-        // These loop the movements of the robot, these must be called continuously in order to work
         follower.update();
         autonomousPathUpdate();
 
-        // Feedback to Driver Hub for debugging
         telemetry.addData("path state", pathState);
         telemetry.addData("x", follower.getPose().getX());
         telemetry.addData("y", follower.getPose().getY());
@@ -109,7 +115,7 @@ scorePreload.setConstantInterpolation(startPose.getHeading()); */
         dashboardTelemetry.update();
     }
 
-    /** This method is called once at the init of the OpMode. **/
+    // called once
     @Override
     public void init() {
         pathTimer = new Timer();
@@ -123,19 +129,18 @@ scorePreload.setConstantInterpolation(startPose.getHeading()); */
 
     }
 
-    /** This method is called continuously after Init while waiting for "play". **/
+    // called continueously while waiting for Start
     @Override
     public void init_loop() {}
 
-    /** This method is called once at the start of the OpMode.
-     * It runs all the setup actions, including building paths and starting the path system **/
+    // called once at start of opmode
     @Override
     public void start() {
         opmodeTimer.resetTimer();
         setPathState(0);
     }
 
-    /** We do not use this because everything should automatically disable **/
+    // dont use; eveyrthign auto disable
     @Override
     public void stop() {}
 
