@@ -31,29 +31,48 @@ public class Velauncher implements Subsystem {
     private MotorEx launch2 = new MotorEx("launch2").reversed();
     public static PIDCoefficients coefficients = new  PIDCoefficients(0.1,0,0);
 
-    public static double velocity1 = 65;
+    public static double velocity1 = rpmToTps(100,28);
 
-    public static double velocity2 = 65;
-    private FeedbackElement pid = new PIDElement(FeedbackType.POSITION, coefficients);
+    public static double unvelocity1 = rpmToTps(0,28);
+
+    public static double unvelocity2 = rpmToTps(0,28);
+
+
+    public static double velocity2 = rpmToTps(100,28);
+
+    public static double TPR_UPPER = 28;
+    public static double TPR_LOWER = 28;
+
+    public static double TARGET_RPM_UPPER = 1000;
+    public static double TARGET_RPM_LOWER = 1000;
+    //private FeedbackElement pid = new PIDElement(FeedbackType.VELOCITY, coefficients);
     private ControlSystem controlSystem = ControlSystem.builder()
-            .feedback(pid)
+            .velPid(0.01, 0, 0)
             .build();
     private ControlSystem controlSystem2 = ControlSystem.builder()
-            .feedback(pid)
+            .velPid(0.01, 0, 0)
             .build();
 
     public Command velaunch = new RunToVelocity(controlSystem,velocity1);
     public Command velaunch2 = new RunToVelocity(controlSystem2,velocity2);
 
-    public  Command kinelaunch = new RunToState(controlSystem,new KineticState(0.0, 65.0, 0.0), new KineticState(0.0, 2.0, 0.0));
+    public Command unvelaunch = new RunToVelocity(controlSystem,unvelocity1);
 
-    public  Command kinelaunch2 = new RunToState(controlSystem2,new KineticState(0.0, 65.0, 0.0), new KineticState(0.0, 2.0, 0.0));
+    public  Command unvelaunch2 = new RunToVelocity(controlSystem2,unvelocity2);
+
 
 
     @Override
     public void periodic() {
         launch.setPower(controlSystem.calculate(launch.getState()));
         launch2.setPower(controlSystem.calculate(launch2.getState()));
+    }
+    private static double rpmToTps(double rpm, double tpr) {
+        return rpm * tpr / 60.0;
+    }
+
+    private static double tpsToRpm(double tps, double tpr) {
+        return (tps * 60.0) / tpr;
     }
 }
 
