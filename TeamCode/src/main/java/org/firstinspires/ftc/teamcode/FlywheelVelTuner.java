@@ -1,5 +1,4 @@
-// Adjust package + imports to match your project
-package org.firstinspires.ftc.teamcode; // <-- change or remove
+package org.firstinspires.ftc.teamcode;
 
 import com.acmerobotics.dashboard.FtcDashboard;
 import com.acmerobotics.dashboard.config.Config;
@@ -8,8 +7,6 @@ import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
-
-import org.firstinspires.ftc.robotcore.external.Telemetry;
 
 import java.net.PortUnreachableException;
 
@@ -96,18 +93,10 @@ public class FlywheelVelTuner extends OpMode {
     private double _kP_LOWER, _kI_LOWER, _kD_LOWER, _kV_LOWER, _kA_LOWER, _kS_LOWER;
     private double _VEL_LP_ALPHA;
 
-    FtcDashboard dashboard;
-
-    Telemetry dashboardTelemetry;
-
     @Override
     public void init() {
         upperMotor = new MotorEx(UPPER_MOTOR_NAME).reversed();
         lowerMotor = new MotorEx(LOWER_MOTOR_NAME).reversed();
-
-        dashboard = FtcDashboard.getInstance();
-
-        dashboardTelemetry = dashboard.getTelemetry();
 
         upperMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         lowerMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
@@ -223,4 +212,3 @@ public class FlywheelVelTuner extends OpMode {
         return (tps * 60.0) / tpr;
     }
 }
-
