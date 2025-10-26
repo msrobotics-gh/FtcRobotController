@@ -24,17 +24,16 @@ import java.util.List;
 
 @TeleOp
 public class taa extends OpMode {
+    public final int initialRotation = 90;
     // CAMERA STUFF
-    private static final boolean USE_WEBCAM = true;
-    private Position cameraPosition = new Position(DistanceUnit.INCH,
+    private final Position cameraPosition = new Position(DistanceUnit.INCH,
             0, 0, 0, 0);
-    private YawPitchRollAngles cameraOrientation = new YawPitchRollAngles(AngleUnit.DEGREES,
-            0, -90, 0, 0);
+    private final YawPitchRollAngles cameraOrientation = new YawPitchRollAngles(AngleUnit.DEGREES,
+            initialRotation, 0, 0, 0);
     private AprilTagProcessor aprilTag;
     private VisionPortal visionPortal;
-//    private Limelight3A camera; //any camera here
 
-    private double telemetryAprilTag() {
+    private double ATPos() {
 
         List<AprilTagDetection> currentDetections = aprilTag.getDetections();
 //        telemetry.addData("# AprilTags Detected", currentDetections.size());
@@ -56,17 +55,11 @@ public class taa extends OpMode {
                     return detection.robotPose.getOrientation().getYaw(AngleUnit.DEGREES);
                 }
             } else {
-//                telemetry.addLine(String.format("\n==== (ID %d) Unknown", detection.id));
-//                telemetry.addLine(String.format("Center %6.0f %6.0f   (pixels)", detection.center.x, detection.center.y));
+                // its an obelisk
                 return 0.0;
             }
-        }   // end for() loop
-
-        // Add "key" information to telemetry
-//        telemetry.addLine("\nkey:\nXYZ = X (Right), Y (Forward), Z (Up) dist.");
-//        telemetry.addLine("PRY = Pitch, Roll & Yaw (XYZ Rotation)");
-
-        return 0;
+        }
+        return 0.0;
     }   // end method telemetryAprilTag()
 
 
@@ -74,48 +67,23 @@ public class taa extends OpMode {
 
         // Create the AprilTag processor.
         aprilTag = new AprilTagProcessor.Builder()
-
-                // The following default settings are available to un-comment and edit as needed.
-                //.setDrawAxes(false)
-                //.setDrawCubeProjection(false)
-                //.setDrawTagOutline(true)
-                //.setTagFamily(AprilTagProcessor.TagFamily.TAG_36h11)
-                //.setTagLibrary(AprilTagGameDatabase.getCenterStageTagLibrary())
-                //.setOutputUnits(DistanceUnit.INCH, AngleUnit.DEGREES)
                 .setCameraPose(cameraPosition, cameraOrientation)
-
                 // == CAMERA CALIBRATION ==
-                // If you do not manually specify calibration parameters, the SDK will attempt
-                // to load a predefined calibration for your camera.
                 .setLensIntrinsics(1406.54, 1406.54, 658.234, 352.691)
                 // ... these parameters are fx, fy, cx, cy.
 
                 .build();
 
-        // Adjust Image Decimation to trade-off detection-range for detection-rate.
-        // eg: Some typical detection data using a Logitech C920 WebCam
-        // Decimation = 1 ..  Detect 2" Tag from 10 feet away at 10 Frames per second
-        // Decimation = 2 ..  Detect 2" Tag from 6  feet away at 22 Frames per second
-        // Decimation = 3 ..  Detect 2" Tag from 4  feet away at 30 Frames Per Second (default)
-        // Decimation = 3 ..  Detect 5" Tag from 10 feet away at 30 Frames Per Second (default)
-        // Note: Decimation can be changed on-the-fly to adapt during a match.
-        //aprilTag.setDecimation(3);
-
-        // Create the vision portal by using a builder.
         VisionPortal.Builder builder = new VisionPortal.Builder();
 
         // Set the camera (webcam vs. built-in RC phone camera).
-        if (USE_WEBCAM) {
-            builder.setCamera(hardwareMap.get(WebcamName.class, "Webcam 1"));
-        } else {
-            builder.setCamera(BuiltinCameraDirection.BACK);
-        }
+        builder.setCamera(hardwareMap.get(WebcamName.class, "Webcam 1"));
 
         // Choose a camera resolution. Not all cameras support all resolutions.
         builder.setCameraResolution(new Size(1280, 720));
 
         // Enable the RC preview (LiveView).  Set "false" to omit camera monitoring.
-        //builder.enableLiveView(true);
+        builder.enableLiveView(false); // disables camera view
 
         // Set the stream format; MJPEG uses less bandwidth than default YUY2.
         //builder.setStreamFormat(VisionPortal.StreamFormat.YUY2);
@@ -155,7 +123,7 @@ public class taa extends OpMode {
 
     // PEDRO STUFF
     private Follower follower;
-    private boolean following = false;
+//    private boolean following = false;
     private final Pose TARGET_LOCATION = new Pose(); //Put the target location here
 
     @Override
@@ -177,32 +145,40 @@ public class taa extends OpMode {
 
         //if you're not using limelight you can follow the same steps: build an offset pose, put your heading offset, and generate a path etc
 
-        final double tagPosition = telemetryAprilTag();
+        final double tagPosition = ATPos();
 
-        if (!following) {
-            follower.followPath(
-                    follower.pathBuilder()
-//                            .addPath(new BezierLine(follower.getPose(), TARGET_LOCATION))
-                            .addPath(new BezierLine(follower.getPose(), follower.getPose()))
-                            .setLinearHeadingInterpolation(follower.getHeading(), Math.toRadians(tagPosition))
-                            .build()
-            );
-            telemetry.addData("> ","following "+tagPosition);
-            telemetry.update();
-        }
+//        if (!following) {
+//            follower.followPath(
+//                    follower.pathBuilder()
+////                            .addPath(new BezierLine(follower.getPose(), TARGET_LOCATION))
+//                            .addPath(new BezierLine(follower.getPose(), follower.getPose()))
+//                            .setLinearHeadingInterpolation(follower.getHeading(), Math.toRadians(tagPosition))
+//                            .build()
+//            );
+//            telemetry.addData("> ","following "+tagPosition);
+//            telemetry.update();
+//        }
+
+        final Pose currentPose = follower.getPose();
+        final Pose tagPose = new Pose(currentPose.getX(), currentPose.getY(), Math.toRadians(tagPosition));
 
         //This uses the aprilTag to relocalize your robot
         //You can also create a custom AprilTag fusion Localizer for the follower if you want to use this by default for all your autos
-        follower.setPose(getRobotPoseFromCamera());
+        follower.setPose(tagPose);
 
-        if (following && !follower.isBusy()) following = false;
+//        if (following && !follower.isBusy()) following = false;
     }
 
-    private Pose getRobotPoseFromCamera() {
-        //Fill this out to get the robot Pose from the camera's output (apply any filters if you need to using follower.getPose() for fusion)
-        //Pedro Pathing has built-in KalmanFilter and LowPassFilter classes you can use for this
-
-        //Use this to convert standard FTC coordinates to standard Pedro Pathing coordinates
-        return new Pose(0, 0, 0, FTCCoordinates.INSTANCE).getAsCoordinateSystem(PedroCoordinates.INSTANCE);
+    @Override
+    public void stop() {
+        visionPortal.close();
     }
+
+//    private Pose getRobotPoseFromCamera() {
+//        //Fill this out to get the robot Pose from the camera's output (apply any filters if you need to using follower.getPose() for fusion)
+//        //Pedro Pathing has built-in KalmanFilter and LowPassFilter classes you can use for this
+//
+//        //Use this to convert standard FTC coordinates to standard Pedro Pathing coordinates
+//        return new Pose(0, 0, 0, FTCCoordinates.INSTANCE).getAsCoordinateSystem(PedroCoordinates.INSTANCE);
+//    }
 }
