@@ -1,5 +1,7 @@
 package org.firstinspires.ftc.teamcode.pedroPathing;
 
+import static java.lang.Thread.sleep;
+
 import com.pedropathing.follower.Follower;
 import com.pedropathing.ftc.FTCCoordinates;
 import com.pedropathing.geometry.BezierLine;
@@ -124,7 +126,9 @@ public class taa extends OpMode {
     // PEDRO STUFF
     private Follower follower;
 //    private boolean following = false;
-    private final Pose TARGET_LOCATION = new Pose(); //Put the target location here
+//    private final Pose TARGET_LOCATION = new Pose(); //Put the target location here
+
+    int dontFryCpu = 0;
 
     @Override
     public void init() {
@@ -142,6 +146,8 @@ public class taa extends OpMode {
     @Override
     public void loop() {
         follower.update();
+        if (dontFryCpu < 100) {dontFryCpu++; return;} else {dontFryCpu = 0;}
+        // running this loop hundreds of time per ms is kinda excessive ._.
 
         //if you're not using limelight you can follow the same steps: build an offset pose, put your heading offset, and generate a path etc
 
