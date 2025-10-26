@@ -44,68 +44,68 @@ public class ta extends OpMode {
     private final Pose pose5 = new Pose(24,24, Math.toRadians(90));
     private final Pose pose6 = new Pose(24,96, Math.toRadians(90));
 
-//    private Path;
-    private PathChain completePath;
+    //    private Path;
+    private PathChain pathOne, pathTwo, pathThr, pathFou, pathFiv, pathSix, pathSev;
 //    private PathChain pathTwo;
 
 
     public void buildPaths() {
 
-        completePath = follower.pathBuilder()
+        // completePath = follower.pathBuilder()
+        //         .addPath(new BezierLine(pose1, pose2))
+        //         .setLinearHeadingInterpolation(pose1.getHeading(), pose2.getHeading())
+        //         .addPath(new BezierLine(pose2, pose3))
+        //         .setLinearHeadingInterpolation(pose2.getHeading(), pose3.getHeading())
+        //         .addPath(new BezierLine(pose1, pose2))
+        //         .setLinearHeadingInterpolation(pose1.getHeading(), pose2.getHeading())
+        //         .addPath(new BezierLine(pose2, pose3))
+        //         .setLinearHeadingInterpolation(pose2.getHeading(), pose3.getHeading())
+        //         .addPath(new BezierLine(pose3, pose4))
+        //         .setLinearHeadingInterpolation(pose3.getHeading(), pose4.getHeading())
+        //         .addPath(new BezierLine(pose4, pose5))
+        //         .setLinearHeadingInterpolation(pose4.getHeading(), pose5.getHeading())
+        //         .addPath(new BezierLine(pose5, pose6))
+        //         .setLinearHeadingInterpolation(pose5.getHeading(), pose6.getHeading())
+        //         .addPath(new BezierLine(pose6, pose2))
+        //         .setLinearHeadingInterpolation(pose6.getHeading(), pose2.getHeading())
+        //         .addPath(new BezierLine(pose2, pose1))
+        //         .setLinearHeadingInterpolation(pose2.getHeading(), pose1.getHeading())
+        //         .build();
+
+        pathOne = follower.pathBuilder()
                 .addPath(new BezierLine(pose1, pose2))
                 .setLinearHeadingInterpolation(pose1.getHeading(), pose2.getHeading())
+                .build();
+
+        pathTwo = follower.pathBuilder()
                 .addPath(new BezierLine(pose2, pose3))
                 .setLinearHeadingInterpolation(pose2.getHeading(), pose3.getHeading())
-                .addPath(new BezierLine(pose1, pose2))
-                .setLinearHeadingInterpolation(pose1.getHeading(), pose2.getHeading())
-                .addPath(new BezierLine(pose2, pose3))
-                .setLinearHeadingInterpolation(pose2.getHeading(), pose3.getHeading())
+                .build();
+
+        pathThr = follower.pathBuilder()
                 .addPath(new BezierLine(pose3, pose4))
                 .setLinearHeadingInterpolation(pose3.getHeading(), pose4.getHeading())
+                .build();
+
+        pathFou = follower.pathBuilder()
                 .addPath(new BezierLine(pose4, pose5))
                 .setLinearHeadingInterpolation(pose4.getHeading(), pose5.getHeading())
+                .build();
+
+        pathFiv = follower.pathBuilder()
                 .addPath(new BezierLine(pose5, pose6))
                 .setLinearHeadingInterpolation(pose5.getHeading(), pose6.getHeading())
+                .build();
+
+        pathSix = follower.pathBuilder()
                 .addPath(new BezierLine(pose6, pose2))
                 .setLinearHeadingInterpolation(pose6.getHeading(), pose2.getHeading())
+                .build();
+
+        pathSev = follower.pathBuilder()
                 .addPath(new BezierLine(pose2, pose1))
                 .setLinearHeadingInterpolation(pose2.getHeading(), pose1.getHeading())
                 .build();
-
-//        pathOne = follower.pathBuilder()
-//                .addPath(new BezierLine(pose1, pose2))
-//                .setLinearHeadingInterpolation(pose1.getHeading(), pose2.getHeading())
-//                .build();
-//
-//        pathTwo = follower.pathBuilder()
-//                .addPath(new BezierLine(pose2, pose3))
-//                .setLinearHeadingInterpolation(pose2.getHeading(), pose3.getHeading())
-//                .build();
-//
-//        pathThr = follower.pathBuilder()
-//                .addPath(new BezierLine(pose3, pose4))
-//                .setLinearHeadingInterpolation(pose3.getHeading(), pose4.getHeading())
-//                .build();
-//
-//        pathFou = follower.pathBuilder()
-//                .addPath(new BezierLine(pose4, pose5))
-//                .setLinearHeadingInterpolation(pose4.getHeading(), pose5.getHeading())
-//                .build();
-//
-//        pathFiv = follower.pathBuilder()
-//                .addPath(new BezierLine(pose5, pose6))
-//                .setLinearHeadingInterpolation(pose5.getHeading(), pose6.getHeading())
-//                .build();
-//
-//        pathSix = follower.pathBuilder()
-//                .addPath(new BezierLine(pose6, pose2))
-//                .setLinearHeadingInterpolation(pose6.getHeading(), pose2.getHeading())
-//                .build();
-//
-//        pathSev = follower.pathBuilder()
-//                .addPath(new BezierLine(pose2, pose1))
-//                .setLinearHeadingInterpolation(pose2.getHeading(), pose1.getHeading())
-//                .build();
 
         // pathThree = follower.pathBuilder()
         //         .addPath(new BezierLine(pose1, pose2))
@@ -117,11 +117,50 @@ public class ta extends OpMode {
     public void autonomousPathUpdate() {
         switch (pathState) {
             case 0:
-                follower.followPath(completePath, true);
+                follower.followPath(pathOne);
                 setPathState(1);
                 break;
             case 1:
-                setPathState(-1);
+                if (!follower.isBusy()) {
+                    follower.followPath(pathTwo);
+                    setPathState(2);
+                }
+                break;
+            case 2:
+                if (!follower.isBusy()) {
+                    follower.followPath(pathThr);
+                    setPathState(3);
+                }
+                break;
+            case 3:
+                if (!follower.isBusy()) {
+                    follower.followPath(pathFou);
+                    setPathState(4);
+                }
+                break;
+            case 4:
+                if (!follower.isBusy()) {
+                    follower.followPath(pathFiv);
+                    setPathState(5);
+                }
+                break;
+            case 5:
+                if (!follower.isBusy()) {
+                    follower.followPath(pathSix);
+                    setPathState(6);
+                }
+                break;
+            case 6:
+                if (!follower.isBusy()) {
+                    follower.followPath(pathSev, true);
+                    setPathState(7);
+                }
+                break;
+            case 7:
+                if (!follower.isBusy()) {
+                    follower.holdPoint(follower.getPose());
+                    setPathState(-1);
+                }
                 break;
 
 
