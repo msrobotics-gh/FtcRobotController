@@ -187,6 +187,8 @@ public class taa extends OpMode {
                             .setLinearHeadingInterpolation(follower.getHeading(), Math.toRadians(tagPosition))
                             .build()
             );
+            telemetry.addData("> ","following "+tagPosition);
+            telemetry.update();
         }
 
         //This uses the aprilTag to relocalize your robot
