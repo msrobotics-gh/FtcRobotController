@@ -40,9 +40,9 @@ public class ta extends OpMode {
     private final Pose pose1 = new Pose(72, 72, Math.toRadians(90));
     private final Pose pose2 = new Pose(72, 96, Math.toRadians(90)); // forward 48
     private final Pose pose3 = new Pose(96, 96, Math.toRadians(90)); // left 48
-    private final Pose pose4 = new Pose(96,24, Math.toRadians(90));
-    private final Pose pose5 = new Pose(24,24, Math.toRadians(90));
-    private final Pose pose6 = new Pose(24,96, Math.toRadians(90));
+    private final Pose pose4 = new Pose(96,48, Math.toRadians(90));
+    private final Pose pose5 = new Pose(48,48, Math.toRadians(90));
+    private final Pose pose6 = new Pose(48,96, Math.toRadians(90));
 
     //    private Path;
     private PathChain pathOne, pathTwo, pathThr, pathFou, pathFiv, pathSix, pathSev;
