@@ -54,14 +54,14 @@ public class taaa extends OpMode {
     @Override
     public void loop() {
         follower.update();
-        if (dontFryCpu < 10000) {
-            dontFryCpu++;
-            telemetry.addData("> ", "saving the cpu");
-            telemetry.update();
-            dtelemetry.addData("> ","saving the cpu");
-            dtelemetry.update();
-            return;
-        } else {dontFryCpu = 0;}
+//        if (dontFryCpu < 10000) {
+//            dontFryCpu++;
+//            telemetry.addData("> ", "saving the cpu");
+//            telemetry.update();
+//            dtelemetry.addData("> ","saving the cpu");
+//            dtelemetry.update();
+//            return;
+//        } else {dontFryCpu = 0;}
 
 
         final Pose tagPose = new Pose(x, y, Math.toRadians(r));
