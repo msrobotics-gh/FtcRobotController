@@ -146,7 +146,7 @@ public class taa extends OpMode {
     @Override
     public void loop() {
         follower.update();
-        if (dontFryCpu < 100) {dontFryCpu++; return;} else {dontFryCpu = 0;}
+        if (dontFryCpu < 10000) {dontFryCpu++; return;} else {dontFryCpu = 0;}
         // running this loop hundreds of time per ms is kinda excessive ._.
 
         //if you're not using limelight you can follow the same steps: build an offset pose, put your heading offset, and generate a path etc
