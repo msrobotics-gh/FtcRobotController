@@ -47,7 +47,7 @@ import java.util.List;
  * @author FTC Team 9895
  * @version 1.0
  */
-@Autonomous(name = "Reference Autonomous", group = "Pedro Examples")
+@Autonomous(name = "apriltag 2", group = "Autonomous")
 @Config
 public class taaaa extends OpMode {
 
