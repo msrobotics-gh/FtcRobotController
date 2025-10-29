@@ -65,7 +65,7 @@ public class Velauncher implements Subsystem {
     @Override
     public void periodic() {
         launch.setPower(controlSystem.calculate(launch.getState()));
-        launch2.setPower(controlSystem.calculate(launch2.getState()));
+        launch2.setPower(controlSystem2.calculate(launch2.getState()));
     }
     private static double rpmToTps(double rpm, double tpr) {
         return rpm * tpr / 60.0;

@@ -10,6 +10,10 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 
+import org.firstinspires.ftc.teamcode.subsystems.FlywheelGate;
+import org.firstinspires.ftc.teamcode.subsystems.Intake;
+import org.firstinspires.ftc.teamcode.subsystems.Lift;
+
 import java.net.PortUnreachableException;
 
 import dev.nextftc.control.ControlSystem;
@@ -19,8 +23,11 @@ import dev.nextftc.control.feedback.FeedbackType;
 import dev.nextftc.control.feedback.PIDCoefficients;
 import dev.nextftc.control.feedback.PIDElement;
 import dev.nextftc.core.commands.Command;
+import dev.nextftc.core.components.BindingsComponent;
+import dev.nextftc.core.components.SubsystemComponent;
 import dev.nextftc.core.subsystems.Subsystem;
 import dev.nextftc.ftc.NextFTCOpMode;
+import dev.nextftc.ftc.components.BulkReadComponent;
 import dev.nextftc.hardware.controllable.RunToPosition;
 import dev.nextftc.hardware.controllable.RunToState;
 import dev.nextftc.hardware.controllable.RunToVelocity;
@@ -40,6 +47,13 @@ import dev.nextftc.hardware.powerable.SetPower;
 @TeleOp(name = "FlywheelVelTuner")
 public class FlywheelVelTuner extends NextFTCOpMode {
 
+    public FlywheelVelTuner() {
+        addComponents(
+                BulkReadComponent.INSTANCE,
+                BindingsComponent.INSTANCE,
+                new SubsystemComponent(Intake.INSTANCE)
+        );
+    }
     // === Hardware names (change to match your configuration) ===
     public static String UPPER_MOTOR_NAME = "launch";
     public static String LOWER_MOTOR_NAME = "launch2";
@@ -49,8 +63,8 @@ public class FlywheelVelTuner extends NextFTCOpMode {
     public static double TPR_LOWER = 28; // ticks per output revolution (lower motor)
 
     // === Target speeds (RPM) ===
-    public static double TARGET_RPM_UPPER = 1000;
-    public static double TARGET_RPM_LOWER = 1000;
+    public static double TARGET_RPM_UPPER = 500;
+    public static double TARGET_RPM_LOWER = 500;
 
     // === Velocity tolerance for "at speed" checks (ticks/sec) ===
     public static double TOL_TPS_UPPER = 50.0;
@@ -66,18 +80,18 @@ public class FlywheelVelTuner extends NextFTCOpMode {
     public static double OPEN_LOOP_POWER_LOWER = 0.7;
 
     // === NextFTC Control gains — Upper motor ===
-    public static double kP_UPPER = 0.0008;
+    public static double kP_UPPER = 0.00002;
     public static double kI_UPPER = 0.0;
     public static double kD_UPPER = 0.0;
-    public static double kV_UPPER = 1.0e-4;
+    public static double kV_UPPER = 0.00152174;
     public static double kA_UPPER = 0.0;
     public static double kS_UPPER = 0.02;
 
     // === NextFTC Control gains — Lower motor ===
-    public static double kP_LOWER = 0.0008;
+    public static double kP_LOWER = 0.00002;
     public static double kI_LOWER = 0.0;
     public static double kD_LOWER = 0.0;
-    public static double kV_LOWER = 1.0e-4;
+    public static double kV_LOWER = 0.00152174;
     public static double kA_LOWER = 0.0;
     public static double kS_LOWER = 0.02;
 
@@ -98,8 +112,8 @@ public class FlywheelVelTuner extends NextFTCOpMode {
 
     @Override
     public void onInit() {
-        upperMotor = new MotorEx(UPPER_MOTOR_NAME).reversed();
-        lowerMotor = new MotorEx(LOWER_MOTOR_NAME).reversed();
+        upperMotor = new MotorEx(UPPER_MOTOR_NAME);
+        lowerMotor = new MotorEx(LOWER_MOTOR_NAME);
 
         upperMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         lowerMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
@@ -115,6 +129,8 @@ public class FlywheelVelTuner extends NextFTCOpMode {
         telemetry.addLine("FlywheelVelTuner ready. Adjust params in FTCDashboard.");
         telemetry.update();
     }
+
+  
 
     @Override
     public void onUpdate() {
@@ -183,7 +199,7 @@ public class FlywheelVelTuner extends NextFTCOpMode {
                 .basicFF(kV_UPPER, kA_UPPER, kS_UPPER)
                 .build();
         if (VEL_LP_ALPHA >= 0.0 && VEL_LP_ALPHA <= 1.0) {
-            // bUpper.lowPass(VEL_LP_ALPHA); // uncomment if supported
+             //bUpper.lowPass(VEL_LP_ALPHA); // uncomment if supported
         }
         ctrlUpper = bUpper;
 
@@ -192,7 +208,7 @@ public class FlywheelVelTuner extends NextFTCOpMode {
                 .basicFF(kV_LOWER, kA_LOWER, kS_LOWER)
                 .build();
         if (VEL_LP_ALPHA >= 0.0 && VEL_LP_ALPHA <= 1.0) {
-            // bLower.lowPass(VEL_LP_ALPHA);
+             //bLower.lowPass(VEL_LP_ALPHA);
         }
         ctrlLower = bLower;
 

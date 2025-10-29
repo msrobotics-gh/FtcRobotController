@@ -24,8 +24,8 @@ public class Launcher implements Subsystem {
             .elevatorFF(0)
             .build();
 
-    public Command spinflywheel = new SetPower(launch,.7);
-    public Command spinflywheel2 = new SetPower(launch2,.7);
+    public Command spinflywheel = new SetPower(launch,.65);
+    public Command spinflywheel2 = new SetPower(launch2,.65);
 
     public Command unspinflywheel = new SetPower(launch,0);
     public Command unspinflywheel2 = new SetPower(launch2,0);
