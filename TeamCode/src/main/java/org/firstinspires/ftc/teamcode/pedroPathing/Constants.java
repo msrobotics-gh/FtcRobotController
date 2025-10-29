@@ -24,9 +24,9 @@ public class Constants {
             .leftFrontMotorDirection(DcMotorSimple.Direction.FORWARD)
             .leftRearMotorDirection(DcMotorSimple.Direction.REVERSE)
             .rightFrontMotorDirection(DcMotorSimple.Direction.REVERSE)
-            .rightRearMotorDirection(DcMotorSimple.Direction.REVERSE);
-//            .xVelocity()
-//            .yVelocity()
+            .rightRearMotorDirection(DcMotorSimple.Direction.REVERSE)
+            .xVelocity(115.91866902566092)
+            .yVelocity(49.52288110523299);
 //            .forwardZeroPowerAcceleration()
 //            .lateralZeroPowerAcceleration();
     public static Follower createFollower(HardwareMap hardwareMap) {
@@ -49,6 +49,6 @@ public class Constants {
             .robotWidth(6.5)
             .robotLength(10.25)
             .forwardTicksToInches(0.01780359287946125)
-            .strafeTicksToInches(-0.009362273844350602)
+            .strafeTicksToInches(0.010001084649399318)
             .turnTicksToInches(0.020664314528815696);
 }
