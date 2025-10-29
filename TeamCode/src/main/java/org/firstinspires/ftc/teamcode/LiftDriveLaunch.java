@@ -15,6 +15,7 @@ import org.firstinspires.ftc.teamcode.subsystems.Velauncher;
 
 import dev.nextftc.core.commands.Command;
 import dev.nextftc.core.commands.CommandManager;
+import dev.nextftc.core.commands.utility.InstantCommand;
 import dev.nextftc.core.components.BindingsComponent;
 import dev.nextftc.core.components.SubsystemComponent;
 import dev.nextftc.ftc.Gamepads;
@@ -49,6 +50,7 @@ public class LiftDriveLaunch extends NextFTCOpMode {
 
     public double bottommotorpower;
 
+    boolean isLeftBumperPressed = false;
     @Override
     public void onStartButtonPressed() {
         Command driverControlled = new MecanumDriverControlled(
@@ -69,20 +71,27 @@ public class LiftDriveLaunch extends NextFTCOpMode {
                 .whenBecomesTrue(Lift.INSTANCE.toLow);
 
         Gamepads.gamepad2().leftBumper()
-                .whenTrue(Velauncher.INSTANCE.velaunch)
-                .whenTrue(Velauncher.INSTANCE.velaunch2)
-                .whenBecomesFalse(Velauncher.INSTANCE.unvelaunch)
-                .whenBecomesFalse(Velauncher.INSTANCE.unvelaunch2);
+                .whenTrue(Launcher.INSTANCE.spinflywheel)
+                .whenTrue(Launcher.INSTANCE.spinflywheel2)
+                .whenTrue(new InstantCommand(()-> {
+                    isLeftBumperPressed = true;
+                }))
+                .whenBecomesFalse(Launcher.INSTANCE.unspinflywheel)
+                .whenBecomesFalse(Launcher.INSTANCE.unspinflywheel2)
+                .whenBecomesFalse(new InstantCommand(()-> {
+                    isLeftBumperPressed = false;
+                }));
 
 
 
-        Gamepads.gamepad2().rightBumper()
-                .whenBecomesTrue(FlywheelGate.INSTANCE.open())
-                .whenBecomesTrue(Intake.INSTANCE.intake)
-                .whenBecomesTrue(Intake.INSTANCE.intakesecond)
-                .whenBecomesFalse(Intake.INSTANCE.intakeoff)
-                .whenBecomesFalse(Intake.INSTANCE.intakeoff2)
-                .whenBecomesFalse(FlywheelGate.INSTANCE.close());
+            Gamepads.gamepad2().rightBumper()
+                    .and(() -> isLeftBumperPressed)
+                    .whenBecomesTrue(FlywheelGate.INSTANCE.open())
+                    .whenBecomesTrue(Intake.INSTANCE.intake)
+                    .whenBecomesTrue(Intake.INSTANCE.intakesecond)
+                    .whenBecomesFalse(Intake.INSTANCE.intakeoff)
+                    .whenBecomesFalse(Intake.INSTANCE.intakeoff2)
+                    .whenBecomesFalse(FlywheelGate.INSTANCE.close());
 
         Gamepads.gamepad2().a()
                 .whenBecomesTrue(Intake.INSTANCE.intake)
