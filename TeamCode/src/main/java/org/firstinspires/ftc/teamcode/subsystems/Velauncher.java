@@ -139,13 +139,13 @@ public class Velauncher implements Subsystem {
 
     public  Command unvelaunch = new LambdaCommand()
             .setStart(() -> {
-                ctrlUpper.setGoal(new KineticState(0.0, targetTpsUpper, 0.0));
+                ctrlUpper.setGoal(new KineticState(0.0, 0, 0.0));
             })
             .setIsDone(() -> true);
 
     public  Command unvelaunch2 = new LambdaCommand()
             .setStart(() -> {
-                ctrlLower.setGoal(new KineticState(0.0, targetTpsLower, 0.0));
+                ctrlLower.setGoal(new KineticState(0.0, 0, 0.0));
             })
             .setIsDone(() -> true);
 
@@ -157,6 +157,7 @@ public class Velauncher implements Subsystem {
         launch2.setPower(ctrlUpper.calculate(launch2.getState()));
          targetTpsUpper = rpmToTps(TARGET_RPM_UPPER, TPR_UPPER);
          targetTpsLower = rpmToTps(TARGET_RPM_LOWER, TPR_LOWER);
+
 
     }
     private static double rpmToTps(double rpm, double tpr) {
