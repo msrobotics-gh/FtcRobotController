@@ -12,6 +12,7 @@ import dev.nextftc.control.feedback.FeedbackType;
 import dev.nextftc.control.feedback.PIDCoefficients;
 import dev.nextftc.control.feedback.PIDElement;
 import dev.nextftc.core.commands.Command;
+import dev.nextftc.core.commands.utility.LambdaCommand;
 import dev.nextftc.core.subsystems.Subsystem;
 import dev.nextftc.hardware.controllable.RunToPosition;
 import dev.nextftc.hardware.controllable.RunToState;
@@ -90,6 +91,9 @@ public class Velauncher implements Subsystem {
 
     public static double velocity2 = rpmToTps(100,28);
 
+     double targetTpsUpper = rpmToTps(TARGET_RPM_UPPER, TPR_UPPER);
+   double targetTpsLower = rpmToTps(TARGET_RPM_LOWER, TPR_LOWER);
+
     @Override
     public void initialize(){
         buildControllers();
@@ -121,12 +125,29 @@ public class Velauncher implements Subsystem {
         _VEL_LP_ALPHA = VEL_LP_ALPHA;
     }
 
-    public Command velaunch = new RunToVelocity(ctrlLower,velocity1);
-    public Command velaunch2 = new RunToVelocity(ctrlUpper,velocity2);
+    public  Command velaunch = new LambdaCommand()
+            .setStart(() -> {
+                ctrlUpper.setGoal(new KineticState(0.0, targetTpsUpper, 0.0));
+            })
+            .setIsDone(() -> true);
+    public  Command velaunch2 = new LambdaCommand()
+            .setStart(() -> {
+                ctrlLower.setGoal(new KineticState(0.0, targetTpsLower, 0.0));
+            })
+            .setIsDone(() -> true);
 
-    public Command unvelaunch = new RunToVelocity(ctrlLower,unvelocity1);
 
-    public  Command unvelaunch2 = new RunToVelocity(ctrlUpper,unvelocity2);
+    public  Command unvelaunch = new LambdaCommand()
+            .setStart(() -> {
+                ctrlUpper.setGoal(new KineticState(0.0, targetTpsUpper, 0.0));
+            })
+            .setIsDone(() -> true);
+
+    public  Command unvelaunch2 = new LambdaCommand()
+            .setStart(() -> {
+                ctrlLower.setGoal(new KineticState(0.0, targetTpsLower, 0.0));
+            })
+            .setIsDone(() -> true);
 
 
 
@@ -134,6 +155,9 @@ public class Velauncher implements Subsystem {
     public void periodic() {
         launch.setPower(ctrlLower.calculate(launch.getState()));
         launch2.setPower(ctrlUpper.calculate(launch2.getState()));
+         targetTpsUpper = rpmToTps(TARGET_RPM_UPPER, TPR_UPPER);
+         targetTpsLower = rpmToTps(TARGET_RPM_LOWER, TPR_LOWER);
+
     }
     private static double rpmToTps(double rpm, double tpr) {
         return rpm * tpr / 60.0;
