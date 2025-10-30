@@ -29,12 +29,12 @@ import java.util.List;
 @Autonomous(name = "apriltag 1", group = "Autonomous")
 //@Config
 public class taa extends OpMode {
-    public final int initialRotation = 90;
+    public final int initialRotationYaw = 0;
     // CAMERA STUFF
     private final Position cameraPosition = new Position(DistanceUnit.INCH,
             0, 0, 0, 0);
     private final YawPitchRollAngles cameraOrientation = new YawPitchRollAngles(AngleUnit.DEGREES,
-            initialRotation, 0, 0, 0);
+            initialRotationYaw, -90, 0, 0);
     private AprilTagProcessor aprilTag;
     private VisionPortal visionPortal;
 
