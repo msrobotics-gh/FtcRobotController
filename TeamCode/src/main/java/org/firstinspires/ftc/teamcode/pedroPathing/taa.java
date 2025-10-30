@@ -64,7 +64,7 @@ public class taa extends OpMode {
                 return 0.0;
             }
         }
-        return 0.0;
+        return -1;
     }   // end method telemetryAprilTag()
 
 
@@ -156,6 +156,12 @@ public class taa extends OpMode {
 
         final double tagPosition = ATPos();
 
+        if (tagPosition == -1) {
+            telemetry.addData("> ","no tags detected");
+            telemetry.update();
+            return;
+        }
+
 //        if (!following) {
 //            follower.followPath(
 //                    follower.pathBuilder()
@@ -174,6 +180,8 @@ public class taa extends OpMode {
         //This uses the aprilTag to relocalize your robot
         //You can also create a custom AprilTag fusion Localizer for the follower if you want to use this by default for all your autos
         follower.setPose(tagPose);
+        telemetry.addData("> ","following %f",tagPosition);
+        telemetry.update();
 
 //        if (following && !follower.isBusy()) following = false;
     }
