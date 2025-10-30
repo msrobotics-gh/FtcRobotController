@@ -29,6 +29,10 @@ import java.util.List;
 @Autonomous(name = "apriltag 1", group = "Autonomous")
 //@Config
 public class taa extends OpMode {
+
+    private final int initialX = 72;
+    private final int initialY = 72;
+    private final int initialR = 90;
     public final int initialRotationYaw = 0;
     // CAMERA STUFF
     private final Position cameraPosition = new Position(DistanceUnit.INCH,
@@ -140,7 +144,7 @@ public class taa extends OpMode {
         telemetry.addData("> ","ready to follow");
         telemetry.update();
         follower = Constants.createFollower(hardwareMap);
-        follower.setStartingPose(new Pose()); //set your starting pose
+        follower.setStartingPose(new Pose(initialX, initialY, Math.toRadians(initialR))); //set your starting pose
     }
 
     @Override
@@ -175,11 +179,14 @@ public class taa extends OpMode {
 //        }
 
         final Pose currentPose = follower.getPose();
-        final Pose tagPose = new Pose(currentPose.getX(), currentPose.getY(), Math.toRadians(tagPosition));
+//        final Pose tagPose = new Pose(currentPose.getX(), currentPose.getY(), Math.toRadians(tagPosition));
+        final Pose tagPose = new Pose(initialX, initialY, Math.toRadians(initialR));
+
 
         //This uses the aprilTag to relocalize your robot
         //You can also create a custom AprilTag fusion Localizer for the follower if you want to use this by default for all your autos
         follower.setPose(tagPose);
+
         telemetry.addData("> ","following %f",tagPosition);
         telemetry.update();
 
