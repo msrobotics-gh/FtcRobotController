@@ -3,6 +3,8 @@ package org.firstinspires.ftc.teamcode.subsystems;
 
 import com.acmerobotics.dashboard.config.Config;
 
+import org.firstinspires.ftc.robotcore.external.Telemetry;
+
 import java.net.PortUnreachableException;
 
 import dev.nextftc.control.ControlSystem;
@@ -14,6 +16,7 @@ import dev.nextftc.control.feedback.PIDElement;
 import dev.nextftc.core.commands.Command;
 import dev.nextftc.core.commands.utility.LambdaCommand;
 import dev.nextftc.core.subsystems.Subsystem;
+import dev.nextftc.ftc.ActiveOpMode;
 import dev.nextftc.hardware.controllable.RunToPosition;
 import dev.nextftc.hardware.controllable.RunToState;
 import dev.nextftc.hardware.controllable.RunToVelocity;
@@ -30,8 +33,8 @@ public class Velauncher implements Subsystem {
     public static double TPR_LOWER = 28; // ticks per output revolution (lower motor)
 
     // === Target speeds (RPM) ===
-    public static double TARGET_RPM_UPPER = 500;
-    public static double TARGET_RPM_LOWER = 500;
+    public static double TARGET_RPM_UPPER = 850;
+    public static double TARGET_RPM_LOWER = 950;
 
     // === Velocity tolerance for "at speed" checks (ticks/sec) ===
     public static double TOL_TPS_UPPER = 50.0;
@@ -79,8 +82,6 @@ public class Velauncher implements Subsystem {
     public static final Velauncher INSTANCE = new Velauncher();
     private Velauncher() { }
 
-    private MotorEx launch = new MotorEx("launch").reversed();
-    private MotorEx launch2 = new MotorEx("launch2").reversed();
 
     public static double velocity1 = rpmToTps(100,28);
 
@@ -96,6 +97,9 @@ public class Velauncher implements Subsystem {
 
     @Override
     public void initialize(){
+        upperMotor = new MotorEx("launch");
+        lowerMotor = new MotorEx("launch2");
+
         buildControllers();
 
     }
@@ -153,12 +157,34 @@ public class Velauncher implements Subsystem {
 
     @Override
     public void periodic() {
-        launch.setPower(ctrlLower.calculate(launch.getState()));
-        launch2.setPower(ctrlUpper.calculate(launch2.getState()));
+        double powerUpper, powerLower;
+
          targetTpsUpper = rpmToTps(TARGET_RPM_UPPER, TPR_UPPER);
          targetTpsLower = rpmToTps(TARGET_RPM_LOWER, TPR_LOWER);
+        powerUpper = ctrlUpper.calculate(upperMotor.getState());
+        powerLower = ctrlLower.calculate(lowerMotor.getState());
 
-         
+        upperMotor.setPower(powerLower);
+        lowerMotor.setPower(powerUpper);
+
+        final double measTpsUpper = upperMotor.getVelocity();
+        final double measTpsLower = lowerMotor.getVelocity();
+        final double measRpmUpper = tpsToRpm(measTpsUpper, TPR_UPPER);
+        final double measRpmLower = tpsToRpm(measTpsLower, TPR_LOWER);
+
+        final double errUpper = targetTpsUpper - measTpsUpper;
+        final double errLower = targetTpsLower - measTpsLower;
+
+        final boolean atSpeedUpper = Math.abs(errUpper) <= TOL_TPS_UPPER;
+        final boolean atSpeedLower = Math.abs(errLower) <= TOL_TPS_LOWER;
+
+        Telemetry telemetry = ActiveOpMode.telemetry();
+        telemetry.addData("Upper RPM", "%.0f / %.0f (err=%.0f) power=%.2f %s",
+                measRpmUpper, TARGET_RPM_UPPER, tpsToRpm(errUpper, TPR_UPPER), powerUpper, atSpeedUpper ? "✓" : "✗");
+        telemetry.addData("Lower RPM", "%.0f / %.0f (err=%.0f) power=%.2f %s",
+                measRpmLower, TARGET_RPM_LOWER, tpsToRpm(errLower, TPR_LOWER), powerLower, atSpeedLower ? "✓" : "✗");
+        telemetry.addData("Closed Loop", CLOSED_LOOP_ENABLED);
+        telemetry.update();
     }
     private static double rpmToTps(double rpm, double tpr) {
         return rpm * tpr / 60.0;

@@ -17,8 +17,8 @@ public class Launcher implements Subsystem {
     public static final Launcher INSTANCE = new Launcher();
     private Launcher() { }
 
-    private MotorEx launch = new MotorEx("launch").reversed();
-    private MotorEx launch2 = new MotorEx("launch2").reversed();
+    private MotorEx launch = new MotorEx("launch");
+    private MotorEx launch2 = new MotorEx("launch2");
     private ControlSystem controlSystem = ControlSystem.builder()
             .posPid(0.005, 0, 0)
             .elevatorFF(0)
