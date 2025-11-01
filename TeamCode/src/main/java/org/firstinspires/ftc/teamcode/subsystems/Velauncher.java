@@ -158,7 +158,7 @@ public class Velauncher implements Subsystem {
          targetTpsUpper = rpmToTps(TARGET_RPM_UPPER, TPR_UPPER);
          targetTpsLower = rpmToTps(TARGET_RPM_LOWER, TPR_LOWER);
 
-
+         
     }
     private static double rpmToTps(double rpm, double tpr) {
         return rpm * tpr / 60.0;
