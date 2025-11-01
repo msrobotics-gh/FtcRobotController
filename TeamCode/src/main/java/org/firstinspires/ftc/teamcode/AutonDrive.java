@@ -201,23 +201,7 @@ public class AutonDrive extends LinearOpMode {
             // - This requires no math, but it is hard to drive forward slowly and keep straight.
             // leftPower  = -gamepad1.left_stick_y ;
             // rightPower = -gamepad1.right_stick_y ;
-
-
-
-
-
-
-
-            timer.wait(1);
-            // Send calculated power to wheels
-            leftDrive.setPower(leftPower-strafeLeftPower);
-            rightDrive.setPower(rightPower+strafeRightPower);
-            frontLeftDrive.setPower(leftPower+strafeLeftPower);
-            frontRightDrive.setPower(rightPower-strafeRightPower);
-            timer.wait(1);
-            drive = 0;
-            timer.wait(1);
-            driveForRotations(2);
+            driveForRotations(3);
 
 
             // Show the elapsed game timer and wheel power.
