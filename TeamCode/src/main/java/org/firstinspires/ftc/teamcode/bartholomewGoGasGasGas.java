@@ -27,12 +27,16 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.firstinspires.ftc.robotcontroller.external.samples;
+package org.firstinspires.ftc.teamcode;
 
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
+import com.acmerobotics.dashboard.FtcDashboard;
+import com.acmerobotics.dashboard.config.Config;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorEx;
+
+import org.firstinspires.ftc.robotcore.external.Telemetry;
 
 /*
  * This OpMode ramps a single motor speed up and down repeatedly until Stop is pressed.
@@ -46,69 +50,79 @@ import com.qualcomm.robotcore.hardware.DcMotor;
  * Use Android Studio to Copy this Class, and Paste it into your team's code folder with a new name.
  * Remove or comment out the @Disabled line to add this OpMode to the Driver Station OpMode list
  */
-@TeleOp(name = "Concept: Ramp Motor Speed", group = "Concept")
+@TeleOp(name = "ViperSlide Lift Control Using D-Pad", group = "Concept")
+@Config
+public class bartholomewGoGasGasGas extends LinearOpMode {
 
-public class ConceptRampMotorSpeed extends LinearOpMode {
+    public static double POWER = 0.5;
 
-    static final double INCREMENT   = 0.01;     // amount to ramp motor each CYCLE_MS cycle
-    static final int    CYCLE_MS    =   50;     // period of each cycle
-    static final double MAX_FWD     =  1.0;     // Maximum FWD power applied to motor
-    static final double MAX_REV     = -1.0;     // Maximum REV power applied to motor
+    public static int MOTOR_1_MULT = -1;
+    public static int MOTOR_2_MULT = -1;
+
 
     // Define class members
-    DcMotor motor;
-    double  power   = 0;
-    boolean rampUp  = true;
+    DcMotorEx motor_1;
+    DcMotorEx motor_2;
+
+    FtcDashboard dashboard = FtcDashboard.getInstance();
+    Telemetry dashboardTelemetry = dashboard.getTelemetry();
 
 
     @Override
     public void runOpMode() {
 
-        // Connect to motor (Assume standard left wheel)
-        // Change the text in quotes to match any motor name on your robot.
-        motor = hardwareMap.get(DcMotor.class, "left_drive");
+//        !! IMPORTANT !!
+//        set first motor name to "motor"
+//        set second motor name to "lowter"
+
+        motor_1 = hardwareMap.get(DcMotorEx.class, "fastboi"); // 0
+        motor_2 = hardwareMap.get(DcMotorEx.class, "slowboi"); // 1
 
         // Wait for the start button
-        telemetry.addData(">", "Press Start to run Motors." );
+        telemetry.addData("> ", "press start pls ty" );
         telemetry.update();
+        dashboardTelemetry.addData("> ","press start pls ty");
+        dashboardTelemetry.update();
         waitForStart();
+
+        motor_1.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        motor_2.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+
+        motor_1.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        motor_2.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
         // Ramp motor speeds till stop pressed.
         while(opModeIsActive()) {
+//            motor_1.setVelocity(VELOCITY_1);
+//            motor_2.setVelocity(VELOCITY_2);
 
-            // Ramp the motors, according to the rampUp variable.
-            if (rampUp) {
-                // Keep stepping up until we hit the max value.
-                power += INCREMENT ;
-                if (power >= MAX_FWD ) {
-                    power = MAX_FWD;
-                    rampUp = !rampUp;   // Switch ramp direction
-                }
+            if (gamepad1.dpad_up) {
+                motor_1.setPower(POWER * MOTOR_1_MULT);
+                motor_2.setPower(POWER * MOTOR_2_MULT);
+                telemetry.addData("> ","goin up");
+                dashboardTelemetry.addData("> ","goin up");
+            } else if (gamepad1.dpad_down) {
+                motor_1.setPower(POWER * -MOTOR_1_MULT);
+                motor_2.setPower(POWER * -MOTOR_2_MULT);
+                telemetry.addData("> ","goin down");
+                dashboardTelemetry.addData("> ","goin down");
+            } else {
+                motor_1.setPower(0);
+                motor_2.setPower(0);
+                telemetry.addData("> ", "chillin");
+                dashboardTelemetry.addData("> ","chillin");
             }
-            else {
-                // Keep stepping down until we hit the min value.
-                power -= INCREMENT ;
-                if (power <= MAX_REV ) {
-                    power = MAX_REV;
-                    rampUp = !rampUp;  // Switch ramp direction
-                }
-            }
-
-            // Display the current value
-            telemetry.addData("Motor Power", "%5.2f", power);
-            telemetry.addData(">", "Press Stop to end test." );
             telemetry.update();
-
-            // Set the motor to the new power and pause;
-            motor.setPower(power);
-            sleep(CYCLE_MS);
-            idle();
+            dashboardTelemetry.update();
         }
 
         // Turn off motor and signal done;
-        motor.setPower(0);
-        telemetry.addData(">", "Done");
+        motor_1.setPower(0);
+        motor_2.setPower(0);
+        telemetry.addData("> ", "finished");
         telemetry.update();
+        dashboardTelemetry.addData("> ","finsihed");
+        dashboardTelemetry.update();
 
     }
 }

@@ -27,12 +27,17 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.firstinspires.ftc.robotcontroller.external.samples;
+package org.firstinspires.ftc.teamcode;
+import com.acmerobotics.dashboard.FtcDashboard;
+import com.acmerobotics.dashboard.config.Config;
 
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorEx;
+
+import org.firstinspires.ftc.robotcore.external.Telemetry;
 
 /*
  * This OpMode ramps a single motor speed up and down repeatedly until Stop is pressed.
@@ -46,69 +51,76 @@ import com.qualcomm.robotcore.hardware.DcMotor;
  * Use Android Studio to Copy this Class, and Paste it into your team's code folder with a new name.
  * Remove or comment out the @Disabled line to add this OpMode to the Driver Station OpMode list
  */
-@TeleOp(name = "Concept: Ramp Motor Speed", group = "Concept")
-
+@TeleOp(name = "Motor Speed with Velocity", group = "Concept")
+@Config
 public class ConceptRampMotorSpeed extends LinearOpMode {
 
-    static final double INCREMENT   = 0.01;     // amount to ramp motor each CYCLE_MS cycle
-    static final int    CYCLE_MS    =   50;     // period of each cycle
-    static final double MAX_FWD     =  1.0;     // Maximum FWD power applied to motor
-    static final double MAX_REV     = -1.0;     // Maximum REV power applied to motor
+    public static double VELOCITY_1 = 500;
+    public static double VELOCITY_2 = 500;
+
+    double TPS_1;
+    double TPS_2;
+
 
     // Define class members
-    DcMotor motor;
-    double  power   = 0;
-    boolean rampUp  = true;
+    DcMotorEx motor_1;
+    DcMotorEx motor_2;
+
+    FtcDashboard dashboard = FtcDashboard.getInstance();
+    Telemetry dashboardTelemetry = dashboard.getTelemetry();
 
 
     @Override
     public void runOpMode() {
 
-        // Connect to motor (Assume standard left wheel)
-        // Change the text in quotes to match any motor name on your robot.
-        motor = hardwareMap.get(DcMotor.class, "left_drive");
+//        !! IMPORTANT !!
+//        set first motor name to "motor"
+//        set second motor name to "lowter"
+
+        motor_1 = hardwareMap.get(DcMotorEx.class, "test_1");
+        motor_2 = hardwareMap.get(DcMotorEx.class, "test_2");
 
         // Wait for the start button
         telemetry.addData(">", "Press Start to run Motors." );
         telemetry.update();
+        dashboardTelemetry.addData(">","press start to run motors");
+        dashboardTelemetry.update();
         waitForStart();
+
+        motor_1.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        motor_2.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+
 
         // Ramp motor speeds till stop pressed.
         while(opModeIsActive()) {
+//            motor_1.setVelocity(VELOCITY_1);
+//            motor_2.setVelocity(VELOCITY_2);
 
-            // Ramp the motors, according to the rampUp variable.
-            if (rampUp) {
-                // Keep stepping up until we hit the max value.
-                power += INCREMENT ;
-                if (power >= MAX_FWD ) {
-                    power = MAX_FWD;
-                    rampUp = !rampUp;   // Switch ramp direction
-                }
-            }
-            else {
-                // Keep stepping down until we hit the min value.
-                power -= INCREMENT ;
-                if (power <= MAX_REV ) {
-                    power = MAX_REV;
-                    rampUp = !rampUp;  // Switch ramp direction
-                }
-            }
+            TPS_1 = (VELOCITY_1 / 60) * 28;
+            TPS_2 = (VELOCITY_2 / 60) * 28;
 
-            // Display the current value
-            telemetry.addData("Motor Power", "%5.2f", power);
-            telemetry.addData(">", "Press Stop to end test." );
+            motor_1.setVelocity(gamepad1.right_trigger * TPS_1);
+            motor_2.setVelocity(gamepad1.left_trigger * TPS_2);
+
+
+            double motor_1_velo = motor_1.getVelocity();
+            double motor_2_velo = motor_2.getVelocity();
+
+            telemetry.addData("motor 1 velocity",motor_1_velo);
+            telemetry.addData("motor 2 velocity",motor_2_velo);
             telemetry.update();
-
-            // Set the motor to the new power and pause;
-            motor.setPower(power);
-            sleep(CYCLE_MS);
-            idle();
+            dashboardTelemetry.addData("motor 1 velocity",motor_1_velo);
+            dashboardTelemetry.addData("motor 2 velocity",motor_2_velo);
+            dashboardTelemetry.update();
         }
 
         // Turn off motor and signal done;
-        motor.setPower(0);
+        motor_1.setPower(0);
+        motor_2.setPower(0);
         telemetry.addData(">", "Done");
         telemetry.update();
+        dashboardTelemetry.addData(">","Done");
+        dashboardTelemetry.update();
 
     }
 }
