@@ -63,7 +63,6 @@ import com.qualcomm.robotcore.util.Range;
 @Autonomous(name="Drive", group="Linear OpMode")
 public class AutonDrive extends LinearOpMode {
     // Declare OpMode members.
-    private final ElapsedTime runtime = new ElapsedTime();
     private DcMotor leftDrive = null;
     private DcMotor rightDrive = null;
     private DcMotor frontLeftDrive = null;
