@@ -63,18 +63,17 @@ import com.qualcomm.robotcore.util.Range;
 @Autonomous(name="Drive", group="Linear OpMode")
 public class AutonDrive extends LinearOpMode {
     // Declare OpMode members.
-    private DcMotor leftDrive = null;
-    private DcMotor rightDrive = null;
-    private DcMotor frontLeftDrive = null;
-    private DcMotor frontRightDrive = null;
-    double drive = -1;
-    double strafe = gamepad1.left_stick_x;
-    double turn  =  gamepad1.right_stick_x;
-    private ElapsedTime timer = new ElapsedTime();
-    public int leftEncoderTicks = leftDrive.getCurrentPosition();
-    public int rightEncoderTicks = rightDrive.getCurrentPosition();
-    public int frontLeftEncoderTicks = frontLeftDrive.getCurrentPosition();
-   public  int frontRightEncoderTicks = frontRightDrive.getCurrentPosition();
+    private DcMotor leftDrive;
+    private DcMotor rightDrive;
+    private DcMotor frontLeftDrive;
+    private DcMotor frontRightDrive;
+
+    private double drive = -1.0;
+    private double strafe = 0.0;
+    private double turn  = 0.0;
+
+    private final ElapsedTime timer = new ElapsedTime();
+
     public double leftPower;
     public double rightPower;
     public double strafeLeftPower;
@@ -210,23 +209,56 @@ public class AutonDrive extends LinearOpMode {
         }
     }
     public void driveForRotations(double rotations) {
-         resetRotations();
-        leftDrive.setPower(leftPower-strafeLeftPower);
-        rightDrive.setPower(rightPower+strafeRightPower);
-        frontLeftDrive.setPower(leftPower+strafeLeftPower);
-        frontRightDrive.setPower(rightPower-strafeRightPower);
-        do {
-            drive = 0;
-            resetRotations();
-        } while (leftRotations <= rotations && rightRotations <= rotations && frontLeftRotations <= rotations && frontRightRotations <= rotations);
+        if (!opModeIsActive()) {
+            return;
+        }
+
+        double backLeftCommand = leftPower - strafeLeftPower;
+        double backRightCommand = rightPower + strafeRightPower;
+        double frontLeftCommand = leftPower + strafeLeftPower;
+        double frontRightCommand = rightPower - strafeRightPower;
+
+        if (Math.abs(backLeftCommand) < 1e-4
+                && Math.abs(backRightCommand) < 1e-4
+                && Math.abs(frontLeftCommand) < 1e-4
+                && Math.abs(frontRightCommand) < 1e-4) {
+            return;
+        }
+
+        resetRotations();
+
+        leftDrive.setPower(backLeftCommand);
+        rightDrive.setPower(backRightCommand);
+        frontLeftDrive.setPower(frontLeftCommand);
+        frontRightDrive.setPower(frontRightCommand);
+
+        while (opModeIsActive()
+                && getRotations(leftDrive) < rotations
+                && getRotations(rightDrive) < rotations
+                && getRotations(frontLeftDrive) < rotations
+                && getRotations(frontRightDrive) < rotations) {
+            idle();
+        }
+
+        stopAllDriveMotors();
+        drive = 0;
     }
-    public void turnForRotation(double rotation, double direction) throws InterruptedException {
-        if(direction<0){
-            resetRotations();
-        leftDrive.setPower(-leftPower-strafeLeftPower);
-        rightDrive.setPower(rightPower+strafeRightPower);
-        frontLeftDrive.setPower(-leftPower+strafeLeftPower);
-        frontRightDrive.setPower(rightPower-strafeRightPower);
+    public void turnForRotation(double rotations, double direction) throws InterruptedException {
+        if (!opModeIsActive()) {
+            return;
+        }
+
+        double turnPower = Range.clip(direction, -MAX_POWER, MAX_POWER);
+        if (turnPower == 0) {
+            return;
+        }
+
+        resetRotations();
+
+        leftDrive.setPower(turnPower);
+        rightDrive.setPower(-turnPower);
+        frontLeftDrive.setPower(turnPower);
+        frontRightDrive.setPower(-turnPower);
 
     }
         else {
