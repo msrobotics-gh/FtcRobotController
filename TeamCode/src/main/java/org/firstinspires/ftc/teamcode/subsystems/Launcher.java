@@ -17,15 +17,15 @@ public class Launcher implements Subsystem {
     public static final Launcher INSTANCE = new Launcher();
     private Launcher() { }
 
-    private MotorEx launch = new MotorEx("launch").reversed();
-    private MotorEx launch2 = new MotorEx("launch2").reversed();
+    private MotorEx launch = new MotorEx("launch");
+    private MotorEx launch2 = new MotorEx("launch2");
     private ControlSystem controlSystem = ControlSystem.builder()
             .posPid(0.005, 0, 0)
             .elevatorFF(0)
             .build();
 
-    public Command spinflywheel = new SetPower(launch,.7);
-    public Command spinflywheel2 = new SetPower(launch2,.7);
+    public Command spinflywheel = new SetPower(launch,.65);
+    public Command spinflywheel2 = new SetPower(launch2,.65);
 
     public Command unspinflywheel = new SetPower(launch,0);
     public Command unspinflywheel2 = new SetPower(launch2,0);

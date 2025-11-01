@@ -3,15 +3,14 @@ package org.firstinspires.ftc.teamcode;
 
 import com.acmerobotics.dashboard.FtcDashboard;
 import com.acmerobotics.dashboard.config.Config;
+import com.qualcomm.robotcore.eventloop.SyncdDevice;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
-import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.teamcode.subsystems.FlywheelGate;
 import org.firstinspires.ftc.teamcode.subsystems.Intake;
 import org.firstinspires.ftc.teamcode.subsystems.Launcher;
 import org.firstinspires.ftc.teamcode.subsystems.Lift;
-//import org.firstinspires.ftc.teamcode.subsystems.Velauncher;
-//import org.firstinspires.ftc.teamcode.subsystems.Velauncher;
+import org.firstinspires.ftc.teamcode.subsystems.Velauncher;
 
 import dev.nextftc.core.commands.Command;
 import dev.nextftc.core.commands.CommandManager;
@@ -21,22 +20,21 @@ import dev.nextftc.core.components.SubsystemComponent;
 import dev.nextftc.ftc.Gamepads;
 import dev.nextftc.ftc.NextFTCOpMode;
 import dev.nextftc.ftc.components.BulkReadComponent;
-import dev.nextftc.hardware.driving.FieldCentric;
-import dev.nextftc.hardware.driving.HolonomicMode;
 import dev.nextftc.hardware.driving.MecanumDriverControlled;
 import dev.nextftc.hardware.impl.Direction;
 import dev.nextftc.hardware.impl.IMUEx;
 import dev.nextftc.hardware.impl.MotorEx;
 
-@TeleOp(name = "lift drive launch")
+@TeleOp(name = "Velocity Lift Drive Launch")
 @Config
-public class LiftDriveLaunch extends NextFTCOpMode {
-    public LiftDriveLaunch() {
+public class LiftDriveLaunchVelauncher extends NextFTCOpMode {
+    public LiftDriveLaunchVelauncher() {
         addComponents(
                 new SubsystemComponent(Lift.INSTANCE),
                 BulkReadComponent.INSTANCE,
                 BindingsComponent.INSTANCE,
-                new SubsystemComponent(FlywheelGate.INSTANCE)
+                new SubsystemComponent(FlywheelGate.INSTANCE),
+                new SubsystemComponent(Velauncher.INSTANCE)
         );
     }
     FtcDashboard dashboard = FtcDashboard.getInstance();
@@ -77,21 +75,14 @@ public class LiftDriveLaunch extends NextFTCOpMode {
                 .whenBecomesTrue(Lift.INSTANCE.toLow);
 
         Gamepads.gamepad2().leftBumper()
-                .whenTrue(Launcher.INSTANCE.spinflywheel)
-                .whenTrue(Launcher.INSTANCE.spinflywheel2)
-                .whenTrue(new InstantCommand(()-> {
-                    isLeftBumperPressed = true;
-                }))
-                .whenBecomesFalse(Launcher.INSTANCE.unspinflywheel)
-                .whenBecomesFalse(Launcher.INSTANCE.unspinflywheel2)
-                .whenBecomesFalse(new InstantCommand(()-> {
-                    isLeftBumperPressed = false;
-                }));
+                .whenTrue(Velauncher.INSTANCE.velaunch)
+                .whenTrue(Velauncher.INSTANCE.velaunch2)
+                .whenBecomesFalse(Velauncher.INSTANCE.unvelaunch)
+                .whenBecomesFalse(Velauncher.INSTANCE.unvelaunch2);
 
 
 
             Gamepads.gamepad2().rightBumper()
-                    .and(() -> isLeftBumperPressed)
                     .whenBecomesTrue(FlywheelGate.INSTANCE.open())
                     .whenBecomesTrue(Intake.INSTANCE.intake)
                     .whenBecomesTrue(Intake.INSTANCE.intakesecond)
