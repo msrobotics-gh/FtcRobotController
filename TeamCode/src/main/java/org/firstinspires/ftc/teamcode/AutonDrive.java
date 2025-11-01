@@ -63,7 +63,7 @@ import com.qualcomm.robotcore.util.Range;
 @Autonomous(name="Drive", group="Linear OpMode")
 public class AutonDrive extends LinearOpMode {
     // Declare OpMode members.
-    private ElapsedTime runtime = new ElapsedTime();
+    private final ElapsedTime runtime = new ElapsedTime();
     private DcMotor leftDrive = null;
     private DcMotor rightDrive = null;
     private DcMotor frontLeftDrive = null;
@@ -197,14 +197,6 @@ public class AutonDrive extends LinearOpMode {
             strafeLeftPower = Range.clip(strafe, -0.4, 0.4) ;
             strafeRightPower = Range.clip(strafe, -0.4, 0.4) ;
             final double COUNTS_PER_MOTOR_REV = 28; // Example for HD Hex Motor, adjust for your motor
-
-
-
-
-
-
-
-
             // Tank Mode uses one stick to control each wheel.
             // - This requires no math, but it is hard to drive forward slowly and keep straight.
             // leftPower  = -gamepad1.left_stick_y ;
