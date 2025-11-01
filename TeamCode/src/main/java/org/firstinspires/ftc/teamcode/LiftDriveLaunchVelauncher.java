@@ -12,14 +12,17 @@ import org.firstinspires.ftc.teamcode.subsystems.Launcher;
 import org.firstinspires.ftc.teamcode.subsystems.Lift;
 import org.firstinspires.ftc.teamcode.subsystems.Velauncher;
 
+import dev.nextftc.control.KineticState;
 import dev.nextftc.core.commands.Command;
 import dev.nextftc.core.commands.CommandManager;
 import dev.nextftc.core.commands.utility.InstantCommand;
+import dev.nextftc.core.commands.utility.LambdaCommand;
 import dev.nextftc.core.components.BindingsComponent;
 import dev.nextftc.core.components.SubsystemComponent;
 import dev.nextftc.ftc.Gamepads;
 import dev.nextftc.ftc.NextFTCOpMode;
 import dev.nextftc.ftc.components.BulkReadComponent;
+import dev.nextftc.hardware.driving.DriverControlledCommand;
 import dev.nextftc.hardware.driving.MecanumDriverControlled;
 import dev.nextftc.hardware.impl.Direction;
 import dev.nextftc.hardware.impl.IMUEx;
@@ -57,19 +60,37 @@ public class LiftDriveLaunchVelauncher extends NextFTCOpMode {
     boolean isLeftBumperPressed = false;
     @Override
     public void onStartButtonPressed() {
-        Command driverControlled = new MecanumDriverControlled(
-                frontLeftMotor,
+
+        DriverControlledCommand driverControlled2 = new MecanumDriverControlled(frontLeftMotor,
                 frontRightMotor,
                 backLeftMotor,
                 backRightMotor,
                 Gamepads.gamepad1().leftStickY().negate(),
                 Gamepads.gamepad1().leftStickX(),
                 Gamepads.gamepad1().rightStickX()
+
         );
-        driverControlled.schedule();
+        Command setHalfSpeed = new LambdaCommand()
+                .setStart(() -> {
+                driverControlled2.setScalar(.5);
+                })
+                .setIsDone(() -> true);
+
+        driverControlled2.schedule();
+        Command setFullSpeed = new LambdaCommand()
+                .setStart(() -> {
+                    driverControlled2.setScalar(1);
+                        })
+                        .setIsDone(() -> true);
+
 
         Gamepads.gamepad2().dpadUp()
                 .whenBecomesTrue(Lift.INSTANCE.toHigh);
+
+        Gamepads.gamepad1().a()
+                        .whenBecomesTrue(setHalfSpeed);
+        Gamepads.gamepad1().b()
+                        .whenBecomesTrue(setFullSpeed);
 
         Gamepads.gamepad2().dpadDown()
                 .whenBecomesTrue(Lift.INSTANCE.toLow);
