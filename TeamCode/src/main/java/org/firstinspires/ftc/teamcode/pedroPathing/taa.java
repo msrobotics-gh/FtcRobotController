@@ -49,10 +49,10 @@ public class taa extends OpMode {
 
         // Step through the list of detections and display info for each one.
         for (AprilTagDetection detection : currentDetections) {
-            if (detection.metadata != null) {
+            if (detection.metadata != null && !detection.metadata.name.contains("Obelisk")) {
 //                telemetry.addLine(String.format("\n==== (ID %d) %s", detection.id, detection.metadata.name));
                 // Only use tags that don't have Obelisk in them
-                if (!detection.metadata.name.contains("Obelisk")) {
+                //  && detection.robotPose != null
 //                    telemetry.addLine(String.format("XYZ %6.1f %6.1f %6.1f  (inch)",
 //                            detection.robotPose.getPosition().x,
 //                            detection.robotPose.getPosition().y,
@@ -61,14 +61,14 @@ public class taa extends OpMode {
 //                            detection.robotPose.getOrientation().getPitch(AngleUnit.DEGREES),
 //                            detection.robotPose.getOrientation().getRoll(AngleUnit.DEGREES),
 //                            detection.robotPose.getOrientation().getYaw(AngleUnit.DEGREES)));
-                    return detection.robotPose.getOrientation().getYaw(AngleUnit.DEGREES);
-                }
+//                    return detection.robotPose.getOrientation().getYaw(AngleUnit.DEGREES);
+                    return detection.ftcPose.bearing;
             } else {
                 // its an obelisk
-                return 0.0;
+                return -1.0;
             }
         }
-        return -1;
+        return -1.0;
     }   // end method telemetryAprilTag()
 
 
@@ -137,6 +137,8 @@ public class taa extends OpMode {
 
     int dontFryCpu = 0;
 
+    private Pose initPose;
+
     @Override
     public void init() {
 //        camera = hardwareMap.get(Limelight3A.class, "limelight");
@@ -144,6 +146,9 @@ public class taa extends OpMode {
         telemetry.addData("> ","ready to follow");
         telemetry.update();
         follower = Constants.createFollower(hardwareMap);
+
+        final double initialHeading = ATPos();
+
         follower.setStartingPose(new Pose(initialX, initialY, Math.toRadians(initialR))); //set your starting pose
     }
 
@@ -160,8 +165,8 @@ public class taa extends OpMode {
 
         final double tagPosition = ATPos();
 
-        if (tagPosition == -1) {
-            telemetry.addData("> ","no tags detected");
+        if (tagPosition == -1.0) {
+            telemetry.addData("> ","no tags detected / obelisk");
             telemetry.update();
             return;
         }
@@ -180,7 +185,7 @@ public class taa extends OpMode {
 
         final Pose currentPose = follower.getPose();
 //        final Pose tagPose = new Pose(currentPose.getX(), currentPose.getY(), Math.toRadians(tagPosition));
-        final Pose tagPose = new Pose(initialX, initialY, Math.toRadians(initialR));
+        final Pose tagPose = new Pose(0, 0, Math.toRadians(tagPosition));
 
 
         //This uses the aprilTag to relocalize your robot
@@ -196,6 +201,7 @@ public class taa extends OpMode {
     @Override
     public void stop() {
         visionPortal.close();
+        follower.breakFollowing();
     }
 
 //    private Pose getRobotPoseFromCamera() {
