@@ -72,7 +72,6 @@ public class Velauncher implements Subsystem {
     public static boolean REVERSE_UPPER = false;
     public static boolean REVERSE_LOWER = true;
 
-    private MotorEx upperMotor, lowerMotor;
     private ControlSystem ctrlUpper, ctrlLower;
 
     // Cache current tunables
@@ -82,6 +81,8 @@ public class Velauncher implements Subsystem {
     public static final Velauncher INSTANCE = new Velauncher();
     private Velauncher() { }
 
+    private MotorEx upperMotor = new MotorEx("launch").reversed();
+    private MotorEx lowerMotor = new MotorEx("launch2").reversed();
 
     public static double velocity1 = rpmToTps(100,28);
 
@@ -97,8 +98,6 @@ public class Velauncher implements Subsystem {
 
     @Override
     public void initialize(){
-        upperMotor = new MotorEx("launch");
-        lowerMotor = new MotorEx("launch2");
 
         buildControllers();
 
