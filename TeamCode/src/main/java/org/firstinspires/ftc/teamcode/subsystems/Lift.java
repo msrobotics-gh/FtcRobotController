@@ -12,6 +12,10 @@ import dev.nextftc.ftc.ActiveOpMode;
 import dev.nextftc.hardware.controllable.RunToPosition;
 import dev.nextftc.hardware.impl.MotorEx;
 
+
+// if(pathTimer.getElapsedTimeSeconds() > 1) {}
+// private Timer pathTimer, actionTimer, opmodeTimer;
+// import com.pedropathing.util.Timer;
 public class Lift implements Subsystem {
     public static final Lift INSTANCE = new Lift();
 

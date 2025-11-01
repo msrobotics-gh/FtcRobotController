@@ -28,7 +28,7 @@ import org.firstinspires.ftc.vision.apriltag.AprilTagProcessor;
 
 import java.util.List;
 
-@Autonomous(name = "following dashboard", group = "Autonomous")
+@Autonomous(name = "dashboard control", group = "Autonomous")
 @Config
 public class taaa extends OpMode {
     FtcDashboard dashboard = FtcDashboard.getInstance();
@@ -48,7 +48,7 @@ public class taaa extends OpMode {
         dtelemetry.addData("> ","ready to follow");
         dtelemetry.update();
         follower = Constants.createFollower(hardwareMap);
-        follower.setStartingPose(new Pose(72, 72, Math.toRadians(90))); //set your starting pose
+        follower.setStartingPose(new Pose(x, y, Math.toRadians(r))); //set your starting pose
     }
 
     @Override

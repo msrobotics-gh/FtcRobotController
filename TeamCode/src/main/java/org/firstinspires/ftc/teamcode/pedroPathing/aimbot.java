@@ -3,9 +3,11 @@ package org.firstinspires.ftc.teamcode.pedroPathing;
 import static java.lang.Thread.sleep;
 
 import com.pedropathing.follower.Follower;
+import com.pedropathing.geometry.BezierLine;
 import com.pedropathing.geometry.Pose;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
+import com.pedropathing.paths.PathChain;
 
 import android.util.Size;
 
@@ -40,6 +42,8 @@ public class aimbot extends OpMode {
     private double currRobotYaw = 0.0;
     private double currRobotBearing = 0.0;
     private Pose3D cRP;
+
+//    private PathChain pathSev;
 
     private double ATPos() {
 
@@ -190,11 +194,17 @@ public class aimbot extends OpMode {
 //        final Pose tagPose = new Pose(currentPose.getX(), currentPose.getY(), Math.toRadians(tagPosition));
         final double fialPoseYaw = cRP.getOrientation().getYaw(AngleUnit.DEGREES) + currRobotBearing;
         final Pose finalPose = new Pose(cRP.getPosition().x, cRP.getPosition().y, Math.toRadians(fialPoseYaw));
+        final Pose testtt = new Pose(cRP.getPosition().x, cRP.getPosition().y, Math.toRadians(cRP.getOrientation().getYaw()));
 
+
+        PathChain pathSix = follower.pathBuilder()
+                .addPath(new BezierLine(testtt, finalPose))
+                .setLinearHeadingInterpolation(testtt.getHeading(), finalPose.getHeading())
+                .build();
 
         //This uses the aprilTag to relocalize your robot
         //You can also create a custom AprilTag fusion Localizer for the follower if you want to use this by default for all your autos
-        follower.setPose(finalPose);
+        follower.followPath(pathSix);
 
         telemetry.addData("> ","following %5.2f",fialPoseYaw);
         telemetry.update();
