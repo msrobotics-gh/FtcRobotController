@@ -70,7 +70,7 @@ public class AutonDrive extends LinearOpMode {
     double drive = -1;
     double strafe = gamepad1.left_stick_x;
     double turn  =  gamepad1.right_stick_x;
-    private ElapsedTime timer = new ElapsedTime();
+    private final ElapsedTime timer = new ElapsedTime();
     public int leftEncoderTicks = leftDrive.getCurrentPosition();
     public int rightEncoderTicks = rightDrive.getCurrentPosition();
     public int frontLeftEncoderTicks = frontLeftDrive.getCurrentPosition();
