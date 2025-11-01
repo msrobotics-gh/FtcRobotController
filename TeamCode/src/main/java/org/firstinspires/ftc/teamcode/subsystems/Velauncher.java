@@ -2,6 +2,8 @@ package org.firstinspires.ftc.teamcode.subsystems;
 
 
 import com.acmerobotics.dashboard.config.Config;
+import com.acmerobotics.dashboard.FtcDashboard;
+import com.acmerobotics.dashboard.telemetry.TelemetryPacket;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 
@@ -34,7 +36,7 @@ public class Velauncher implements Subsystem {
 
     // === Target speeds (RPM) ===
     public static double TARGET_RPM_UPPER = 850;
-    public static double TARGET_RPM_LOWER = 950;
+    public static double TARGET_RPM_LOWER = 1000;
 
     // === Velocity tolerance for "at speed" checks (ticks/sec) ===
     public static double TOL_TPS_UPPER = 50.0;
@@ -176,6 +178,25 @@ public class Velauncher implements Subsystem {
 
         final boolean atSpeedUpper = Math.abs(errUpper) <= TOL_TPS_UPPER;
         final boolean atSpeedLower = Math.abs(errLower) <= TOL_TPS_LOWER;
+
+        TelemetryPacket packet = new TelemetryPacket();
+        packet.put("Upper_target_tps", targetTpsUpper);
+        packet.put("Upper_meas_tps", measTpsUpper);
+        packet.put("Upper_target_rpm", TARGET_RPM_UPPER);
+        packet.put("Upper_meas_rpm", measRpmUpper);
+        packet.put("Upper_err_tps", errUpper);
+        packet.put("Upper_power", powerUpper);
+        packet.put("Upper_atSpeed", atSpeedUpper);
+
+        packet.put("Lower_target_tps", targetTpsLower);
+        packet.put("Lower_meas_tps", measTpsLower);
+        packet.put("Lower_target_rpm", TARGET_RPM_LOWER);
+        packet.put("Lower_meas_rpm", measRpmLower);
+        packet.put("Lower_err_tps", errLower);
+        packet.put("Lower_power", powerLower);
+        packet.put("Lower_atSpeed", atSpeedLower);
+
+        FtcDashboard.getInstance().sendTelemetryPacket(packet);
 
         Telemetry telemetry = ActiveOpMode.telemetry();
         telemetry.addData("Upper RPM", "%.0f / %.0f (err=%.0f) power=%.2f %s",
