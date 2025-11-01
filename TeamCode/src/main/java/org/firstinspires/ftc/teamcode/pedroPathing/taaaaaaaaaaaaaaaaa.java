@@ -38,7 +38,7 @@ public class taaaaaaaaaaaaaaaaa extends OpMode {
     // POSES
 
     private final Pose pose1 = new Pose(72, 72, Math.toRadians(90));
-    private final Pose pose2 = new Pose(72, 100, Math.toRadians(90)); // forward 48
+    private final Pose pose2 = new Pose(72, 144, Math.toRadians(90)); // forward 48
 
     //    private Path;
     private PathChain pathOne;

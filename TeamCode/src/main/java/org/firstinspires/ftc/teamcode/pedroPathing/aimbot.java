@@ -2,22 +2,17 @@ package org.firstinspires.ftc.teamcode.pedroPathing;
 
 import static java.lang.Thread.sleep;
 
-import com.acmerobotics.dashboard.config.Config;
 import com.pedropathing.follower.Follower;
-import com.pedropathing.ftc.FTCCoordinates;
-import com.pedropathing.geometry.BezierLine;
-import com.pedropathing.geometry.PedroCoordinates;
 import com.pedropathing.geometry.Pose;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
-import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
 import android.util.Size;
 
-import org.firstinspires.ftc.robotcore.external.hardware.camera.BuiltinCameraDirection;
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
+import org.firstinspires.ftc.robotcore.external.navigation.Pose3D;
 import org.firstinspires.ftc.robotcore.external.navigation.Position;
 import org.firstinspires.ftc.robotcore.external.navigation.YawPitchRollAngles;
 import org.firstinspires.ftc.vision.VisionPortal;
@@ -26,9 +21,9 @@ import org.firstinspires.ftc.vision.apriltag.AprilTagProcessor;
 
 import java.util.List;
 
-@Autonomous(name = "apriltag 1", group = "Autonomous")
+@Autonomous(name = "aimbot >:D", group = "Autonomous")
 //@Config
-public class taa extends OpMode {
+public class aimbot extends OpMode {
 
     private final int initialX = 72;
     private final int initialY = 72;
@@ -42,6 +37,10 @@ public class taa extends OpMode {
     private AprilTagProcessor aprilTag;
     private VisionPortal visionPortal;
 
+    private double currRobotYaw = 0.0;
+    private double currRobotBearing = 0.0;
+    private Pose3D cRP;
+
     private double ATPos() {
 
         List<AprilTagDetection> currentDetections = aprilTag.getDetections();
@@ -50,6 +49,10 @@ public class taa extends OpMode {
         // Step through the list of detections and display info for each one.
         for (AprilTagDetection detection : currentDetections) {
             if (detection.metadata != null && !detection.metadata.name.contains("Obelisk")) {
+                currRobotYaw = detection.robotPose.getOrientation().getYaw(AngleUnit.DEGREES);
+                currRobotBearing = detection.ftcPose.bearing;
+
+                cRP = detection.robotPose;
 //                telemetry.addLine(String.format("\n==== (ID %d) %s", detection.id, detection.metadata.name));
                 // Only use tags that don't have Obelisk in them
                 //  && detection.robotPose != null
@@ -62,7 +65,7 @@ public class taa extends OpMode {
 //                            detection.robotPose.getOrientation().getRoll(AngleUnit.DEGREES),
 //                            detection.robotPose.getOrientation().getYaw(AngleUnit.DEGREES)));
 //                    return detection.robotPose.getOrientation().getYaw(AngleUnit.DEGREES);
-                    return detection.ftcPose.bearing;
+                    return 0.0;
             } else {
                 // its an obelisk
                 return -1.0;
@@ -183,16 +186,17 @@ public class taa extends OpMode {
 //            telemetry.update();
 //        }
 
-        final Pose currentPose = follower.getPose();
+//        final Pose currentPose = new Pose();
 //        final Pose tagPose = new Pose(currentPose.getX(), currentPose.getY(), Math.toRadians(tagPosition));
-        final Pose tagPose = new Pose(0, 0, Math.toRadians(tagPosition));
+        final double fialPoseYaw = cRP.getOrientation().getYaw(AngleUnit.DEGREES) + currRobotBearing;
+        final Pose finalPose = new Pose(cRP.getPosition().x, cRP.getPosition().y, Math.toRadians(fialPoseYaw));
 
 
         //This uses the aprilTag to relocalize your robot
         //You can also create a custom AprilTag fusion Localizer for the follower if you want to use this by default for all your autos
-        follower.setPose(tagPose);
+        follower.setPose(finalPose);
 
-        telemetry.addData("> ","following %f",tagPosition);
+        telemetry.addData("> ","following %5.2f",fialPoseYaw);
         telemetry.update();
 
 //        if (following && !follower.isBusy()) following = false;
