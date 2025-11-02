@@ -26,15 +26,8 @@
  * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-
-
-
-
-
-
-
-
 package org.firstinspires.ftc.teamcode;
+
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
@@ -52,14 +45,6 @@ import com.qualcomm.robotcore.util.Range;
  * Use Android Studio to Copy this Class, and Paste it into your team's code folder with a new name.
  * Remove or comment out the @Disabled line to add this OpMode to the Driver Station OpMode list
  */
-
-
-
-
-
-
-
-
 @Autonomous(name="Drive", group="Linear OpMode")
 public class AutonDrive extends LinearOpMode {
     // Declare OpMode members.
@@ -120,12 +105,6 @@ public class AutonDrive extends LinearOpMode {
         }
     }
 
-
-
-
-
-
-
     @Override
     public void runOpMode() throws InterruptedException {
         telemetry.addData("Status", "Initialized");
@@ -139,13 +118,6 @@ public class AutonDrive extends LinearOpMode {
         frontLeftDrive = hardwareMap.get(DcMotor.class, "left_top");
         frontRightDrive = hardwareMap.get(DcMotor.class, "right_top");
 
-
-
-
-
-
-
-
         // Pushing the left stick forward MUST make robot go forward. So a       // To drive forward, most robots need the motor on one side to be reversed, because the axles point in opposite directions.
         // just these two lines based on your first test drive.
         // Note: The settings here assume direct drive on left and right wheels.  Gear Reduction or 90 Deg drives may require direction flips
@@ -158,35 +130,13 @@ public class AutonDrive extends LinearOpMode {
         // Wait for the game to start (driver presses START)
         waitForStart();
 
-
-
-
-
-
-
-
-
         // run until the end of the match (driver presses STOP)
         while (opModeIsActive()) {
-
-
-
-
-
-
-
 
             // Setup a variable for each drive wheel to save power level for telemetry
 
             // Choose to drive using either Tank Mode, or POV Mode
             // Comment out the method that's not used.  The default below is POV.
-
-
-
-
-
-
-
 
             // POV Mode uses left stick to go forward, and right stick to turn.
             // - This uses basic math to combine motions and is easier to drive straight.
@@ -208,7 +158,6 @@ public class AutonDrive extends LinearOpMode {
             // leftPower  = -gamepad1.left_stick_y ;
             // rightPower = -gamepad1.right_stick_y ;
             driveForRotations(3);
-
 
             // Show the elapsed game timer and wheel power.
             telemetry.addData("Status", "Run Time: ");
