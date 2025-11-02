@@ -162,10 +162,12 @@ public class aimbot extends OpMode {
     @Override
     public void start() {}
 
+    int kill = 0;
+
     @Override
     public void loop() {
         follower.update();
-//        if (dontFryCpu < 10000) {dontFryCpu++; return;} else {dontFryCpu = 0;}
+        if (kill < 500) {kill++; return;} else {kill = 0;}
         // running this loop hundreds of time per ms is kinda excessive ._.
 
         //if you're not using limelight you can follow the same steps: build an offset pose, put your heading offset, and generate a path etc
@@ -193,20 +195,23 @@ public class aimbot extends OpMode {
 //        final Pose currentPose = new Pose();
 //        final Pose tagPose = new Pose(currentPose.getX(), currentPose.getY(), Math.toRadians(tagPosition));
         final double fialPoseYaw = cRP.getOrientation().getYaw(AngleUnit.DEGREES) + currRobotBearing;
-        final Pose finalPose = new Pose(cRP.getPosition().x, cRP.getPosition().y, Math.toRadians(fialPoseYaw));
-        final Pose testtt = new Pose(cRP.getPosition().x, cRP.getPosition().y, Math.toRadians(cRP.getOrientation().getYaw()));
-
-
-        PathChain pathSix = follower.pathBuilder()
-                .addPath(new BezierLine(testtt, finalPose))
-                .setLinearHeadingInterpolation(testtt.getHeading(), finalPose.getHeading())
-                .build();
+//        final Pose finalPose = new Pose(cRP.getPosition().x, cRP.getPosition().y, Math.toRadians(fialPoseYaw));
+//        final Pose testtt = new Pose(cRP.getPosition().x, cRP.getPosition().y, Math.toRadians(cRP.getOrientation().getYaw()));
+//
+//
+//        PathChain pathSix = follower.pathBuilder()
+//                .addPath(new BezierLine(testtt, finalPose))
+//                .setLinearHeadingInterpolation(testtt.getHeading(), finalPose.getHeading())
+//                .build();
 
         //This uses the aprilTag to relocalize your robot
         //You can also create a custom AprilTag fusion Localizer for the follower if you want to use this by default for all your autos
-        follower.followPath(pathSix);
+//        follower.followPath(pathSix);
 
-        telemetry.addData("> ","following %5.2f",fialPoseYaw);
+        follower.turn(currRobotBearing, true);
+
+
+        telemetry.addData("> ","following %5.2f",currRobotBearing);
         telemetry.update();
 
 //        if (following && !follower.isBusy()) following = false;
