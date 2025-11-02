@@ -149,7 +149,7 @@ public class AutonDrive extends LinearOpMode {
         frontRightDrive.setDirection(DcMotor.Direction.FORWARD);
         // Wait for the game to start (driver presses START)
         waitForStart();
-        runtime.reset();
+
 
 
 
