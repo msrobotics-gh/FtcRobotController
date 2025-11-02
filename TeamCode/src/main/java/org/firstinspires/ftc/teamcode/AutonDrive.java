@@ -78,22 +78,47 @@ public class AutonDrive extends LinearOpMode {
     public double rightPower;
     public double strafeLeftPower;
     public double strafeRightPower;
-     public void resetRotations() {
-        leftEncoderTicks = 0;
-        rightEncoderTicks = 0;
-        frontLeftEncoderTicks = 0;
-        frontRightEncoderTicks = 0;
+
+    private static final double COUNTS_PER_MOTOR_REV = 28.0; // Example for HD Hex Motor, adjust for your motor
+    private static final double MAX_POWER = 0.4;
+
+    public void resetRotations() {
+        if (leftDrive == null || rightDrive == null || frontLeftDrive == null || frontRightDrive == null) {
+            return;
+        }
+
+        leftDrive.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        rightDrive.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        frontLeftDrive.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        frontRightDrive.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+
+        leftDrive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        rightDrive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        frontLeftDrive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        frontRightDrive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
     }
 
     public void drive(double speed) {
 
     }
-    final double COUNTS_PER_MOTOR_REV = 28; // Example for HD Hex Motor, adjust for your motor
+    private double getRotations(DcMotor motor) {
+        return Math.abs(motor.getCurrentPosition()) / COUNTS_PER_MOTOR_REV;
+    }
 
-    double leftRotations = (double) leftEncoderTicks / COUNTS_PER_MOTOR_REV;
-    double rightRotations = (double) rightEncoderTicks / COUNTS_PER_MOTOR_REV;
-    double frontLeftRotations = (double) frontLeftEncoderTicks / COUNTS_PER_MOTOR_REV;
-    double frontRightRotations = (double) frontRightEncoderTicks / COUNTS_PER_MOTOR_REV;
+    private void stopAllDriveMotors() {
+        if (leftDrive != null) {
+            leftDrive.setPower(0);
+        }
+        if (rightDrive != null) {
+            rightDrive.setPower(0);
+        }
+        if (frontLeftDrive != null) {
+            frontLeftDrive.setPower(0);
+        }
+        if (frontRightDrive != null) {
+            frontRightDrive.setPower(0);
+        }
+    }
 
 
 
@@ -105,24 +130,6 @@ public class AutonDrive extends LinearOpMode {
     public void runOpMode() throws InterruptedException {
         telemetry.addData("Status", "Initialized");
         telemetry.update();
-
-        leftDrive.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        leftDrive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        rightDrive.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        rightDrive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        frontLeftDrive.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        frontLeftDrive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        frontRightDrive.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        frontRightDrive .setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-
-
-
-
-
-
-
-
-
 
         // Initialize the hardware variables. Note that the strings used here as parameters
         // to 'get' must correspond to the names assigned during the robot configuration
@@ -146,9 +153,11 @@ public class AutonDrive extends LinearOpMode {
         rightDrive.setDirection(DcMotor.Direction.FORWARD);
         frontLeftDrive.setDirection(DcMotor.Direction.REVERSE);
         frontRightDrive.setDirection(DcMotor.Direction.FORWARD);
+
+        resetRotations();
         // Wait for the game to start (driver presses START)
         waitForStart();
-        runtime.reset();
+
 
 
 
@@ -190,11 +199,10 @@ public class AutonDrive extends LinearOpMode {
             //double strafe = gamepad1.left_stick_x;
             //double turn  =  gamepad1.right_stick_x;
 
-            leftPower    = Range.clip(drive + turn, -0.4, 0.4) ;
-            rightPower   = Range.clip(drive - turn, -0.4, 0.4) ;
-            strafeLeftPower = Range.clip(strafe, -0.4, 0.4) ;
-            strafeRightPower = Range.clip(strafe, -0.4, 0.4) ;
-            final double COUNTS_PER_MOTOR_REV = 28; // Example for HD Hex Motor, adjust for your motor
+            leftPower    = Range.clip(drive + turn, -MAX_POWER, MAX_POWER);
+            rightPower   = Range.clip(drive - turn, -MAX_POWER, MAX_POWER);
+            strafeLeftPower = Range.clip(strafe, -MAX_POWER, MAX_POWER);
+            strafeRightPower = Range.clip(strafe, -MAX_POWER, MAX_POWER);
             // Tank Mode uses one stick to control each wheel.
             // - This requires no math, but it is hard to drive forward slowly and keep straight.
             // leftPower  = -gamepad1.left_stick_y ;
@@ -203,7 +211,7 @@ public class AutonDrive extends LinearOpMode {
 
 
             // Show the elapsed game timer and wheel power.
-            telemetry.addData("Status", "Run Time: " + runtime.toString());
+            telemetry.addData("Status", "Run Time: ");
             telemetry.addData("Motors", "left (%.2f)", leftPower);
             telemetry.update();
         }
@@ -260,23 +268,51 @@ public class AutonDrive extends LinearOpMode {
         frontLeftDrive.setPower(turnPower);
         frontRightDrive.setPower(-turnPower);
 
+        while (opModeIsActive()
+                && getRotations(leftDrive) < rotations
+                && getRotations(rightDrive) < rotations
+                && getRotations(frontLeftDrive) < rotations
+                && getRotations(frontRightDrive) < rotations) {
+            idle();
+        }
+
+        stopAllDriveMotors();
+        turn = 0;
     }
-        else {
-            leftDrive.setPower(leftPower-strafeLeftPower);
-            rightDrive.setPower(-rightPower+strafeRightPower);
-            frontLeftDrive.setPower(leftPower+strafeLeftPower);
-            frontRightDrive.setPower(-rightPower-strafeRightPower);
-
+    public void strafeForRotation(double rotations) {
+        double directionPower = strafeRightPower;
+        if (directionPower == 0) {
+            directionPower = MAX_POWER;
         }
-        do {
-            drive = 0;
-            resetRotations();
-        } while (leftRotations <= rotation && rightRotations <= rotation && frontLeftRotations <= rotation && frontRightRotations <= rotation);
-        }
-        public void strafeForRotation() {
-
-
+        strafeForRotation(rotations, directionPower);
+    }
+    public void strafeForRotation(double rotations, double direction) {
+        if (!opModeIsActive()) {
+            return;
         }
 
+        double strafePower = Range.clip(direction, -MAX_POWER, MAX_POWER);
+        if (strafePower == 0) {
+            return;
+        }
+
+        resetRotations();
+
+        leftDrive.setPower(-strafePower);
+        rightDrive.setPower(strafePower);
+        frontLeftDrive.setPower(strafePower);
+        frontRightDrive.setPower(-strafePower);
+
+        while (opModeIsActive()
+                && getRotations(leftDrive) < rotations
+                && getRotations(rightDrive) < rotations
+                && getRotations(frontLeftDrive) < rotations
+                && getRotations(frontRightDrive) < rotations) {
+            idle();
+        }
+
+        stopAllDriveMotors();
+        strafe = 0;
     }
 
+    }
