@@ -35,6 +35,7 @@
 
 
 package org.firstinspires.ftc.teamcode;
+
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
@@ -79,7 +80,8 @@ public class AutonDrive extends LinearOpMode {
     public double rightPower;
     public double strafeLeftPower;
     public double strafeRightPower;
-     public void resetRotations() {
+
+    public void resetRotations() {
         leftEncoderTicks = 0;
         rightEncoderTicks = 0;
         frontLeftEncoderTicks = 0;
@@ -87,8 +89,8 @@ public class AutonDrive extends LinearOpMode {
     }
 
     public void drive(double speed) {
-
     }
+
     final double COUNTS_PER_MOTOR_REV = 28; // Example for HD Hex Motor, adjust for your motor
 
     double leftRotations = (double) leftEncoderTicks / COUNTS_PER_MOTOR_REV;
