@@ -4,6 +4,8 @@ package org.firstinspires.ftc.teamcode.subsystems;
 import com.acmerobotics.dashboard.config.Config;
 import com.acmerobotics.dashboard.FtcDashboard;
 import com.acmerobotics.dashboard.telemetry.TelemetryPacket;
+import com.qualcomm.robotcore.hardware.DcMotorEx;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 
@@ -165,11 +167,11 @@ public class Velauncher implements Subsystem {
         powerUpper = ctrlUpper.calculate(upperMotor.getState());
         powerLower = ctrlLower.calculate(lowerMotor.getState());
 
-        upperMotor.setPower(powerLower);
-        lowerMotor.setPower(powerUpper);
+        upperMotor.setPower(powerUpper);
+        lowerMotor.setPower(powerLower);
 
-        final double measTpsUpper = upperMotor.getVelocity();
-        final double measTpsLower = lowerMotor.getVelocity();
+        final double measTpsUpper = Math.abs(upperMotor.getVelocity());
+        final double measTpsLower = Math.abs(lowerMotor.getVelocity());
         final double measRpmUpper = tpsToRpm(measTpsUpper, TPR_UPPER);
         final double measRpmLower = tpsToRpm(measTpsLower, TPR_LOWER);
 
