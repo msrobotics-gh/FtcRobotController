@@ -32,6 +32,7 @@ public class aimbot extends OpMode {
     private final int initialY = 72;
     private final int initialR = 90;
     public final int initialRotationYaw = 0;
+    private final double correctionInterval = 750.0;
     // CAMERA STUFF
     private final Position cameraPosition = new Position(DistanceUnit.INCH,
             0, 0, 0, 0);
@@ -173,7 +174,7 @@ public class aimbot extends OpMode {
     public void loop() {
         follower.update();
 //        if (kill < 500) {kill++; return;} else {kill = 0;}
-        if (correctionTimer.getElapsedTime() < 1000) {return;} else {correctionTimer.resetTimer();}
+        if (correctionTimer.getElapsedTime() < correctionInterval) {return;} else {correctionTimer.resetTimer();}
         // running this loop hundreds of time per ms is kinda excessive ._.
 
         //if you're not using limelight you can follow the same steps: build an offset pose, put your heading offset, and generate a path etc
