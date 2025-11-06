@@ -12,6 +12,8 @@ import dev.nextftc.ftc.ActiveOpMode;
 import dev.nextftc.hardware.controllable.RunToPosition;
 import dev.nextftc.hardware.impl.MotorEx;
 
+import com.pedropathing.util.Timer;
+
 
 // if(pathTimer.getElapsedTimeSeconds() > 1) {}
 // private Timer pathTimer, actionTimer, opmodeTimer;

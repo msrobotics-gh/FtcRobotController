@@ -2,6 +2,8 @@ package org.firstinspires.ftc.teamcode.pedroPathing;
 
 import static java.lang.Thread.sleep;
 
+import com.acmerobotics.dashboard.config.Config;
+import com.acmerobotics.dashboard.FtcDashboard;
 import com.pedropathing.follower.Follower;
 import com.pedropathing.geometry.BezierLine;
 import com.pedropathing.geometry.Pose;
@@ -12,6 +14,7 @@ import com.pedropathing.paths.PathChain;
 
 import android.util.Size;
 
+import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
@@ -25,8 +28,13 @@ import org.firstinspires.ftc.vision.apriltag.AprilTagProcessor;
 import java.util.List;
 
 @Autonomous(name = "aimbot >:D", group = "Autonomous")
-//@Config
+@Config
 public class aimbot extends OpMode {
+
+    FtcDashboard dashboard = FtcDashboard.getInstance();
+    Telemetry dashboardTelemetry = dashboard.getTelemetry();
+
+    public int rotation = 90;
 
     private final int initialX = 72;
     private final int initialY = 72;
@@ -160,7 +168,7 @@ public class aimbot extends OpMode {
 
         final double initialHeading = ATPos();
 
-        follower.setStartingPose(new Pose(initialX, initialY, Math.toRadians(initialR))); //set your starting pose
+        follower.setStartingPose(new Pose(initialX, initialY, Math.toRadians(rotation))); //set your starting pose
     }
 
     @Override
@@ -173,19 +181,20 @@ public class aimbot extends OpMode {
     @Override
     public void loop() {
         follower.update();
-//        if (kill < 500) {kill++; return;} else {kill = 0;}
-        if (correctionTimer.getElapsedTime() < correctionInterval) {return;} else {correctionTimer.resetTimer();}
+//        if (correctionTimer.getElapsedTime() < correctionInterval) {return;} else {correctionTimer.resetTimer();}
         // running this loop hundreds of time per ms is kinda excessive ._.
 
         //if you're not using limelight you can follow the same steps: build an offset pose, put your heading offset, and generate a path etc
 
-        final double tagPosition = ATPos();
-
-        if (tagPosition == -1.0) {
-            telemetry.addData("> ","no tags detected / obelisk");
-            telemetry.update();
-            return;
-        }
+// need start
+//        final double tagPosition = ATPos();
+//
+//        if (tagPosition == -1.0) {
+//            telemetry.addData("> ","no tags detected / obelisk");
+//            telemetry.update();
+//            return;
+//        }
+// need end
 
 //        if (!following) {
 //            follower.followPath(
@@ -200,11 +209,14 @@ public class aimbot extends OpMode {
 //        }
 
 //        final Pose currentPose = new Pose();
-//        final Pose tagPose = new Pose(currentPose.getX(), currentPose.getY(), Math.toRadians(tagPosition));
-        final double fialPoseYaw = cRP.getOrientation().getYaw(AngleUnit.DEGREES) + currRobotBearing;
-//        final Pose finalPose = new Pose(cRP.getPosition().x, cRP.getPosition().y, Math.toRadians(fialPoseYaw));
-//        final Pose testtt = new Pose(cRP.getPosition().x, cRP.getPosition().y, Math.toRadians(cRP.getOrientation().getYaw()));
-//
+
+
+
+
+//        final double fialPoseYaw = cRP.getOrientation().getYaw(AngleUnit.DEGREES) + currRobotBearing;
+
+
+
 //
 //        PathChain pathSix = follower.pathBuilder()
 //                .addPath(new BezierLine(testtt, finalPose))
@@ -215,11 +227,15 @@ public class aimbot extends OpMode {
         //You can also create a custom AprilTag fusion Localizer for the follower if you want to use this by default for all your autos
 //        follower.followPath(pathSix);
 
-        follower.turn(currRobotBearing, true);
+        follower.turn(rotation, true);
 
 
-        telemetry.addData("> ","turning left %5.2f",currRobotBearing);
+        telemetry.addData("> ","turning to %3.2f",rotation);
+        dashboardTelemetry.addData("> ","turning to %3.2f",rotation);
+        telemetry.addData("> ","elapsed time: %3.2f",correctionTimer.getElapsedTime());
+        dashboardTelemetry.addData("> ","elapsed time: %3.2f",correctionTimer.getElapsedTime());
         telemetry.update();
+        dashboardTelemetry.update();
 
 //        if (following && !follower.isBusy()) following = false;
     }

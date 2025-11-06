@@ -35,6 +35,8 @@ public class Auto implements Subsystem {
     private Auto() {
         final Pose pose1 = new Pose(72, 72, Math.toRadians(90));
         final Pose pose2 = new Pose(72, 96, Math.toRadians(90));
+
+        follower().setStartingPose(pose1);
 //        final PathChain pathOne;
         pathOne = follower().pathBuilder()
                 .addPath(new BezierLine(pose1, pose2))
