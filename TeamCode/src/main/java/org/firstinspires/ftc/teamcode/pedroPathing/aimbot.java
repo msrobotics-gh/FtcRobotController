@@ -5,6 +5,7 @@ import static java.lang.Thread.sleep;
 import com.pedropathing.follower.Follower;
 import com.pedropathing.geometry.BezierLine;
 import com.pedropathing.geometry.Pose;
+import com.pedropathing.util.Timer;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.pedropathing.paths.PathChain;
@@ -38,7 +39,7 @@ public class aimbot extends OpMode {
             initialRotationYaw, -90, 0, 0);
     private AprilTagProcessor aprilTag;
     private VisionPortal visionPortal;
-
+    private Timer correctionTimer;
     private double currRobotYaw = 0.0;
     private double currRobotBearing = 0.0;
     private Pose3D cRP;
@@ -154,20 +155,25 @@ public class aimbot extends OpMode {
         telemetry.update();
         follower = Constants.createFollower(hardwareMap);
 
+        correctionTimer = new Timer();
+
         final double initialHeading = ATPos();
 
         follower.setStartingPose(new Pose(initialX, initialY, Math.toRadians(initialR))); //set your starting pose
     }
 
     @Override
-    public void start() {}
+    public void start() {
+        correctionTimer.resetTimer();
+    }
 
     int kill = 0;
 
     @Override
     public void loop() {
         follower.update();
-        if (kill < 500) {kill++; return;} else {kill = 0;}
+//        if (kill < 500) {kill++; return;} else {kill = 0;}
+        if (correctionTimer.getElapsedTime() < 1000) {return;} else {correctionTimer.resetTimer();}
         // running this loop hundreds of time per ms is kinda excessive ._.
 
         //if you're not using limelight you can follow the same steps: build an offset pose, put your heading offset, and generate a path etc
@@ -211,7 +217,7 @@ public class aimbot extends OpMode {
         follower.turn(currRobotBearing, true);
 
 
-        telemetry.addData("> ","following %5.2f",currRobotBearing);
+        telemetry.addData("> ","turning left %5.2f",currRobotBearing);
         telemetry.update();
 
 //        if (following && !follower.isBusy()) following = false;
