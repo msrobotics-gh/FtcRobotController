@@ -34,13 +34,14 @@ public class aimbot extends OpMode {
     FtcDashboard dashboard = FtcDashboard.getInstance();
     Telemetry dashboardTelemetry = dashboard.getTelemetry();
 
-    public int rotation = 90;
+    public int rotation = 0;
+    public boolean cInterval = true;
 
     private final int initialX = 72;
     private final int initialY = 72;
     private final int initialR = 90;
     public final int initialRotationYaw = 0;
-    private final double correctionInterval = 750.0;
+    private final double correctionInterval = 150.0;
     // CAMERA STUFF
     private final Position cameraPosition = new Position(DistanceUnit.INCH,
             0, 0, 0, 0);
@@ -168,7 +169,7 @@ public class aimbot extends OpMode {
 
         final double initialHeading = ATPos();
 
-        follower.setStartingPose(new Pose(initialX, initialY, Math.toRadians(rotation))); //set your starting pose
+        follower.setStartingPose(new Pose(initialX, initialY, Math.toRadians(initialR))); //set your starting pose
     }
 
     @Override
@@ -181,7 +182,9 @@ public class aimbot extends OpMode {
     @Override
     public void loop() {
         follower.update();
-//        if (correctionTimer.getElapsedTime() < correctionInterval) {return;} else {correctionTimer.resetTimer();}
+        if (cInterval) {
+            if (correctionTimer.getElapsedTime() < correctionInterval) {return;} else {correctionTimer.resetTimer();}
+        }
         // running this loop hundreds of time per ms is kinda excessive ._.
 
         //if you're not using limelight you can follow the same steps: build an offset pose, put your heading offset, and generate a path etc
