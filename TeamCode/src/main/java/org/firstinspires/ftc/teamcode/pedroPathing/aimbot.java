@@ -34,14 +34,14 @@ public class aimbot extends OpMode {
     FtcDashboard dashboard = FtcDashboard.getInstance();
     Telemetry dashboardTelemetry = dashboard.getTelemetry();
 
-    public int rotation = 0;
-    public boolean cInterval = true;
+    public static double rotation = 0.0;
+    public static boolean cInterval = true;
 
     private final int initialX = 72;
     private final int initialY = 72;
     private final int initialR = 90;
     public final int initialRotationYaw = 0;
-    private final double correctionInterval = 150.0;
+    private final double correctionInterval = 1000.0;
     // CAMERA STUFF
     private final Position cameraPosition = new Position(DistanceUnit.INCH,
             0, 0, 0, 0);
@@ -67,6 +67,10 @@ public class aimbot extends OpMode {
                 currRobotYaw = detection.robotPose.getOrientation().getYaw(AngleUnit.DEGREES);
                 currRobotBearing = detection.ftcPose.bearing;
 
+                dashboardTelemetry.addData("> ","yaw: %5.2f", currRobotYaw);
+                dashboardTelemetry.addData("> ","bearing: %5.2f", currRobotBearing);
+//                dashboardTelemetry.update();
+
                 cRP = detection.robotPose;
 //                telemetry.addLine(String.format("\n==== (ID %d) %s", detection.id, detection.metadata.name));
                 // Only use tags that don't have Obelisk in them
@@ -80,7 +84,7 @@ public class aimbot extends OpMode {
 //                            detection.robotPose.getOrientation().getRoll(AngleUnit.DEGREES),
 //                            detection.robotPose.getOrientation().getYaw(AngleUnit.DEGREES)));
 //                    return detection.robotPose.getOrientation().getYaw(AngleUnit.DEGREES);
-                    return 0.0;
+                    return detection.ftcPose.bearing;
             } else {
                 // its an obelisk
                 return -1.0;
@@ -187,10 +191,8 @@ public class aimbot extends OpMode {
         }
         // running this loop hundreds of time per ms is kinda excessive ._.
 
-        //if you're not using limelight you can follow the same steps: build an offset pose, put your heading offset, and generate a path etc
-
 // need start
-//        final double tagPosition = ATPos();
+//        final double tagPosition = ATPos(); // does not update dashboard
 //
 //        if (tagPosition == -1.0) {
 //            telemetry.addData("> ","no tags detected / obelisk");
@@ -199,40 +201,13 @@ public class aimbot extends OpMode {
 //        }
 // need end
 
-//        if (!following) {
-//            follower.followPath(
-//                    follower.pathBuilder()
-////                            .addPath(new BezierLine(follower.getPose(), TARGET_LOCATION))
-//                            .addPath(new BezierLine(follower.getPose(), follower.getPose()))
-//                            .setLinearHeadingInterpolation(follower.getHeading(), Math.toRadians(tagPosition))
-//                            .build()
-//            );
-//            telemetry.addData("> ","following "+tagPosition);
-//            telemetry.update();
-//        }
-
-//        final Pose currentPose = new Pose();
-
 
 
 
 //        final double fialPoseYaw = cRP.getOrientation().getYaw(AngleUnit.DEGREES) + currRobotBearing;
-
-
-
-//
-//        PathChain pathSix = follower.pathBuilder()
-//                .addPath(new BezierLine(testtt, finalPose))
-//                .setLinearHeadingInterpolation(testtt.getHeading(), finalPose.getHeading())
-//                .build();
-
-        //This uses the aprilTag to relocalize your robot
-        //You can also create a custom AprilTag fusion Localizer for the follower if you want to use this by default for all your autos
-//        follower.followPath(pathSix);
-
         follower.turn(rotation, true);
 
-
+        dashboardTelemetry.addData("> ","---");
         telemetry.addData("> ","turning to %3.2f",rotation);
         dashboardTelemetry.addData("> ","turning to %3.2f",rotation);
         telemetry.addData("> ","elapsed time: %3.2f",correctionTimer.getElapsedTime());
