@@ -6,6 +6,7 @@ import com.acmerobotics.dashboard.config.Config;
 import com.qualcomm.robotcore.eventloop.SyncdDevice;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
+import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.teamcode.subsystems.FlywheelGate;
 import org.firstinspires.ftc.teamcode.subsystems.Intake;
 import org.firstinspires.ftc.teamcode.subsystems.Launcher;
@@ -58,6 +59,8 @@ public class LiftDriveLaunchVelauncher extends NextFTCOpMode {
     public double bottommotorpower;
 
     boolean isLeftBumperPressed = false;
+
+    boolean isPressed = false;
     @Override
     public void onStartButtonPressed() {
 
@@ -85,7 +88,16 @@ public class LiftDriveLaunchVelauncher extends NextFTCOpMode {
 
 
         Gamepads.gamepad2().dpadUp()
-                .whenBecomesTrue(Lift.INSTANCE.toHigh);
+                .whenTrue(new InstantCommand(()-> {
+                    double startTime = getRuntime();
+                    while (isPressed) {
+                        double curTime = getRuntime();
+                        if (curTime - startTime > 5) {
+                            CommandManager.INSTANCE.scheduleCommand(Lift.INSTANCE.toHigh);
+                            return;
+                        }
+                    }
+                }));
 
         Gamepads.gamepad1().a()
                         .whenBecomesTrue(setHalfSpeed);
