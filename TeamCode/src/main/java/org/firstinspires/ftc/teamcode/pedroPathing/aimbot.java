@@ -85,7 +85,7 @@ public class aimbot extends OpMode {
             }
         }
         return -1.0;
-    }   // end method telemetryAprilTag()
+    }
 
 
     private void initAprilTag() {
@@ -100,26 +100,19 @@ public class aimbot extends OpMode {
         builder.addProcessor(aprilTag);
         visionPortal = builder.build();
 
-    }   // end method initAprilTag()
+    }
 
 
 
+    // -----
 
 
 
+    // PEDRO
 
 
 
-
-
-
-
-
-
-
-
-
-    // PEDRO STUFF
+    // -----
     private Follower follower;
 
     @Override
@@ -141,15 +134,12 @@ public class aimbot extends OpMode {
         correctionTimer.resetTimer();
     }
 
-    int kill = 0;
-
     @Override
     public void loop() {
         follower.update();
         if (cInterval) {
             if (correctionTimer.getElapsedTime() < correctionInterval) {return;} else {correctionTimer.resetTimer();}
         }
-        // running this loop hundreds of time per ms is kinda excessive ._.
 
 // need start
 //        final double tagPosition = ATPos(); // does not update dashboard
