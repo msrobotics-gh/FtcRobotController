@@ -42,6 +42,13 @@ public class aimbot extends OpMode {
     private final int initialR = 90;
     public final int initialRotationYaw = 0;
     private final double correctionInterval = 1000.0;
+    private double currRobotYaw = 0.0;
+    private double currRobotBearing = 0.0;
+    private Pose3D cRP;
+
+
+
+
     // CAMERA STUFF
     private final Position cameraPosition = new Position(DistanceUnit.INCH,
             0, 0, 0, 0);
@@ -50,9 +57,6 @@ public class aimbot extends OpMode {
     private AprilTagProcessor aprilTag;
     private VisionPortal visionPortal;
     private Timer correctionTimer;
-    private double currRobotYaw = 0.0;
-    private double currRobotBearing = 0.0;
-    private Pose3D cRP;
 
 //    private PathChain pathSev;
 
@@ -67,24 +71,14 @@ public class aimbot extends OpMode {
                 currRobotYaw = detection.robotPose.getOrientation().getYaw(AngleUnit.DEGREES);
                 currRobotBearing = detection.ftcPose.bearing;
 
+                telemetry.addData("> ","yaw: %5.2f", currRobotYaw);
+                telemetry.addData("> ","bearing: %5.2f", currRobotBearing);
                 dashboardTelemetry.addData("> ","yaw: %5.2f", currRobotYaw);
                 dashboardTelemetry.addData("> ","bearing: %5.2f", currRobotBearing);
-//                dashboardTelemetry.update();
 
                 cRP = detection.robotPose;
-//                telemetry.addLine(String.format("\n==== (ID %d) %s", detection.id, detection.metadata.name));
-                // Only use tags that don't have Obelisk in them
-                //  && detection.robotPose != null
-//                    telemetry.addLine(String.format("XYZ %6.1f %6.1f %6.1f  (inch)",
-//                            detection.robotPose.getPosition().x,
-//                            detection.robotPose.getPosition().y,
-//                            detection.robotPose.getPosition().z));
-//                    telemetry.addLine(String.format("PRY %6.1f %6.1f %6.1f  (deg)",
-//                            detection.robotPose.getOrientation().getPitch(AngleUnit.DEGREES),
-//                            detection.robotPose.getOrientation().getRoll(AngleUnit.DEGREES),
-//                            detection.robotPose.getOrientation().getYaw(AngleUnit.DEGREES)));
-//                    return detection.robotPose.getOrientation().getYaw(AngleUnit.DEGREES);
-                    return detection.ftcPose.bearing;
+
+                return detection.ftcPose.bearing;
             } else {
                 // its an obelisk
                 return -1.0;
@@ -95,43 +89,16 @@ public class aimbot extends OpMode {
 
 
     private void initAprilTag() {
-
-        // Create the AprilTag processor.
         aprilTag = new AprilTagProcessor.Builder()
                 .setCameraPose(cameraPosition, cameraOrientation)
-                // == CAMERA CALIBRATION ==
                 .setLensIntrinsics(1406.54, 1406.54, 658.234, 352.691)
-                // ... these parameters are fx, fy, cx, cy.
-
                 .build();
-
         VisionPortal.Builder builder = new VisionPortal.Builder();
-
-        // Set the camera (webcam vs. built-in RC phone camera).
         builder.setCamera(hardwareMap.get(WebcamName.class, "Webcam 1"));
-
-        // Choose a camera resolution. Not all cameras support all resolutions.
         builder.setCameraResolution(new Size(1280, 720));
-
-        // Enable the RC preview (LiveView).  Set "false" to omit camera monitoring.
-        builder.enableLiveView(false); // disables camera view
-
-        // Set the stream format; MJPEG uses less bandwidth than default YUY2.
-        //builder.setStreamFormat(VisionPortal.StreamFormat.YUY2);
-
-        // Choose whether or not LiveView stops if no processors are enabled.
-        // If set "true", monitor shows solid orange screen if no processors enabled.
-        // If set "false", monitor shows camera view without annotations.
-        //builder.setAutoStopLiveView(false);
-
-        // Set and enable the processor.
+        builder.enableLiveView(false);
         builder.addProcessor(aprilTag);
-
-        // Build the Vision Portal, using the above settings.
         visionPortal = builder.build();
-
-        // Disable or re-enable the aprilTag processor at any time.
-        //visionPortal.setProcessorEnabled(aprilTag, true);
 
     }   // end method initAprilTag()
 
@@ -154,16 +121,9 @@ public class aimbot extends OpMode {
 
     // PEDRO STUFF
     private Follower follower;
-//    private boolean following = false;
-//    private final Pose TARGET_LOCATION = new Pose(); //Put the target location here
-
-    int dontFryCpu = 0;
-
-    private Pose initPose;
 
     @Override
     public void init() {
-//        camera = hardwareMap.get(Limelight3A.class, "limelight");
         initAprilTag();
         telemetry.addData("> ","ready to follow");
         telemetry.update();
@@ -171,7 +131,7 @@ public class aimbot extends OpMode {
 
         correctionTimer = new Timer();
 
-        final double initialHeading = ATPos();
+//        final double initialHeading = ATPos();
 
         follower.setStartingPose(new Pose(initialX, initialY, Math.toRadians(initialR))); //set your starting pose
     }
@@ -210,12 +170,11 @@ public class aimbot extends OpMode {
         dashboardTelemetry.addData("> ","---");
         telemetry.addData("> ","turning to %3.2f",rotation);
         dashboardTelemetry.addData("> ","turning to %3.2f",rotation);
-        telemetry.addData("> ","elapsed time: %3.2f",correctionTimer.getElapsedTime());
-        dashboardTelemetry.addData("> ","elapsed time: %3.2f",correctionTimer.getElapsedTime());
+        telemetry.addData("> ","elapsed time: %3.2f",(float) correctionTimer.getElapsedTime());
+        dashboardTelemetry.addData("> ","elapsed time: %3.2f",(float) correctionTimer.getElapsedTime());
         telemetry.update();
         dashboardTelemetry.update();
 
-//        if (following && !follower.isBusy()) following = false;
     }
 
     @Override
@@ -223,12 +182,4 @@ public class aimbot extends OpMode {
         visionPortal.close();
         follower.breakFollowing();
     }
-
-//    private Pose getRobotPoseFromCamera() {
-//        //Fill this out to get the robot Pose from the camera's output (apply any filters if you need to using follower.getPose() for fusion)
-//        //Pedro Pathing has built-in KalmanFilter and LowPassFilter classes you can use for this
-//
-//        //Use this to convert standard FTC coordinates to standard Pedro Pathing coordinates
-//        return new Pose(0, 0, 0, FTCCoordinates.INSTANCE).getAsCoordinateSystem(PedroCoordinates.INSTANCE);
-//    }
 }
