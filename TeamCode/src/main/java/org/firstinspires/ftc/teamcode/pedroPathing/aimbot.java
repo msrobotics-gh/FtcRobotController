@@ -35,7 +35,9 @@ public class aimbot extends OpMode {
     Telemetry dashboardTelemetry = dashboard.getTelemetry();
 
     public static double rotation = 0.0;
+    public static double rotationTarget = 90.0;
     public static boolean cInterval = true;
+    public static boolean bartho = true;
 
     private final int initialX = 72;
     private final int initialY = 72;
@@ -155,7 +157,11 @@ public class aimbot extends OpMode {
 
 
 //        final double fialPoseYaw = cRP.getOrientation().getYaw(AngleUnit.DEGREES) + currRobotBearing;
-        follower.turn(rotation, true);
+        if (bartho) {
+            follower.turn(rotation, true);
+        } else {
+            follower.turnTo(rotationTarget);
+        }
 
         dashboardTelemetry.addData("> ","---");
         telemetry.addData("> ","turning to %3.2f",rotation);
