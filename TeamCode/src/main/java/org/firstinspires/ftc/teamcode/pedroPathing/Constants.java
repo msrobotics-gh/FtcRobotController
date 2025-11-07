@@ -38,6 +38,14 @@ public class Constants {
             .rightRearMotorDirection(DcMotorSimple.Direction.REVERSE);
 //            .xVelocity(115.91866902566092)
 //            .yVelocity(49.52288110523299);
+
+    public static OTOSConstants OTlocalizerConstants = new OTOSConstants()
+            .hardwareMapName("otos")
+            .linearUnit(DistanceUnit.INCH)
+            .angleUnit(AngleUnit.DEGREES)
+            .offset(new SparkFunOTOS.Pose2D(-7.5, 0.0, 270.0));
+//            //.linearScalar(499.39);
+//            //.angularScalar();
     public static Follower createFollower(HardwareMap hardwareMap) {
         return new FollowerBuilder(followerConstants, hardwareMap)
                 .pathConstraints(pathConstraints)
@@ -46,15 +54,6 @@ public class Constants {
                 .OTOSLocalizer(OTlocalizerConstants)
                 .build();
     }
-
-
-    public static OTOSConstants OTlocalizerConstants = new OTOSConstants()
-            .hardwareMapName("otos")
-            .linearUnit(DistanceUnit.INCH)
-            .angleUnit(AngleUnit.DEGREES)
-            .offset(new SparkFunOTOS.Pose2D(0.0, 7.5, 0.0));
-//            .linearScalar()
-//            .angularScalar();
 
     public static DriveEncoderConstants DElocalizerConstants = new DriveEncoderConstants()
             .rightFrontMotorName("front_right")
