@@ -154,7 +154,7 @@ public class aimbot extends OpMode {
 // need end
 
 
-
+ 
 
 //        final double fialPoseYaw = cRP.getOrientation().getYaw(AngleUnit.DEGREES) + currRobotBearing;
         if (bartho) {
