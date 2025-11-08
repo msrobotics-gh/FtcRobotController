@@ -75,7 +75,7 @@ public class LiftDriveLaunchVelauncher extends NextFTCOpMode {
         );
         Command setHalfSpeed = new LambdaCommand()
                 .setStart(() -> {
-                driverControlled2.setScalar(.5);
+                    driverControlled2.setScalar(.5);
                 })
                 .setIsDone(() -> true);
 
@@ -83,8 +83,8 @@ public class LiftDriveLaunchVelauncher extends NextFTCOpMode {
         Command setFullSpeed = new LambdaCommand()
                 .setStart(() -> {
                     driverControlled2.setScalar(1);
-                        })
-                        .setIsDone(() -> true);
+                })
+                .setIsDone(() -> true);
 
 
         Gamepads.gamepad2().dpadUp()
@@ -100,28 +100,26 @@ public class LiftDriveLaunchVelauncher extends NextFTCOpMode {
                 }));
 
         Gamepads.gamepad1().a()
-                        .whenBecomesTrue(setHalfSpeed);
+                .whenBecomesTrue(setHalfSpeed);
         Gamepads.gamepad1().b()
-                        .whenBecomesTrue(setFullSpeed);
+                .whenBecomesTrue(setFullSpeed);
 
         Gamepads.gamepad2().dpadDown()
                 .whenBecomesTrue(Lift.INSTANCE.toLow);
 
         Gamepads.gamepad2().leftBumper()
                 .whenTrue(Velauncher.INSTANCE.velaunch)
-                .whenTrue(Velauncher.INSTANCE.velaunch2)
-                .whenBecomesFalse(Velauncher.INSTANCE.unvelaunch)
-                .whenBecomesFalse(Velauncher.INSTANCE.unvelaunch2);
+                .whenBecomesFalse(Velauncher.INSTANCE.unvelaunch);
 
 
 
-            Gamepads.gamepad2().rightBumper()
-                    .whenBecomesTrue(FlywheelGate.INSTANCE.open())
-                    .whenBecomesTrue(Intake.INSTANCE.intake)
-                    .whenBecomesTrue(Intake.INSTANCE.intakesecond)
-                    .whenBecomesFalse(Intake.INSTANCE.intakeoff)
-                    .whenBecomesFalse(Intake.INSTANCE.intakeoff2)
-                    .whenBecomesFalse(FlywheelGate.INSTANCE.close());
+        Gamepads.gamepad2().rightBumper()
+                .whenBecomesTrue(FlywheelGate.INSTANCE.open())
+                .whenBecomesTrue(Intake.INSTANCE.intake)
+                .whenBecomesTrue(Intake.INSTANCE.intakesecond)
+                .whenBecomesFalse(Intake.INSTANCE.intakeoff)
+                .whenBecomesFalse(Intake.INSTANCE.intakeoff2)
+                .whenBecomesFalse(FlywheelGate.INSTANCE.close());
 
         Gamepads.gamepad2().a()
                 .whenBecomesTrue(Intake.INSTANCE.intake)
@@ -132,7 +130,7 @@ public class LiftDriveLaunchVelauncher extends NextFTCOpMode {
                 .whenBecomesTrue(Intake.INSTANCE.intakeoff2);
 
         for (String message : CommandManager.INSTANCE.snapshot()
-             ) {
+        ) {
             telemetry.addLine(message);
         }
         telemetry.update();
