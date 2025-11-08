@@ -148,7 +148,7 @@ public class Velauncher implements Subsystem {
     public static double kP_UPPER = 0.00002;
     public static double kI_UPPER = 0.0;
     public static double kD_UPPER = 0.0;
-    public static double kV_UPPER = 0.00152174;
+    public static double kV_UPPER = 0.00057;
     public static double kA_UPPER = 0.0;
     public static double kS_UPPER = 0.02;
 
@@ -156,7 +156,7 @@ public class Velauncher implements Subsystem {
     public static double kP_LOWER = 0.00002;
     public static double kI_LOWER = 0.0;
     public static double kD_LOWER = 0.0;
-    public static double kV_LOWER = 0.00152174;
+    public static double kV_LOWER = 0.00065;
     public static double kA_LOWER = 0.0;
     public static double kS_LOWER = 0.02;
 
@@ -256,8 +256,13 @@ public class Velauncher implements Subsystem {
             ctrlLower.setGoal(new KineticState(0.0, 0.0, 0.0));
         }
 
-        powerUpper = ctrlUpper.calculate(upperMotor.getState());
-        powerLower = ctrlLower.calculate(lowerMotor.getState());
+        if (CLOSED_LOOP_ENABLED) {
+            powerUpper = ctrlUpper.calculate(upperMotor.getState());
+            powerLower = ctrlLower.calculate(lowerMotor.getState());
+        } else {
+            powerUpper = OPEN_LOOP_POWER_UPPER;
+            powerLower = OPEN_LOOP_POWER_LOWER;
+        }
 
         upperMotor.setPower(powerUpper);
         lowerMotor.setPower(powerLower);
@@ -310,3 +315,9 @@ public class Velauncher implements Subsystem {
 }
 
 
+
+
+/*
+lower measured (actually upper) is 3500rpm
+upper measured (actually lower) is 2500rpm
+*/
