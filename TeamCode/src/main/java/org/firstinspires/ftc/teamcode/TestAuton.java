@@ -23,7 +23,6 @@ public class TestAuton extends NextFTCOpMode {
     @Override
     public void onStartButtonPressed() {
         Velauncher.INSTANCE.velaunch.schedule();
-        Velauncher.INSTANCE.velaunch.schedule();
         new Delay(0.5).schedule();
         FlywheelGate.INSTANCE.open().schedule();
         Intake.INSTANCE.intake.schedule();
