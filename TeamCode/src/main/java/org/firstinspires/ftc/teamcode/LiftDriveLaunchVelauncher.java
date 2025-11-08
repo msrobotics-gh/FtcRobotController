@@ -61,6 +61,7 @@ public class LiftDriveLaunchVelauncher extends NextFTCOpMode {
     boolean isLeftBumperPressed = false;
 
     boolean isPressed = false;
+    double startTime;
     @Override
     public void onStartButtonPressed() {
 
@@ -88,14 +89,13 @@ public class LiftDriveLaunchVelauncher extends NextFTCOpMode {
 
 
         Gamepads.gamepad2().dpadUp()
+                .whenBecomesTrue(new InstantCommand(()-> {
+                    startTime = getRuntime();
+                }))
                 .whenTrue(new InstantCommand(()-> {
-                    double startTime = getRuntime();
-                    while (isPressed) {
-                        double curTime = getRuntime();
-                        if (curTime - startTime > 5) {
-                            CommandManager.INSTANCE.scheduleCommand(Lift.INSTANCE.toHigh);
-                            return;
-                        }
+                    double curTime = getRuntime();
+                    if (curTime - startTime > 5) {
+                        CommandManager.INSTANCE.scheduleCommand(Lift.INSTANCE.toHigh);
                     }
                 }));
 
