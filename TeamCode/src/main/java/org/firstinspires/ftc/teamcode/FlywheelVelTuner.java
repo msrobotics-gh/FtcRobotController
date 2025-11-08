@@ -112,8 +112,8 @@ public class FlywheelVelTuner extends NextFTCOpMode {
 
     @Override
     public void onInit() {
-        upperMotor = new MotorEx(UPPER_MOTOR_NAME);
-        lowerMotor = new MotorEx(LOWER_MOTOR_NAME);
+        upperMotor = new MotorEx(UPPER_MOTOR_NAME).reversed();
+        lowerMotor = new MotorEx(LOWER_MOTOR_NAME).reversed();
 
         upperMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         lowerMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
@@ -155,8 +155,8 @@ public class FlywheelVelTuner extends NextFTCOpMode {
         if (ENABLED_UPPER) upperMotor.setPower(powerUpper); else upperMotor.setPower(0);
         if (ENABLED_LOWER) lowerMotor.setPower(powerLower); else lowerMotor.setPower(0);
 
-        final double measTpsUpper = upperMotor.getVelocity();
-        final double measTpsLower = lowerMotor.getVelocity();
+        final double measTpsUpper = Math.abs(upperMotor.getVelocity());
+        final double measTpsLower = Math.abs(lowerMotor.getVelocity());
         final double measRpmUpper = tpsToRpm(measTpsUpper, TPR_UPPER);
         final double measRpmLower = tpsToRpm(measTpsLower, TPR_LOWER);
 
