@@ -74,6 +74,12 @@ public class MotorSpeedTest extends LinearOpMode {
         backLeftMotor = hardwareMap.get(MotorEx.class, "back_left");
         backRightMotor = hardwareMap.get(MotorEx.class, "back_right");
 
+        double measTpsFrontLeftMotor = Math.abs(frontLeftMotor.getVelocity());
+        double measTpsFrontRightMotor = Math.abs(frontRightMotor.getVelocity());
+        double measTpsBackLeftMotor = Math.abs(backLeftMotor.getVelocity());
+        double measTpsBackRightMotor = Math.abs(backRightMotor.getVelocity());
+
+
         // Wait for the start button
         telemetry.addData(">", "Press Start to run Motors." );
         telemetry.update();
@@ -81,6 +87,10 @@ public class MotorSpeedTest extends LinearOpMode {
 
         // Ramp motor speeds till stop pressed.
         while(opModeIsActive()) {
+            measTpsFrontLeftMotor = Math.abs(frontLeftMotor.getVelocity());
+            measTpsFrontRightMotor = Math.abs(frontRightMotor.getVelocity());
+            measTpsBackLeftMotor = Math.abs(backLeftMotor.getVelocity());
+            measTpsBackRightMotor = Math.abs(backRightMotor.getVelocity());
 
             if (gamepad1.a){
                 rampUp = true;
@@ -107,7 +117,10 @@ public class MotorSpeedTest extends LinearOpMode {
             }
 
             // Display the current value
-            telemetry.addData("Motor Power", "%5.2f", power);
+            telemetry.addData("Motor Power Front Left Motor", "%5.2f", measTpsFrontLeftMotor);
+            telemetry.addData("Motor Power Front Right Motor", "%5.2f", measTpsFrontRightMotor);
+            telemetry.addData("Motor Power Back Left Motor", "%5.2f", measTpsBackLeftMotor);
+            telemetry.addData("Motor Power Back Right Motor", "%5.2f", measTpsBackRightMotor);
             telemetry.addData(">", "Press Stop to end test." );
             telemetry.update();
 
