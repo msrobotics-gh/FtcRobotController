@@ -43,7 +43,7 @@ public class aimbot extends OpMode {
     private final int initialY = 72;
     private final int initialR = 90;
     public final int initialRotationYaw = 0;
-    private final double correctionInterval = 1000.0;
+    public static double correctionInterval = 1000.0;
     private double currRobotYaw = 0.0;
     private double currRobotBearing = 0.0;
     private Pose3D cRP;
@@ -144,13 +144,17 @@ public class aimbot extends OpMode {
         }
 
 // need start
-//        final double tagPosition = ATPos(); // does not update dashboard
-//
+        final double tagPosition = ATPos(); // does not update dashboard
+
 //        if (tagPosition == -1.0) {
 //            telemetry.addData("> ","no tags detected / obelisk");
 //            telemetry.update();
 //            return;
 //        }
+        telemetry.addData("> ","bearing: %5.2f", tagPosition);
+        telemetry.addLine();
+        dashboardTelemetry.addData("> ","bearing: %5.2f", tagPosition);
+        dashboardTelemetry.addLine();
 // need end
 
 

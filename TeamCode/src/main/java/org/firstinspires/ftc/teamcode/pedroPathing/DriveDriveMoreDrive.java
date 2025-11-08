@@ -41,7 +41,7 @@ public class DriveDriveMoreDrive extends NextFTCOpMode {
                 .whenBecomesTrue(()->{ tele("end all"); });
                 // bro why do i have to use lambda expression functions for each function in pedropathing T_T i hate this library
 
-        telemetry.addData("> ","xkcd 293");
+        telemetry.addLine("> xkcd 293");
         telemetry.update();
     }
 }

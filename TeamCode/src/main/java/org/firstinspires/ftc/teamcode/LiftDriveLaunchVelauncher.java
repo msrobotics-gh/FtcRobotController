@@ -64,7 +64,8 @@ public class LiftDriveLaunchVelauncher extends NextFTCOpMode {
     @Override
     public void onStartButtonPressed() {
 
-        DriverControlledCommand driverControlled2 = new MecanumDriverControlled(frontLeftMotor,
+        DriverControlledCommand driverControlled2 = new MecanumDriverControlled(
+                frontLeftMotor,
                 frontRightMotor,
                 backLeftMotor,
                 backRightMotor,

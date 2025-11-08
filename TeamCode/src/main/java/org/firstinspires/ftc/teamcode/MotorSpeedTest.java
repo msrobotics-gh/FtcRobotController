@@ -56,10 +56,16 @@ public class MotorSpeedTest extends LinearOpMode {
     static final double MAX_REV     = -1.0;     // Maximum REV power applied to motor
 
     // Define class members
-    private MotorEx frontLeftMotor = new MotorEx("front_left");
-    private MotorEx frontRightMotor = new MotorEx("front_right").reversed();
-    private MotorEx backLeftMotor = new MotorEx("back_left").reversed();
-    private MotorEx backRightMotor = new MotorEx("back_right").reversed();
+//    private MotorEx frontLeftMotor;
+//    private MotorEx frontRightMotor;
+//    private MotorEx backLeftMotor;
+//    private MotorEx backRightMotor;
+
+
+    private final MotorEx frontLeftMotor = new MotorEx("front_left");
+    private final MotorEx frontRightMotor = new MotorEx("front_right").reversed();
+    private final MotorEx backLeftMotor = new MotorEx("back_left").reversed();
+    private final MotorEx backRightMotor = new MotorEx("back_right").reversed();
     double  power   = 0;
     boolean rampUp  = false;
 
@@ -69,10 +75,10 @@ public class MotorSpeedTest extends LinearOpMode {
 
         // Connect to motor (Assume standard left wheel)
         // Change the text in quotes to match any motor name on your robot.
-        frontLeftMotor = hardwareMap.get(MotorEx.class, "front_left");
-        frontRightMotor = hardwareMap.get(MotorEx.class, "front_right");
-        backLeftMotor = hardwareMap.get(MotorEx.class, "back_left");
-        backRightMotor = hardwareMap.get(MotorEx.class, "back_right");
+//        frontLeftMotor = hardwareMap.get(MotorEx.class, "front_left");
+//        frontRightMotor = hardwareMap.get(MotorEx.class, "front_right").reversed();
+//        backLeftMotor = hardwareMap.get(MotorEx.class, "back_left").reversed();
+//        backRightMotor = hardwareMap.get(MotorEx.class, "back_right").reversed();
 
         double measTpsFrontLeftMotor = Math.abs(frontLeftMotor.getVelocity());
         double measTpsFrontRightMotor = Math.abs(frontRightMotor.getVelocity());

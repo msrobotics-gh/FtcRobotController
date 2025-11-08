@@ -124,12 +124,20 @@ import dev.nextftc.hardware.powerable.SetPower;
 
 public class Velauncher implements Subsystem {
 
+    // === Target speeds (RPM), kV ===
+    // CONSTANTS
+    public final static double TARGET_RPM_UPPER = 2357;
+    public final static double TARGET_RPM_LOWER = 3642;
+
+    public final static double kV_UPPER = 0.000415;
+    public final static double kV_LOWER = 0.000419;
+
+
+    // === TPR (what does this mean) ===
     public static double TPR_UPPER = 28; // ticks per output revolution (upper motor)
     public static double TPR_LOWER = 28; // ticks per output revolution (lower motor)
 
-    // === Target speeds (RPM) ===
-    public static double TARGET_RPM_UPPER = 850;
-    public static double TARGET_RPM_LOWER = 1000;
+
 
     // === Velocity tolerance for "at speed" checks (ticks/sec) ===
     public static double TOL_TPS_UPPER = 50.0;
@@ -148,7 +156,6 @@ public class Velauncher implements Subsystem {
     public static double kP_UPPER = 0.00002;
     public static double kI_UPPER = 0.0;
     public static double kD_UPPER = 0.0;
-    public static double kV_UPPER = 0.00057;
     public static double kA_UPPER = 0.0;
     public static double kS_UPPER = 0.02;
 
@@ -156,7 +163,7 @@ public class Velauncher implements Subsystem {
     public static double kP_LOWER = 0.00002;
     public static double kI_LOWER = 0.0;
     public static double kD_LOWER = 0.0;
-    public static double kV_LOWER = 0.00065;
+
     public static double kA_LOWER = 0.0;
     public static double kS_LOWER = 0.02;
 
@@ -279,6 +286,12 @@ public class Velauncher implements Subsystem {
         final boolean atSpeedLower = Math.abs(errLower) <= TOL_TPS_LOWER;
 
         TelemetryPacket packet = new TelemetryPacket();
+
+        packet.put("MEASURED UPPER RPM", measRpmUpper);
+        packet.put("MEASURED LOWER", measRpmLower);
+
+        packet.put("---", "---");
+
         packet.put("Upper_target_tps", targetTpsUpper);
         packet.put("Upper_meas_tps", measTpsUpper);
         packet.put("Upper_target_rpm", TARGET_RPM_UPPER);
