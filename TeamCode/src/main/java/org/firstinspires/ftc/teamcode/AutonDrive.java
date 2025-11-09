@@ -187,5 +187,7 @@ public class AutonDrive extends LinearOpMode {
     }
     static void move(double MoveForward, double MoveStrafe, double MoveTurn){
         driveMove = MoveForward;
+        strafe = MoveStrafe;
+        turnMove = MoveTurn;
     }
 }
