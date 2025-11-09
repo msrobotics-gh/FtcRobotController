@@ -10,6 +10,7 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 @Autonomous(name="Drivenations", group="Linear OpMode")
 public class AutonDrive extends LinearOpMode {
     // Declare OpMode members.
+
     private DcMotor leftDrive = null;
     private DcMotor rightDrive = null;
     private DcMotor frontLeftDrive = null;
@@ -29,6 +30,7 @@ public class AutonDrive extends LinearOpMode {
     public static double speed = 0.7;
     private DcMotor upDrive = null;
     private DcMotor downDrive = null;
+
     @Override
     public void runOpMode() {
         telemetry.addData("Status", "Initialized");
