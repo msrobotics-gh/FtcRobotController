@@ -7,6 +7,8 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
+import java.util.function.Function;
+
 @Autonomous(name="Drivenations", group="Linear OpMode")
 public class AutonDrive extends LinearOpMode {
     // Declare OpMode members.
