@@ -71,14 +71,7 @@ public class AutonDrive extends LinearOpMode {
         // run until the end of the match (driver presses STOP)
         while (opModeIsActive()) {
 
-            //Main Move Vars
-            double driveMove = gamepad1.left_stick_y;
-            double strafe = gamepad1.right_stick_x;
-            double turnMove = -gamepad1.left_stick_x;
-            double leftPower = clip(driveMove + turnMove, -1, 1);
-            double rightPower = clip(driveMove - turnMove, -1, 1);
-            double strafeLeftPower = clip(strafe, -1, 1);
-            double strafeRightPower = clip(strafe, -1, 1);
+
 
             // Send calculated power to wheels
             leftDrive.setPower(leftPower - strafeLeftPower);
@@ -187,5 +180,8 @@ public class AutonDrive extends LinearOpMode {
             telemetry.addData("Motors", "left (%.2f), right (%.2f)");
             telemetry.update();
         }
+    }
+    static void move(double MoveForward, double MoveStrafe, double MoveTurn){
+        driveMove = MoveForward;
     }
 }
