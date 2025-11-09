@@ -20,9 +20,9 @@ import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 
 public class Constants {
     public static FollowerConstants followerConstants = new FollowerConstants()
-            .mass(12);
-//            .forwardZeroPowerAcceleration(-644.1573425975088)
-//            .lateralZeroPowerAcceleration(-900.4536131149029);
+            .mass(12)
+            .forwardZeroPowerAcceleration(-644.1573425975088)
+            .lateralZeroPowerAcceleration(-900.4536131149029);
 
     public static PathConstraints pathConstraints = new PathConstraints(0.99, 100, 1, 1);
 
@@ -35,9 +35,9 @@ public class Constants {
             .leftFrontMotorDirection(DcMotorSimple.Direction.FORWARD)
             .leftRearMotorDirection(DcMotorSimple.Direction.REVERSE)
             .rightFrontMotorDirection(DcMotorSimple.Direction.REVERSE)
-            .rightRearMotorDirection(DcMotorSimple.Direction.REVERSE);
-//            .xVelocity(115.91866902566092)
-//            .yVelocity(49.52288110523299);
+            .rightRearMotorDirection(DcMotorSimple.Direction.REVERSE)
+            .xVelocity(115.91866902566092)
+            .yVelocity(49.52288110523299);
 
     public static OTOSConstants OTlocalizerConstants = new OTOSConstants()
             .hardwareMapName("otos")
@@ -50,8 +50,8 @@ public class Constants {
         return new FollowerBuilder(followerConstants, hardwareMap)
                 .pathConstraints(pathConstraints)
                 .mecanumDrivetrain(driveConstants)
-//                .driveEncoderLocalizer(DElocalizerConstants)
-                .OTOSLocalizer(OTlocalizerConstants)
+                .driveEncoderLocalizer(DElocalizerConstants)
+//                .OTOSLocalizer(OTlocalizerConstants)
                 .build();
     }
 

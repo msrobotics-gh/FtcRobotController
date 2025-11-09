@@ -13,8 +13,8 @@ import dev.nextftc.ftc.NextFTCOpMode;
 
 @TeleOp(name = "why do all good ftc libraries have absolutely horrendous documentation", group = "TeleOp")
 @Config
-public class DriveDriveMoreDrive extends NextFTCOpMode {
-    public DriveDriveMoreDrive() {
+public class manualAuton extends NextFTCOpMode {
+    public manualAuton() {
         addComponents(
                 new PedroComponent(Constants::createFollower)
         );
@@ -32,9 +32,13 @@ public class DriveDriveMoreDrive extends NextFTCOpMode {
                 .whenBecomesTrue(Auto.INSTANCE.follow)
                 .whenBecomesTrue(()->{ tele("following path"); });
 
+        Gamepads.gamepad2().dpadRight()
+                .whenBecomesTrue(Auto.INSTANCE.turnRed)
+                .whenBecomesTrue(()->{ tele("turning red"); });
+
         Gamepads.gamepad2().dpadLeft()
-                .whenBecomesTrue(Auto.INSTANCE.turn)
-                .whenBecomesTrue(()->{ tele("turning"); });
+                .whenBecomesTrue(Auto.INSTANCE.turnBlu)
+                .whenBecomesTrue(()->{ tele("turning blue"); });
 
         Gamepads.gamepad2().leftBumper()
                 .whenBecomesTrue(()->{ follower().breakFollowing(); })

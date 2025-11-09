@@ -22,30 +22,30 @@ import dev.nextftc.hardware.impl.MotorEx;
 import static dev.nextftc.extensions.pedro.PedroComponent.follower;
 
 import com.qualcomm.robotcore.hardware.HardwareMap;
-//import com.rowanmcalpin.nextftc.pedro.TurnTo;
 
+//
 
-// if(pathTimer.getElapsedTimeSeconds() > 1) {}
-// private Timer pathTimer, actionTimer, opmodeTimer;
-// import com.pedropathing.util.Timer;
 public class Auto implements Subsystem {
     public static final Auto INSTANCE = new Auto();
     private PathChain pathOne;
 
     private Auto() {
-        final Pose pose1 = new Pose(72, 72, Math.toRadians(90));
-        final Pose pose2 = new Pose(72, 96, Math.toRadians(90));
+        final Pose start = new Pose(72, 72, Math.toRadians(90));
+        final Pose enddd = new Pose(72, 144, Math.toRadians(90));
 
-        follower().setStartingPose(pose1);
+        follower().setStartingPose(start);
 //        final PathChain pathOne;
         pathOne = follower().pathBuilder()
-                .addPath(new BezierLine(pose1, pose2))
-                .setLinearHeadingInterpolation(pose1.getHeading(), pose2.getHeading())
+                .addPath(new BezierLine(start, enddd))
+//                .setLinearHeadingInterpolation(start.getHeading(), pose2.getHeading())
+                .setConstantHeadingInterpolation(90.0)
                 .build();
+
     }
 
     public Command follow = new FollowPath(pathOne, true);
-    public Command turn = new TurnTo(Angle.fromDeg(180));
+    public Command turnBlu = new TurnTo(Angle.fromDeg(122));
+    public Command turnRed = new TurnTo(Angle.fromDeg(60));
 
 
     @Override
