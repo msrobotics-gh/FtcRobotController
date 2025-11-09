@@ -6,19 +6,17 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import org.firstinspires.ftc.teamcode.pedroPathing.Constants;
 import org.firstinspires.ftc.teamcode.subsystems.Auto;
 import org.firstinspires.ftc.teamcode.subsystems.FlywheelGate;
-import org.firstinspires.ftc.teamcode.subsystems.Velauncher;
 import org.firstinspires.ftc.teamcode.subsystems.Intake;
-// dont need lift
-
+import org.firstinspires.ftc.teamcode.subsystems.Velauncher;
 
 import dev.nextftc.core.commands.delays.Delay;
 import dev.nextftc.extensions.pedro.PedroComponent;
 import dev.nextftc.ftc.NextFTCOpMode;
 
-@Autonomous(name = "AUTON RED ALLIANCE", group = "Autonomous")
+@Autonomous(name = "AUTON BLUE ALLIANCE", group = "Autonomous")
 @Config
-public class LiftDriveBartholomewRed extends NextFTCOpMode {
-    public LiftDriveBartholomewRed() {
+public class DriveLaunchBlue extends NextFTCOpMode {
+    public DriveLaunchBlue() {
         addComponents(
                 new PedroComponent(Constants::createFollower)
         );
@@ -31,8 +29,8 @@ public class LiftDriveBartholomewRed extends NextFTCOpMode {
 
     @Override
     public void onStartButtonPressed() {
-        Auto.INSTANCE.turnRed.schedule(); // to 60 for red; 122 for blue
-        new Delay(0.5).schedule(); // wait for turn
+        Auto.INSTANCE.turnBlu.schedule(); // to 60 for red; 122 for blue
+        new Delay(0.5).schedule();
         Velauncher.INSTANCE.velaunch.schedule();
         new Delay(0.5).schedule();
         FlywheelGate.INSTANCE.open().schedule();
