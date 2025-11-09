@@ -18,9 +18,14 @@ public class AutonDrive extends LinearOpMode {
     private DcMotor leftIntake = null;
     private DcMotor rightIntake = null;
     private DcMotor upp = null;
-    double leftPower;
-    double rightPower;
-
+    //Main Move Vars
+    public static double driveMove = 0;
+    public static double strafe = 0;
+    public static double turnMove = 0;
+    public static double leftPower = clip(driveMove + turnMove, -1, 1);
+    public static double rightPower = clip(driveMove - turnMove, -1, 1);
+    public static double strafeLeftPower = clip(strafe, -1, 1);
+    public static double strafeRightPower = clip(strafe, -1, 1);
     public static double speed = 0.7;
     private DcMotor upDrive = null;
     private DcMotor downDrive = null;
@@ -66,16 +71,12 @@ public class AutonDrive extends LinearOpMode {
         // run until the end of the match (driver presses STOP)
         while (opModeIsActive()) {
 
-            // Setup a variable for each drive1 wheel to save power level for telemetry
-            // Choose to drive1 using either Tank Mode, or POV Mode
-            // Comment out the method that's not used.  The default below is POV.
-            // POV Mode uses left stick to go forward, and right stick to turn.
-            // - This uses basic math to combine motions and is easier to drive1 straight.
-            double drive2 = gamepad1.left_stick_y;
+            //Main Move Vars
+            double driveMove = gamepad1.left_stick_y;
             double strafe = gamepad1.right_stick_x;
-            double turn1 = -gamepad1.left_stick_x;
-            double leftPower = clip(drive2 + turn1, -1, 1);
-            double rightPower = clip(drive2 - turn1, -1, 1);
+            double turnMove = -gamepad1.left_stick_x;
+            double leftPower = clip(driveMove + turnMove, -1, 1);
+            double rightPower = clip(driveMove - turnMove, -1, 1);
             double strafeLeftPower = clip(strafe, -1, 1);
             double strafeRightPower = clip(strafe, -1, 1);
 
@@ -109,7 +110,7 @@ public class AutonDrive extends LinearOpMode {
                 move = 0;
             }
 
-            
+
             if (slow) {
                 speed = 0.4;
             }
