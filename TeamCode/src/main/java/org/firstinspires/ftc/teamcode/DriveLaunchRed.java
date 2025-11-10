@@ -60,31 +60,31 @@ public class DriveLaunchRed extends NextFTCOpMode {
 
         new SequentialGroup(
                 Auto.INSTANCE.turnRed, // to 60 for red; 122 for blue
-                new Delay(0.5),
+                new Delay(Constants.AutonDelay),
                 Velauncher.INSTANCE.velaunch,
-                new Delay(0.5),
+                new Delay(Constants.AutonDelay),
                 FlywheelGate.INSTANCE.open(),
 
                 Intake.INSTANCE.intake, // ball one
                 Intake.INSTANCE.intakesecond,
-                new Delay(0.5),
+                new Delay(Constants.AutonDelay),
                 Intake.INSTANCE.intakeoff,
                 Intake.INSTANCE.intakeoff2,
-                new Delay(0.5),
+                new Delay(Constants.AutonDelay),
 
                 Intake.INSTANCE.intake, // ball two
                 Intake.INSTANCE.intakesecond,
-                new Delay(0.5),
+                new Delay(Constants.AutonDelay),
                 Intake.INSTANCE.intakeoff,
                 Intake.INSTANCE.intakeoff2,
-                new Delay(0.5),
+                new Delay(Constants.AutonDelay),
 
                 Intake.INSTANCE.intake, // ball three
                 Intake.INSTANCE.intakesecond,
-                new Delay(0.5),
+                new Delay(Constants.AutonDelay),
                 Intake.INSTANCE.intakeoff,
                 Intake.INSTANCE.intakeoff2,
-                new Delay(0.5),
+                new Delay(Constants.AutonDelay),
 
                 FlywheelGate.INSTANCE.close(),
                 Velauncher.INSTANCE.unvelaunch,

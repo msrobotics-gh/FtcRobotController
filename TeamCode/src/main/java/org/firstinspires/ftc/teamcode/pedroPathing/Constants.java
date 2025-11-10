@@ -19,6 +19,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 //import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 
 public class Constants {
+    public static double AutonDelay = 0.5;
     public static FollowerConstants followerConstants = new FollowerConstants()
             .mass(12)
             .forwardZeroPowerAcceleration(-644.1573425975088)
@@ -46,6 +47,7 @@ public class Constants {
             .offset(new SparkFunOTOS.Pose2D(-7.5, 0.5, 180.0))
             .linearScalar(142.68123428571312)
             .angularScalar(0.01750454656217);
+
     public static Follower createFollower(HardwareMap hardwareMap) {
         return new FollowerBuilder(followerConstants, hardwareMap)
                 .pathConstraints(pathConstraints)

@@ -9,6 +9,8 @@ import org.firstinspires.ftc.teamcode.subsystems.FlywheelGate;
 import org.firstinspires.ftc.teamcode.subsystems.Intake;
 import org.firstinspires.ftc.teamcode.subsystems.Velauncher;
 
+import java.time.Duration;
+
 import dev.nextftc.core.commands.delays.Delay;
 import dev.nextftc.core.commands.groups.SequentialGroup;
 import dev.nextftc.core.components.SubsystemComponent;
@@ -61,31 +63,31 @@ public class DriveLaunchBlue extends NextFTCOpMode {
 
         new SequentialGroup(
                 Auto.INSTANCE.turnBlu, // to 60 for red; 122 for blue
-                new Delay(0.5),
+                new Delay(Constants.AutonDelay),
                 Velauncher.INSTANCE.velaunch,
-                new Delay(0.5),
+                new Delay(Constants.AutonDelay),
                 FlywheelGate.INSTANCE.open(),
 
                 Intake.INSTANCE.intake, // ball one
                 Intake.INSTANCE.intakesecond,
-                new Delay(0.5),
+                new Delay(Constants.AutonDelay),
                 Intake.INSTANCE.intakeoff,
                 Intake.INSTANCE.intakeoff2,
-                new Delay(0.5),
+                new Delay(Constants.AutonDelay),
 
                 Intake.INSTANCE.intake, // ball two
                 Intake.INSTANCE.intakesecond,
-                new Delay(0.5),
+                new Delay(Constants.AutonDelay),
                 Intake.INSTANCE.intakeoff,
                 Intake.INSTANCE.intakeoff2,
-                new Delay(0.5),
+                new Delay(Constants.AutonDelay),
 
                 Intake.INSTANCE.intake, // ball three
                 Intake.INSTANCE.intakesecond,
-                new Delay(0.5),
+                new Delay(Constants.AutonDelay),
                 Intake.INSTANCE.intakeoff,
                 Intake.INSTANCE.intakeoff2,
-                new Delay(0.5),
+                new Delay(Constants.AutonDelay),
 
                 FlywheelGate.INSTANCE.close(),
                 Velauncher.INSTANCE.unvelaunch,
