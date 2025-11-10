@@ -27,7 +27,6 @@ public class DriveLaunchBlue extends NextFTCOpMode {
                 new SubsystemComponent(Velauncher.INSTANCE),
                 new SubsystemComponent(Intake.INSTANCE),
                 new SubsystemComponent(Auto.INSTANCE)
-
         );
     }
 
