@@ -49,9 +49,6 @@ public class DriveLaunchBlue extends NextFTCOpMode {
         telemetry.addLine("BLUE ALLIANCE AUTONOMOUS");
         telemetry.update();
 
-        // WHERE THE LIVING DUCK DID YALL GET .schedule() FROM
-
-
 //        Auto.INSTANCE.turnBlu.schedule(); // to 60 for red; 122 for blue
 //        new Delay(0.5).schedule();
 //        Velauncher.INSTANCE.velaunch.schedule();
