@@ -41,7 +41,32 @@ public class DriveLaunchRed extends NextFTCOpMode {
 
     @Override
     public void onInit() {
-        commandChain = new SequentialGroup(
+//        commandChain;
+    }
+
+    @Override
+    public void onStartButtonPressed() {
+        telemetry.addLine("RED ALLIANCE AUTONOMOUS");
+        telemetry.update();
+//        Auto.INSTANCE.turnRed.schedule(); // to 60 for red; 122 for blue
+//        new Delay(0.5).schedule(); // wait for turn
+//        Velauncher.INSTANCE.velaunch.schedule();
+//        new Delay(0.5).schedule();
+//        FlywheelGate.INSTANCE.open().schedule();
+//        for (int i=0; i<3; i++){ // thrice - each ball
+//            Intake.INSTANCE.intake.schedule();
+//            Intake.INSTANCE.intakesecond.schedule();
+//            new Delay(0.5).schedule();
+//            Intake.INSTANCE.intakeoff.schedule();
+//            Intake.INSTANCE.intakeoff2.schedule();
+//            new Delay(0.5).schedule();
+//        }
+//        FlywheelGate.INSTANCE.close().schedule();
+//        Velauncher.INSTANCE.unvelaunch.schedule();
+//        Auto.INSTANCE.follow.schedule();
+
+
+        new SequentialGroup(
                 Auto.INSTANCE.turnRed, // to 60 for red; 122 for blue
                 new Delay(Constants.AutonDelay),
                 Velauncher.INSTANCE.velaunch,
@@ -72,32 +97,7 @@ public class DriveLaunchRed extends NextFTCOpMode {
                 FlywheelGate.INSTANCE.close(),
                 Velauncher.INSTANCE.unvelaunch,
                 Auto.INSTANCE.follow
-        );
-    }
-
-    @Override
-    public void onStartButtonPressed() {
-        telemetry.addLine("RED ALLIANCE AUTONOMOUS");
-        telemetry.update();
-//        Auto.INSTANCE.turnRed.schedule(); // to 60 for red; 122 for blue
-//        new Delay(0.5).schedule(); // wait for turn
-//        Velauncher.INSTANCE.velaunch.schedule();
-//        new Delay(0.5).schedule();
-//        FlywheelGate.INSTANCE.open().schedule();
-//        for (int i=0; i<3; i++){ // thrice - each ball
-//            Intake.INSTANCE.intake.schedule();
-//            Intake.INSTANCE.intakesecond.schedule();
-//            new Delay(0.5).schedule();
-//            Intake.INSTANCE.intakeoff.schedule();
-//            Intake.INSTANCE.intakeoff2.schedule();
-//            new Delay(0.5).schedule();
-//        }
-//        FlywheelGate.INSTANCE.close().schedule();
-//        Velauncher.INSTANCE.unvelaunch.schedule();
-//        Auto.INSTANCE.follow.schedule();
-
-
-        commandChain.schedule();
+        ).schedule();
 
 
     }
