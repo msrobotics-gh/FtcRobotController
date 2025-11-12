@@ -87,12 +87,12 @@ public class DriveLaunchBlue extends NextFTCOpMode {
                 Intake.INSTANCE.intakeoff2,
                 new Delay(Constants.AutonDelay),
 
-                Intake.INSTANCE.intake, // ball three
-                Intake.INSTANCE.intakesecond,
-                new Delay(Constants.AutonDelay),
-                Intake.INSTANCE.intakeoff,
-                Intake.INSTANCE.intakeoff2,
-                new Delay(Constants.AutonDelay),
+//                Intake.INSTANCE.intake, // ball three
+//                Intake.INSTANCE.intakesecond,
+//                new Delay(Constants.AutonDelay),
+//                Intake.INSTANCE.intakeoff,
+//                Intake.INSTANCE.intakeoff2,
+//                new Delay(Constants.AutonDelay),
 
                 FlywheelGate.INSTANCE.close(),
                 Velauncher.INSTANCE.unvelaunch,

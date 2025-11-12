@@ -126,8 +126,8 @@ public class Velauncher implements Subsystem {
 
     // === Target speeds (RPM), kV ===
     // CONSTANTS
-    public final static double TARGET_RPM_UPPER = 2357;
-    public final static double TARGET_RPM_LOWER = 3642;
+    public final static double TARGET_RPM_UPPER = 2157;
+    public final static double TARGET_RPM_LOWER = 3442;
 
     public final static double kV_UPPER = 0.000415;
     public final static double kV_LOWER = 0.000419;

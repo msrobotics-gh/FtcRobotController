@@ -90,15 +90,16 @@ public class LiftDriveLaunchVelauncher extends NextFTCOpMode {
 
 
         Gamepads.gamepad2().dpadUp()
-                .whenBecomesTrue(new InstantCommand(()-> {
-                    startTime = getRuntime();
-                }))
-                .whenTrue(new InstantCommand(()-> {
-                    double curTime = getRuntime();
-                    if (curTime - startTime > 5) {
-                        CommandManager.INSTANCE.scheduleCommand(Lift.INSTANCE.toHigh);
-                    }
-                }));
+//                .whenBecomesTrue(new InstantCommand(()-> {
+//                    startTime = getRuntime();
+//                }))
+//                .whenTrue(new InstantCommand(()-> {
+//                    double curTime = getRuntime();
+//                    if (curTime - startTime > 2) {
+//                        CommandManager.INSTANCE.scheduleCommand(Lift.INSTANCE.toHigh);
+//                    }
+//                }));
+                .whenBecomesTrue(Lift.INSTANCE.toHigh);
 
         Gamepads.gamepad1().a()
                 .whenBecomesTrue(setHalfSpeed);
