@@ -24,8 +24,9 @@ public class Constants {
     public static double AutonDelay = 0.5;
     public static FollowerConstants followerConstants = new FollowerConstants()
             .mass(12)
-            .forwardZeroPowerAcceleration(-644.1573425975088)
-            .lateralZeroPowerAcceleration(-900.4536131149029);
+            ;
+//            .forwardZeroPowerAcceleration(-644.1573425975088)
+//            .lateralZeroPowerAcceleration(-900.4536131149029);
 
     public static PathConstraints pathConstraints = new PathConstraints(0.99, 100, 1, 1);
 
@@ -39,27 +40,29 @@ public class Constants {
             .leftRearMotorDirection(DcMotorSimple.Direction.REVERSE)
             .rightFrontMotorDirection(DcMotorSimple.Direction.REVERSE)
             .rightRearMotorDirection(DcMotorSimple.Direction.REVERSE)
-            .xVelocity(115.91866902566092)
-            .yVelocity(49.52288110523299);
+            ;
+//            .xVelocity(115.91866902566092)
+//            .yVelocity(49.52288110523299);
 
     public static OTOSConstants OTlocalizerConstants = new OTOSConstants()
             .hardwareMapName("otos")
             .linearUnit(DistanceUnit.INCH)
             .angleUnit(AngleUnit.DEGREES)
-            .offset(new SparkFunOTOS.Pose2D(-7.5, 0.5, Math.toRadians(180)))
-            .linearScalar(142.68123428571312)
-            .angularScalar(0.01750454656217);
+            .offset(new SparkFunOTOS.Pose2D(-7.5, 0.5, 180))
+            .linearScalar(1.0)
+            .angularScalar(1.0);
 
     public static AsymMecanumDriveConstants driveC = AsymMecanumDriveConstants.defaults();
 
     public static Follower createFollower(HardwareMap hardwareMap) {
-        AsymMecanumDrive drive = new AsymMecanumDrive(hardwareMap, driveC);
+        AsymMecanumDrive asymDrive = new AsymMecanumDrive(hardwareMap, driveC);
 
         return new FollowerBuilder(followerConstants, hardwareMap)
+                .setDrivetrain(asymDrive)
                 .pathConstraints(pathConstraints)
-                .mecanumDrivetrain(driveConstants)
-                .driveEncoderLocalizer(DElocalizerConstants)
-//                .OTOSLocalizer(OTlocalizerConstants)
+//                .mecanumDrivetrain(driveConstants)
+//                .driveEncoderLocalizer(DElocalizerConstants)
+                .OTOSLocalizer(OTlocalizerConstants)
                 .build();
     }
 

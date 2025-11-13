@@ -85,17 +85,31 @@ public class AsymMecanumDrive extends Drivetrain {
         // Vector constructor takes (magnitude, theta) where theta is in radians
         vectors = new Vector[4];
 
+        //
+
+//        // Left front: 45° (northeast direction)
+//        vectors[0] = new Vector(1.0, Math.PI / 4);
+//
+//        // Left rear: 135° (northwest direction)
+//        vectors[1] = new Vector(1.0, 3 * Math.PI / 4);
+//
+//        // Right front: -45° or 315° (southeast direction)
+//        vectors[2] = new Vector(1.0, -Math.PI / 4);
+//
+//        // Right rear: -135° or 225° (southwest direction)
+//        vectors[3] = new Vector(1.0, -3 * Math.PI / 4);
+
         // Left front: 45° (northeast direction)
-        vectors[0] = new Vector(1.0, Math.PI / 4);
+        vectors[0] = new Vector(1.0, Math.toRadians(45));
 
         // Left rear: 135° (northwest direction)
-        vectors[1] = new Vector(1.0, 3 * Math.PI / 4);
+        vectors[1] = new Vector(1.0, Math.toRadians(135));
 
         // Right front: -45° or 315° (southeast direction)
-        vectors[2] = new Vector(1.0, -Math.PI / 4);
+        vectors[2] = new Vector(1.0, Math.toRadians(315));
 
         // Right rear: -135° or 225° (southwest direction)
-        vectors[3] = new Vector(1.0, -3 * Math.PI / 4);
+        vectors[3] = new Vector(1.0, Math.toRadians(225));
     }
 
     @Override

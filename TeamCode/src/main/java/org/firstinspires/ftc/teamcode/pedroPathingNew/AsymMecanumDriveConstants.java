@@ -111,12 +111,12 @@ public class AsymMecanumDriveConstants {
 
         // === GEOMETRY (meters) ===
         // MEASURE YOUR ROBOT! These are example values.
-        double halfLengthX = 0.18;      // Half of front-to-rear wheelbase (36cm wheelbase ÷ 2)
-        double halfWidthFront = 0.15;   // Half of front track width (30cm track ÷ 2)
-        double halfWidthRear = 0.22;    // Half of rear track width (44cm track ÷ 2)
+        double halfLengthX =    0.17375;      // Half of front-to-rear wheelbase (36cm wheelbase ÷ 2)
+        double halfWidthFront = 0.1933575;   // Half of front track width (30cm track ÷ 2)
+        double halfWidthRear =  0.102235;    // Half of rear track width (44cm track ÷ 2)
 
         // === WHEEL SPECIFICATIONS ===
-        double wheelRadiusMeters = 0.0508;  // 4 inch wheels = 0.0508m radius
+        double wheelRadiusMeters = 0.0381;  // 4 inch wheels = 0.0508m radius
 
         // === CONTROL PARAMETERS ===
         double maxPower = 1.0;              // Full power (reduce if too aggressive)
