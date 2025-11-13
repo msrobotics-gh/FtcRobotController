@@ -6,6 +6,7 @@ import com.pedropathing.geometry.Pose;
 import com.pedropathing.paths.PathChain;
 import com.pedropathing.follower.Follower;
 
+import org.firstinspires.ftc.robotcore.external.Const;
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.teamcode.pedroPathing.Constants;
 
@@ -31,7 +32,7 @@ public class Auto implements Subsystem {
 
     private Auto() {
         final Pose start = new Pose(72, 72, Math.toRadians(90));
-        final Pose enddd = new Pose(72, 144, Math.toRadians(90));
+        final Pose enddd = new Pose(72, 72 + Constants.AutonDistance, Math.toRadians(90));
 
         follower().setStartingPose(start);
 //        final PathChain pathOne;
@@ -44,8 +45,8 @@ public class Auto implements Subsystem {
     }
 
     public Command follow = new FollowPath(pathOne, true);
-    public Command turnBlu = new TurnTo(Angle.fromDeg(122));
-    public Command turnRed = new TurnTo(Angle.fromDeg(60));
+    public Command turnBlu = new TurnTo(Angle.fromDeg(Constants.blueDegrees));
+    public Command turnRed = new TurnTo(Angle.fromDeg(Constants.redDegrees));
 
 
     @Override
