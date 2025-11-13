@@ -14,6 +14,8 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
+import org.firstinspires.ftc.teamcode.pedroPathingNew.AsymMecanumDrive;
+import org.firstinspires.ftc.teamcode.pedroPathingNew.AsymMecanumDriveConstants;
 
 //import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 //import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
@@ -44,11 +46,15 @@ public class Constants {
             .hardwareMapName("otos")
             .linearUnit(DistanceUnit.INCH)
             .angleUnit(AngleUnit.DEGREES)
-            .offset(new SparkFunOTOS.Pose2D(-7.5, 0.5, 180.0))
+            .offset(new SparkFunOTOS.Pose2D(-7.5, 0.5, Math.toRadians(180)))
             .linearScalar(142.68123428571312)
             .angularScalar(0.01750454656217);
 
+    public static AsymMecanumDriveConstants driveC = AsymMecanumDriveConstants.defaults();
+
     public static Follower createFollower(HardwareMap hardwareMap) {
+        AsymMecanumDrive drive = new AsymMecanumDrive(hardwareMap, driveC);
+
         return new FollowerBuilder(followerConstants, hardwareMap)
                 .pathConstraints(pathConstraints)
                 .mecanumDrivetrain(driveConstants)
