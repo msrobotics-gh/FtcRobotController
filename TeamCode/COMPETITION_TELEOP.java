@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode;
+package org.firstinspires.ftc.teamcode.Mechanisms;
 
 import static com.qualcomm.robotcore.util.Range.*;
 
@@ -7,9 +7,9 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
-@TeleOp(name="Drivenations", group="Linear OpMode")
-public class Teleop1 extends LinearOpMode {
-
+@TeleOp(name="Drivenations(COMP_CODE)", group="Linear OpMode")
+public class Drivenations_FINAL_COMP_CODE extends LinearOpMode {
+//HAS SLOW MODE FOR ENDGAME (Doesn't work)
 
     // Declare OpMode members.
 
@@ -146,7 +146,7 @@ public class Teleop1 extends LinearOpMode {
             move = 0;
             if (drive == true) {
                 move = 1 * speed;
-            } 
+            }
             else {
                 move = 0;
             }
@@ -163,7 +163,7 @@ public class Teleop1 extends LinearOpMode {
 
 
             // Send calculated power to wheels
-          //  upp.setPower(gamepad2.right_stick_y*speed);
+            //  upp.setPower(gamepad2.right_stick_y*speed);
             if(gamepad2.a){
                 speed=1;
             } else if (gamepad2.b) {
@@ -174,7 +174,25 @@ public class Teleop1 extends LinearOpMode {
                 speed = 0.25;
             }
             else if (gamepad2.right_bumper) {
-            
+
+            }
+            if (gamepad1.b) {
+                drive2 = 0.4;
+                strafe = 0.4;
+                turn1 = 0.4;
+                leftPower = 0.4;
+                rightPower = 0.4;
+                strafeLeftPower = 0.4;
+                strafeRightPower = 0.4;
+
+            } else if (gamepad1.a) {
+                drive2 = 1;
+                strafe = 1;
+                turn1 = 1;
+                leftPower = 1;
+                rightPower = 1;
+                strafeLeftPower = 1;
+                strafeRightPower = 1;
             }
 
             // Show the elapsed game time and wheel power.
