@@ -28,7 +28,7 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 
 public class Auto implements Subsystem {
     public static final Auto INSTANCE = new Auto();
-    private PathChain pathOne;
+    private PathChain pathOne = new PathChain();
 
     private Auto() {
         final Pose start = new Pose(72, 72, Math.toRadians(90));

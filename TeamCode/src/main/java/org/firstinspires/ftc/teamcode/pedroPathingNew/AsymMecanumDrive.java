@@ -74,42 +74,24 @@ public class AsymMecanumDrive extends Drivetrain {
         double halfWidthF = constants.halfWidthFront;
         double halfWidthR = constants.halfWidthRear;
 
-        // Calculate radius (distance from center) for front and rear wheels
-        // Front wheels: sqrt(halfLengthX² + halfWidthFront²)
-        radiusFront = Math.sqrt(halfLength * halfLength + halfWidthF * halfWidthF);
-
-        // Rear wheels: sqrt(halfLengthX² + halfWidthRear²)
-        radiusRear = Math.sqrt(halfLength * halfLength + halfWidthR * halfWidthR);
+        radiusFront = halfLength + halfWidthF;
+        radiusRear = halfLength + halfWidthR;
 
         // Mecanum wheel force vectors (normalized for 45° rollers)
         // Vector constructor takes (magnitude, theta) where theta is in radians
         vectors = new Vector[4];
 
-        //
-
-//        // Left front: 45° (northeast direction)
-//        vectors[0] = new Vector(1.0, Math.PI / 4);
-//
-//        // Left rear: 135° (northwest direction)
-//        vectors[1] = new Vector(1.0, 3 * Math.PI / 4);
-//
-//        // Right front: -45° or 315° (southeast direction)
-//        vectors[2] = new Vector(1.0, -Math.PI / 4);
-//
-//        // Right rear: -135° or 225° (southwest direction)
-//        vectors[3] = new Vector(1.0, -3 * Math.PI / 4);
-
         // Left front: 45° (northeast direction)
-        vectors[0] = new Vector(1.0, Math.toRadians(45));
+        vectors[0] = new Vector(1.0, Math.PI / 4);
 
         // Left rear: 135° (northwest direction)
-        vectors[1] = new Vector(1.0, Math.toRadians(135));
+        vectors[1] = new Vector(1.0, 3 * Math.PI / 4);
 
         // Right front: -45° or 315° (southeast direction)
-        vectors[2] = new Vector(1.0, Math.toRadians(315));
+        vectors[2] = new Vector(1.0, -Math.PI / 4);
 
         // Right rear: -135° or 225° (southwest direction)
-        vectors[3] = new Vector(1.0, Math.toRadians(225));
+        vectors[3] = new Vector(1.0, -3 * Math.PI / 4);
     }
 
     @Override
@@ -140,8 +122,8 @@ public class AsymMecanumDrive extends Drivetrain {
 
         // Find maximum absolute power
         double maxPower = Math.max(
-                Math.max(Math.abs(lfPower), Math.abs(lrPower)),
-                Math.max(Math.abs(rfPower), Math.abs(rrPower))
+            Math.max(Math.abs(lfPower), Math.abs(lrPower)),
+            Math.max(Math.abs(rfPower), Math.abs(rrPower))
         );
 
         // Normalize if any power exceeds 1.0
@@ -170,8 +152,8 @@ public class AsymMecanumDrive extends Drivetrain {
 
             // Re-normalize after voltage compensation
             maxPower = Math.max(
-                    Math.max(Math.abs(lfPower), Math.abs(lrPower)),
-                    Math.max(Math.abs(rfPower), Math.abs(rrPower))
+                Math.max(Math.abs(lfPower), Math.abs(lrPower)),
+                Math.max(Math.abs(rfPower), Math.abs(rrPower))
             );
             if (maxPower > 1.0) {
                 lfPower /= maxPower;
@@ -228,8 +210,8 @@ public class AsymMecanumDrive extends Drivetrain {
     @Override
     public void startTeleopDrive(boolean brakeMode) {
         DcMotor.ZeroPowerBehavior behavior = brakeMode
-                ? DcMotor.ZeroPowerBehavior.BRAKE
-                : DcMotor.ZeroPowerBehavior.FLOAT;
+            ? DcMotor.ZeroPowerBehavior.BRAKE
+            : DcMotor.ZeroPowerBehavior.FLOAT;
 
         leftFront.setZeroPowerBehavior(behavior);
         leftRear.setZeroPowerBehavior(behavior);
@@ -271,9 +253,9 @@ public class AsymMecanumDrive extends Drivetrain {
     @Override
     public String debugString() {
         return String.format(
-                "AsymMecanumDrive[LF:%.2f LR:%.2f RF:%.2f RR:%.2f | V:%.1f/%.1f | xVel:%.2f yVel:%.2f]",
-                leftFront.getPower(), leftRear.getPower(), rightFront.getPower(), rightRear.getPower(),
-                getVoltage(), nominalVoltage, xVelocity, yVelocity
+            "AsymMecanumDrive[LF:%.2f LR:%.2f RF:%.2f RR:%.2f | V:%.1f/%.1f | xVel:%.2f yVel:%.2f]",
+            leftFront.getPower(), leftRear.getPower(), rightFront.getPower(), rightRear.getPower(),
+            getVoltage(), nominalVoltage, xVelocity, yVelocity
         );
     }
 }
