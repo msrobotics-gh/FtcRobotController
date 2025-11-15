@@ -74,8 +74,8 @@ public class AsymMecanumDrive extends Drivetrain {
         double halfWidthF = constants.halfWidthFront;
         double halfWidthR = constants.halfWidthRear;
 
-        radiusFront = halfLength + halfWidthF;
-        radiusRear = halfLength + halfWidthR;
+        radiusFront = Math.sqrt(halfLength * halfLength + halfWidthF * halfWidthF);
+        radiusRear = Math.sqrt(halfLength * halfLength + halfWidthR * halfWidthR);
 
         // Mecanum wheel force vectors (normalized for 45° rollers)
         // Vector constructor takes (magnitude, theta) where theta is in radians
