@@ -30,8 +30,8 @@ public class Constants {
             .linearUnit(DistanceUnit.INCH)
             .angleUnit(AngleUnit.RADIANS)
             .offset(new SparkFunOTOS.Pose2D(-7.5, 0.5, Math.toRadians(90)))
-            .linearScalar(1.0) //tune this
-            .angularScalar(1.0); //tune this
+            .linearScalar(2.325) //tune this
+            .angularScalar(0.9961); //tune this
 
     public static AsymMecanumDriveConstants driveC = AsymMecanumDriveConstants.defaults();
 

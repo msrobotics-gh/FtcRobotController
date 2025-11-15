@@ -16,6 +16,7 @@ import dev.nextftc.control.ControlSystem;
 import dev.nextftc.control.KineticState;
 import dev.nextftc.core.commands.Command;
 import dev.nextftc.core.commands.CommandManager;
+import dev.nextftc.core.commands.utility.InstantCommand;
 import dev.nextftc.core.commands.utility.LambdaCommand;
 import dev.nextftc.core.subsystems.Subsystem;
 import dev.nextftc.ftc.ActiveOpMode;
@@ -34,6 +35,9 @@ public class Lift implements Subsystem {
 
     public static double setPosition2 = -500;
     public static double height;
+
+    public boolean lifted = false;
+
     private Lift() { }
     private ControlSystem controlSystem = ControlSystem.builder()
             .posPid(0.005, 0, 0)
@@ -51,16 +55,19 @@ public class Lift implements Subsystem {
 
     @Override
     public void initialize(){
-        sensorDistance = hardwareMap.get(DistanceSensor.class, "sensor_distance");
+        sensorDistance = ActiveOpMode.hardwareMap().get(DistanceSensor.class, "sensor_distance");
 
         // you can also cast this to a Rev2mDistanceSensor if you want to use added
         // methods associated with the Rev2mDistanceSensor class.
         Rev2mDistanceSensor sensorTimeOfFlight = (Rev2mDistanceSensor) sensorDistance;
+
+        lift_motor.zeroed();
+        lift_motor2.zeroed();
     }
 
     // you can also cast this to a Rev2mDistanceSensor if you want to use added
     // methods associated with the Rev2mDistanceSensor class.
-    Rev2mDistanceSensor sensorTimeOfFlight = (Rev2mDistanceSensor) sensorDistance;
+//    Rev2mDistanceSensor sensorTimeOfFlight = (Rev2mDistanceSensor) sensorDistance;
     private void buildControllers(){
         controlSystem = ControlSystem.builder()
                 .posPid(0.005, 0, 0)
@@ -83,20 +90,56 @@ public class Lift implements Subsystem {
     public  Command stop = new SetPower(lift_motor,0);
     public  Command stop2 = new SetPower(lift_motor2,0);
 
-    public  Command toPos = new LambdaCommand()
+    public  Command liftHigh = new LambdaCommand()
             .setStart(() -> {
                 buildControllers();
+                lifted = true;
             })
             .setIsDone(() -> true);
+
+//    public Command liftHigh = new InstantCommand(() -> {
+//        controlSystem.setGoal(new KineticState(setPosition1));
+//        controlSystem2.setGoal(new KineticState(setPosition2));
+//        buildControllers();
+//    });
+
+    public  Command liftLow = new LambdaCommand()
+            .setStart(() -> {
+                buildControllers();
+                lifted = false;
+            })
+            .setIsDone(() -> true);
+//    public Command liftLow = new InstantCommand(() -> {
+//        controlSystem.setGoal(new KineticState(0));
+//        controlSystem2.setGoal(new KineticState(0));
+//        buildControllers();
+//    });
 
     @Override
     public void periodic() {
 
-        controlSystem.setGoal(new KineticState(setPosition1));
-        controlSystem2.setGoal(new KineticState(setPosition2));
+
         liftPosition1 = lift_motor.getCurrentPosition();
         liftPosition2 = lift_motor2.getCurrentPosition();
         TelemetryPacket packet = new TelemetryPacket();
+
+        if (lifted) {
+            controlSystem.setGoal(new KineticState(setPosition1));
+            controlSystem2.setGoal(new KineticState(setPosition2));
+        } else {
+            controlSystem.setGoal(new KineticState(0));
+            controlSystem2.setGoal(new KineticState(0));
+
+        }
+
+        if (ActiveOpMode.opModeIsActive() && (!(sensorDistance.getDistance(DistanceUnit.INCH) > 12))){ //  && (setPosition1 == 0) && (setPosition2 == 0)
+            lift_motor.setPower(controlSystem.calculate(lift_motor.getState()));
+            lift_motor2.setPower(controlSystem2.calculate(lift_motor2.getState()));
+        }
+        else {
+            lift_motor.setPower(0);
+            lift_motor2.setPower(0);
+        }
 
         packet.put("sensor_distance", sensorDistance.getDeviceName() );
         packet.put("range", String.format("%.01f in", sensorDistance.getDistance(DistanceUnit.INCH)));
@@ -110,7 +153,6 @@ public class Lift implements Subsystem {
 
 
         FtcDashboard.getInstance().sendTelemetryPacket(packet);
-        lift_motor.setPower(controlSystem.calculate(lift_motor.getState()));
-        lift_motor2.setPower(controlSystem2.calculate(lift_motor2.getState()));
+
     }
 }

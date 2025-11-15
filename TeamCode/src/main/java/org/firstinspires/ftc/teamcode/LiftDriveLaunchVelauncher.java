@@ -99,7 +99,7 @@ public class LiftDriveLaunchVelauncher extends NextFTCOpMode {
 //                        CommandManager.INSTANCE.scheduleCommand(Lift.INSTANCE.toHigh);
 //                    }
 //                }));
-                .whenBecomesTrue(Lift.INSTANCE.toHigh);
+                .whenBecomesTrue(Lift.INSTANCE.liftHigh);
 
         Gamepads.gamepad1().a()
                 .whenBecomesTrue(setHalfSpeed);
@@ -107,7 +107,7 @@ public class LiftDriveLaunchVelauncher extends NextFTCOpMode {
                 .whenBecomesTrue(setFullSpeed);
 
         Gamepads.gamepad2().dpadDown()
-                .whenBecomesTrue(Lift.INSTANCE.toLow);
+                .whenBecomesTrue(Lift.INSTANCE.liftLow);
 
         Gamepads.gamepad2().leftBumper()
                 .whenTrue(Velauncher.INSTANCE.velaunch)

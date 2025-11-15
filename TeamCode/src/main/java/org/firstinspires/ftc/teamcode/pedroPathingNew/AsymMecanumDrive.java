@@ -115,10 +115,10 @@ public class AsymMecanumDrive extends Drivetrain {
         // Calculate wheel powers using asymmetric mecanum kinematics
         // Scale turning by distance from center (moment arm) for each wheel
         // Front wheels use radiusFront, rear wheels use radiusRear
-        double lfPower = xRobot + yRobot + turn * radiusFront;
-        double lrPower = xRobot - yRobot + turn * radiusRear;
-        double rfPower = xRobot - yRobot - turn * radiusFront;
-        double rrPower = xRobot + yRobot - turn * radiusRear;
+        double lfPower = xRobot - yRobot + turn * radiusFront;
+        double lrPower = xRobot + yRobot + turn * radiusRear;
+        double rfPower = xRobot + yRobot - turn * radiusFront;
+        double rrPower = xRobot - yRobot - turn * radiusRear;
 
         // Find maximum absolute power
         double maxPower = Math.max(
