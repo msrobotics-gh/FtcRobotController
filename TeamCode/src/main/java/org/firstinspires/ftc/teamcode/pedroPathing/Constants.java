@@ -19,7 +19,7 @@ public class Constants {
     public static double redDegrees  = 60.0;
     public static int AutonDistance = 72;
     public static FollowerConstants followerConstants = new FollowerConstants()
-            .mass(11.3);
+            .mass(12);
 
     public static PathConstraints pathConstraints = new PathConstraints(
             0.99, 100, 1, 1
@@ -29,7 +29,7 @@ public class Constants {
             .hardwareMapName("otos")
             .linearUnit(DistanceUnit.INCH)
             .angleUnit(AngleUnit.RADIANS)
-            .offset(new SparkFunOTOS.Pose2D(-7.5, 0.5, Math.toRadians(180)))
+            .offset(new SparkFunOTOS.Pose2D(-7.5, 0.5, Math.toRadians(90)))
             .linearScalar(1.0) //tune this
             .angularScalar(1.0); //tune this
 
