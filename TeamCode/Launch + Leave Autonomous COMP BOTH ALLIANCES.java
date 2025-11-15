@@ -69,8 +69,8 @@ public class RandomAuton extends LinearOpMode {
         if (opModeIsActive()) {
 
 
-            setDrivePower(0.8, 0.8, 0.8, 0.8);
-            sleep(810);
+            setDrivePower(0.5, 0.5, 0.5, 0.5);
+            sleep(1625);
             stopDrive();
 
 
@@ -79,34 +79,21 @@ public class RandomAuton extends LinearOpMode {
 
             double launchPower = 1;
 
-            upDrive.setPower(-0.85);
+            upDrive.setPower(-1);
             downDrive.setPower(launchPower);
 
 
-            sleep(1000);
+            sleep(1200);
 
 
             leftIntake.setPower(1.0);
             rightIntake.setPower(1.0);
-            sleep(670);
-            leftIntake.setPower(0);
-            rightIntake.setPower(0);
-            sleep(670);
+            sleep(1100);
+            leftIntake.setPower(1);
+            rightIntake.setPower(1);
+            sleep(1100);
             leftIntake.setPower(1.0);
             rightIntake.setPower(1.0);
-            sleep(670);
-            leftIntake.setPower(0);
-            rightIntake.setPower(0);
-            sleep(670);
-            leftIntake.setPower(1.0);
-            rightIntake.setPower(1.0);
-            sleep(670);
-            leftIntake.setPower(0);
-            rightIntake.setPower(0);
-            sleep(670);
-            rightIntake.setPower(1.0);
-
-
             sleep(1000);
 ;
 
@@ -116,11 +103,14 @@ public class RandomAuton extends LinearOpMode {
             downDrive.setPower(0);
             stopDrive();
 
-            setDrivePower(0.75, 0.75, 0.75, 0.75);
-            sleep(500);
+            setDrivePower(0, -0.75, 0.75, -0.75);
+            sleep(700);
+            setDrivePower(0, -0.75, 0.75, -0.75);
+            sleep(750);
             stopDrive();
             telemetry.addData("Status", "Autonomous Complete");
             telemetry.update();
+
         }
     }
 
