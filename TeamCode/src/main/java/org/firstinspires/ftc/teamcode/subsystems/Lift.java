@@ -1,10 +1,16 @@
 package org.firstinspires.ftc.teamcode.subsystems;
 
+import static org.firstinspires.ftc.robotcore.external.BlocksOpModeCompanion.hardwareMap;
+
 import com.acmerobotics.dashboard.FtcDashboard;
 import com.acmerobotics.dashboard.config.Config;
 import com.acmerobotics.dashboard.telemetry.TelemetryPacket;
+import com.qualcomm.hardware.rev.Rev2mDistanceSensor;
+import com.qualcomm.robotcore.hardware.DistanceSensor;
+import com.qualcomm.robotcore.hardware.HardwareMap;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
+import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 
 import dev.nextftc.control.ControlSystem;
 import dev.nextftc.control.KineticState;
@@ -40,6 +46,21 @@ public class Lift implements Subsystem {
     private MotorEx lift_motor = new MotorEx("lift_motor");
 
     private MotorEx lift_motor2 = new MotorEx("lift_motor2");
+
+    private DistanceSensor sensorDistance;
+
+    @Override
+    public void initialize(){
+        sensorDistance = hardwareMap.get(DistanceSensor.class, "sensor_distance");
+
+        // you can also cast this to a Rev2mDistanceSensor if you want to use added
+        // methods associated with the Rev2mDistanceSensor class.
+        Rev2mDistanceSensor sensorTimeOfFlight = (Rev2mDistanceSensor) sensorDistance;
+    }
+
+    // you can also cast this to a Rev2mDistanceSensor if you want to use added
+    // methods associated with the Rev2mDistanceSensor class.
+    Rev2mDistanceSensor sensorTimeOfFlight = (Rev2mDistanceSensor) sensorDistance;
     private void buildControllers(){
         controlSystem = ControlSystem.builder()
                 .posPid(0.005, 0, 0)
@@ -70,11 +91,15 @@ public class Lift implements Subsystem {
 
     @Override
     public void periodic() {
+
         controlSystem.setGoal(new KineticState(setPosition1));
         controlSystem2.setGoal(new KineticState(setPosition2));
         liftPosition1 = lift_motor.getCurrentPosition();
         liftPosition2 = lift_motor2.getCurrentPosition();
         TelemetryPacket packet = new TelemetryPacket();
+
+        packet.put("sensor_distance", sensorDistance.getDeviceName() );
+        packet.put("range", String.format("%.01f in", sensorDistance.getDistance(DistanceUnit.INCH)));
 
         // Main measurements
         packet.put("lift pos 1", liftPosition1);
