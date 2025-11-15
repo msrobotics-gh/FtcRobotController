@@ -25,7 +25,7 @@ import dev.nextftc.hardware.impl.Direction;
 import dev.nextftc.hardware.impl.IMUEx;
 import dev.nextftc.hardware.impl.MotorEx;
 
-@TeleOp(name = "Velocity Lift Drive Launch")
+@TeleOp(name = "Lift Run Test")
 @Config
 public class testThingyy extends NextFTCOpMode {
     public testThingyy() {
@@ -59,23 +59,11 @@ public class testThingyy extends NextFTCOpMode {
 
 
         Gamepads.gamepad2().dpadUp()
-                .whenBecomesTrue(new InstantCommand(()-> {
-                    startTime = getRuntime();
-                }))
-                .whenTrue(new InstantCommand(()-> {
-                    double curTime = getRuntime();
-                        if (curTime - startTime > 5) {
-                            CommandManager.INSTANCE.scheduleCommand(Lift.INSTANCE.toHigh);
-                        }
-                }));
+                .whenBecomesTrue(Lift.INSTANCE.toPos)
+                .whenBecomesTrue(Lift.INSTANCE.toPos2)
+                .whenBecomesFalse(Lift.INSTANCE.stop)
+                .whenBecomesFalse(Lift.INSTANCE.stop2);
 
-        Gamepads.gamepad2().dpadDown()
-                .whenBecomesTrue(Lift.INSTANCE.toLow);
 
-        for (String message : CommandManager.INSTANCE.snapshot()
-             ) {
-            telemetry.addLine(message);
         }
-        telemetry.update();
     }
-}

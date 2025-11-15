@@ -197,8 +197,8 @@ public class Velauncher implements Subsystem {
     public static int VOLTAGE_COMP_REBUILD_CYCLES = 50; // Rebuild controllers every N cycles to update voltage compensation
 
     // === Feedforward Gains (Nominal - tuned at NOMINAL_VOLTAGE) ===
-    public static double kV_UPPER_NOMINAL = 0.0003475;
-    public static double kV_LOWER_NOMINAL = 0.00036;
+    public static double kV_UPPER_NOMINAL = 0.0003587;
+    public static double kV_LOWER_NOMINAL = 0.00038;
 
     // === TPR (Ticks Per Revolution) ===
     public static double TPR_UPPER = 28; // ticks per output revolution (upper motor)
