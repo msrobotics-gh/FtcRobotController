@@ -12,6 +12,7 @@ import org.firstinspires.ftc.teamcode.subsystems.Velauncher;
 //import java.time.Duration;
 
 import dev.nextftc.core.commands.delays.Delay;
+import dev.nextftc.core.commands.groups.ParallelGroup;
 import dev.nextftc.core.commands.groups.SequentialGroup;
 import dev.nextftc.core.components.SubsystemComponent;
 import dev.nextftc.extensions.pedro.PedroComponent;
@@ -41,7 +42,8 @@ public class DriveLaunchBlue extends NextFTCOpMode {
 
     @Override
     public void onInit() {
-//        commandChain =
+        telemetry.addLine("BLUE ALLIANCE AUTONOMOUS");
+        telemetry.update();
     }
 
     @Override
@@ -67,24 +69,32 @@ public class DriveLaunchBlue extends NextFTCOpMode {
 //        Auto.INSTANCE.follow.schedule();
 
         new SequentialGroup(
-                Auto.INSTANCE.turnBlu, // to 60 for red; 122 for blue
-                new Delay(Constants.AutonDelay),
+//                Auto.INSTANCE.turnBlu, // to 60 for red; 122 for blue
+//                new Delay(Constants.AutonDelay),
                 Velauncher.INSTANCE.velaunch,
                 new Delay(Constants.AutonDelay),
                 FlywheelGate.INSTANCE.open(),
 
-                Intake.INSTANCE.intake, // ball one
-                Intake.INSTANCE.intakesecond,
+                new ParallelGroup(
+                        Intake.INSTANCE.intake, // ball one
+                        Intake.INSTANCE.intakesecond
+                ),
                 new Delay(Constants.AutonDelay),
-                Intake.INSTANCE.intakeoff,
-                Intake.INSTANCE.intakeoff2,
+                new ParallelGroup(
+                        Intake.INSTANCE.intakeoff, // ball one
+                        Intake.INSTANCE.intakeoff2
+                ),
                 new Delay(Constants.AutonDelay),
 
-                Intake.INSTANCE.intake, // ball two
-                Intake.INSTANCE.intakesecond,
+                new ParallelGroup(
+                        Intake.INSTANCE.intake, // ball one
+                        Intake.INSTANCE.intakesecond
+                ),
                 new Delay(Constants.AutonDelay),
-                Intake.INSTANCE.intakeoff,
-                Intake.INSTANCE.intakeoff2,
+                new ParallelGroup(
+                        Intake.INSTANCE.intakeoff, // ball one
+                        Intake.INSTANCE.intakeoff2
+                ),
                 new Delay(Constants.AutonDelay),
 
 //                Intake.INSTANCE.intake, // ball three
@@ -94,10 +104,12 @@ public class DriveLaunchBlue extends NextFTCOpMode {
 //                Intake.INSTANCE.intakeoff2,
 //                new Delay(Constants.AutonDelay),
 
-                FlywheelGate.INSTANCE.close(),
-                Velauncher.INSTANCE.unvelaunch,
+                new ParallelGroup(
+                        FlywheelGate.INSTANCE.close(),
+                        Velauncher.INSTANCE.unvelaunch
+                ),
                 Auto.INSTANCE.follow
-        ).schedule();
+        ).invoke();
 
     }
 }
