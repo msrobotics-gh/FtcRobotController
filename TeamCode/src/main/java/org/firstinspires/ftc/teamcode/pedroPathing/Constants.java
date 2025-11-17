@@ -14,12 +14,14 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 
 public class Constants {
     public static double AutonDelay = 0.5;
-
     public static double blueDegrees = 122.0;
     public static double redDegrees  = 60.0;
     public static int AutonDistance = 72;
+
     public static FollowerConstants followerConstants = new FollowerConstants()
             .mass(12);
+//            .forwardZeroPowerAcceleration()
+//            .lateralZeroPowerAcceleration();
 
     public static PathConstraints pathConstraints = new PathConstraints(
             0.99, 100, 1, 1

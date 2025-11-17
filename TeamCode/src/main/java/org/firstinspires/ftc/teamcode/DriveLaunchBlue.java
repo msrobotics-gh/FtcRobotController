@@ -44,31 +44,9 @@ public class DriveLaunchBlue extends NextFTCOpMode {
     public void onInit() {
         telemetry.addLine("BLUE ALLIANCE AUTONOMOUS");
         telemetry.update();
-    }
 
-    @Override
-    public void onStartButtonPressed() {
-        telemetry.addLine("BLUE ALLIANCE AUTONOMOUS");
-        telemetry.update();
 
-//        Auto.INSTANCE.turnBlu.schedule(); // to 60 for red; 122 for blue
-//        new Delay(0.5).schedule();
-//        Velauncher.INSTANCE.velaunch.schedule();
-//        new Delay(0.5).schedule();
-//        FlywheelGate.INSTANCE.open().schedule();
-//        for (int i=0; i<3; i++){ // thrice - each ball
-//            Intake.INSTANCE.intake.schedule();
-//            Intake.INSTANCE.intakesecond.schedule();
-//            new Delay(0.5).schedule();
-//            Intake.INSTANCE.intakeoff.schedule();
-//            Intake.INSTANCE.intakeoff2.schedule();
-//            new Delay(0.5).schedule();
-//        }
-//        FlywheelGate.INSTANCE.close().schedule();
-//        Velauncher.INSTANCE.unvelaunch.schedule();
-//        Auto.INSTANCE.follow.schedule();
-
-        new SequentialGroup(
+        commandChain = new SequentialGroup(
 //                Auto.INSTANCE.turnBlu, // to 60 for red; 122 for blue
 //                new Delay(Constants.AutonDelay),
                 Velauncher.INSTANCE.velaunch,
@@ -109,7 +87,32 @@ public class DriveLaunchBlue extends NextFTCOpMode {
                         Velauncher.INSTANCE.unvelaunch
                 ),
                 Auto.INSTANCE.follow
-        ).invoke();
+        );
+    }
+
+    @Override
+    public void onStartButtonPressed() {
+        telemetry.addLine("BLUE ALLIANCE AUTONOMOUS");
+        telemetry.update();
+
+//        Auto.INSTANCE.turnBlu.schedule(); // to 60 for red; 122 for blue
+//        new Delay(0.5).schedule();
+//        Velauncher.INSTANCE.velaunch.schedule();
+//        new Delay(0.5).schedule();
+//        FlywheelGate.INSTANCE.open().schedule();
+//        for (int i=0; i<3; i++){ // thrice - each ball
+//            Intake.INSTANCE.intake.schedule();
+//            Intake.INSTANCE.intakesecond.schedule();
+//            new Delay(0.5).schedule();
+//            Intake.INSTANCE.intakeoff.schedule();
+//            Intake.INSTANCE.intakeoff2.schedule();
+//            new Delay(0.5).schedule();
+//        }
+//        FlywheelGate.INSTANCE.close().schedule();
+//        Velauncher.INSTANCE.unvelaunch.schedule();
+//        Auto.INSTANCE.follow.schedule();
+
+        commandChain.invoke();
 
     }
 }
