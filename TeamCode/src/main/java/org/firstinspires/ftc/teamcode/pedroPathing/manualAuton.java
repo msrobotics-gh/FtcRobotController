@@ -7,6 +7,7 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
 import org.firstinspires.ftc.teamcode.subsystems.Auto;
 
+import dev.nextftc.core.components.SubsystemComponent;
 import dev.nextftc.extensions.pedro.PedroComponent;
 import dev.nextftc.ftc.Gamepads;
 import dev.nextftc.ftc.NextFTCOpMode;
@@ -16,7 +17,8 @@ import dev.nextftc.ftc.NextFTCOpMode;
 public class manualAuton extends NextFTCOpMode {
     public manualAuton() {
         addComponents(
-                new PedroComponent(Constants::createFollower)
+                new PedroComponent(Constants::createFollower),
+                new SubsystemComponent(Auto.INSTANCE)
         );
     }
 

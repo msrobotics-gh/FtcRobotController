@@ -17,7 +17,7 @@ import dev.nextftc.core.components.SubsystemComponent;
 import dev.nextftc.extensions.pedro.PedroComponent;
 import dev.nextftc.ftc.NextFTCOpMode;
 
-@Autonomous(name = "AUTON RED ALLIANCE", group = "Autonomous")
+@Autonomous(name = "DONT RUN - AUTON RED ALLIANCE", group = "Autonomous")
 @Config
 public class DriveLaunchRed extends NextFTCOpMode {
     public DriveLaunchRed() {
