@@ -112,7 +112,7 @@ public class DriveLaunchBlue extends NextFTCOpMode {
 //        Velauncher.INSTANCE.unvelaunch.schedule();
 //        Auto.INSTANCE.follow.schedule();
 
-        commandChain.invoke();
+        commandChain.schedule();
 
     }
 }
