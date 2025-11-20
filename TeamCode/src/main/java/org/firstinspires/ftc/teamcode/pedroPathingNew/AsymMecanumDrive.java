@@ -64,7 +64,7 @@ public class AsymMecanumDrive extends Drivetrain {
      * Calculates the moment arm (distance from robot center) for each wheel.
      * These distances are used to properly scale turning contributions in asymmetric mecanum.
      */
-    private double radiusFront, radiusRear;
+    private double turnScaleFront, turnScaleRear;
 
     private void calculateMovementVectors() {
         // For asymmetric mecanum, calculate the distance from each wheel to the robot center
@@ -74,8 +74,12 @@ public class AsymMecanumDrive extends Drivetrain {
         double halfWidthF = constants.halfWidthFront;
         double halfWidthR = constants.halfWidthRear;
 
-        radiusFront = Math.sqrt(halfLength * halfLength + halfWidthF * halfWidthF);
-        radiusRear = Math.sqrt(halfLength * halfLength + halfWidthR * halfWidthR);
+        double radiusFront = Math.sqrt(halfLength * halfLength + halfWidthF * halfWidthF);
+        double radiusRear = Math.sqrt(halfLength * halfLength + halfWidthR * halfWidthR);
+
+        double avgRadius = (radiusFront + radiusRear) / 2.0;
+        turnScaleFront = avgRadius / radiusFront;
+        turnScaleRear = avgRadius / radiusRear;
 
         // Mecanum wheel force vectors (normalized for 45° rollers)
         // Vector constructor takes (magnitude, theta) where theta is in radians
@@ -116,14 +120,14 @@ public class AsymMecanumDrive extends Drivetrain {
         // Scale turning by distance from center (moment arm) for each wheel
         // Front wheels use radiusFront, rear wheels use radiusRear
         // For asymetric drivetrain, need to account for different track widths
-        // Wider wheels need more power for the same lateral velocity contribution
-        double strafeScaleFront = constants.halfWidthFront / constants.halfWidthRear;
+        // Wider wheels need less power for the same lateral velocity contribution
+        double strafeScaleFront =  constants.halfWidthRear / constants.halfWidthFront;
         double strafeScaleRear = 1.0;
 
-        double lfPower = xRobot - yRobot * strafeScaleFront + turn * radiusFront;
-        double lrPower = xRobot + yRobot * strafeScaleRear + turn * radiusRear;
-        double rfPower = xRobot + yRobot * strafeScaleFront - turn * radiusFront;
-        double rrPower = xRobot - yRobot *strafeScaleRear - turn * radiusRear;
+        double lfPower = xRobot - yRobot * strafeScaleFront + turn * turnScaleFront;
+        double lrPower = xRobot + yRobot * strafeScaleRear + turn * turnScaleRear;
+        double rfPower = xRobot + yRobot * strafeScaleFront - turn * turnScaleFront;
+        double rrPower = xRobot - yRobot *strafeScaleRear - turn * turnScaleRear;
 
         // Find maximum absolute power
         double maxPower = Math.max(

@@ -2,6 +2,8 @@ package org.firstinspires.ftc.teamcode;
 
 import static dev.nextftc.extensions.pedro.PedroComponent.follower;
 
+import com.acmerobotics.dashboard.FtcDashboard;
+import com.acmerobotics.dashboard.telemetry.TelemetryPacket;
 import com.pedropathing.geometry.BezierLine;
 import com.pedropathing.geometry.Pose;
 import com.pedropathing.paths.PathChain;
@@ -33,12 +35,13 @@ public class TestAuton extends NextFTCOpMode {
     @Override
     public void onStartButtonPressed() {
         final Pose start = new Pose(0, 0, Math.toRadians(90));
-        final Pose enddd = new Pose(24, 0, Math.toRadians(90));
+        final Pose enddd = new Pose(0, 6, Math.toRadians(90));
         PedroComponent.follower().setStartingPose(start);
 //        final PathChain pathOne;
         pathOne = PedroComponent.follower().pathBuilder()
                 .addPath(new BezierLine(start, enddd))
                 .setLinearHeadingInterpolation(start.getHeading(), enddd.getHeading())
+                .setVelocityConstraint(5)
                 //.setConstantHeadingInterpolation(90.0)
                 .build();
         Command pathGo = new FollowPath(pathOne);
@@ -50,5 +53,16 @@ public class TestAuton extends NextFTCOpMode {
         //Intake.INSTANCE.intake.schedule();
         //Intake.INSTANCE.intakesecond.schedule();
 
+    }
+
+    @Override
+    public void onUpdate() {
+        TelemetryPacket packet = new TelemetryPacket();
+
+        // Main measurements
+        packet.put("robot x", PedroComponent.follower().getPose().getX());
+        packet.put("robot y", PedroComponent.follower().getPose().getY());
+
+        FtcDashboard.getInstance().sendTelemetryPacket(packet);
     }
 }
