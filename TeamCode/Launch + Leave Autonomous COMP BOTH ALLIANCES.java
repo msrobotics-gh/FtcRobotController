@@ -3,11 +3,10 @@ package org.firstinspires.ftc.teamcode.Mechanisms;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 @Autonomous(name="Autonomous - Drive + Launch", group="Linear OpMode")
-public class RandomAuton extends LinearOpMode {
+public class ChelseaWeHaveYourClipBoard extends LinearOpMode {
 
     // Drive Motors
     private DcMotor leftDrive = null;
