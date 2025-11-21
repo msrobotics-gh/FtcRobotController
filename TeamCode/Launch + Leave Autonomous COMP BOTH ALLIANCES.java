@@ -6,7 +6,7 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 @Autonomous(name="Autonomous - Drive + Launch", group="Linear OpMode")
-public class ChelseaWeHaveYourClipBoard extends LinearOpMode {
+public class Auton extends LinearOpMode {
 
     // Drive Motors
     private DcMotor leftDrive = null;
