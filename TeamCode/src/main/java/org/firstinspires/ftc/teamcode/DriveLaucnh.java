@@ -71,21 +71,22 @@ public class DriveLaucnh extends NextFTCOpMode {
 
 
         new SequentialGroup(
-//                Auto.INSTANCE.turnBlu, // to 60 for red; 122 for blue
-//                new Delay(Constants.AutonDelay),
-            Velauncher.INSTANCE.velaunch,
-            new InstantCommand(()->{
-                TelemetryPacket packet = new TelemetryPacket();
-                packet.put("STATUS", "LAUNCH ON");
-                FtcDashboard.getInstance().sendTelemetryPacket(packet);
-            }),
+                FlywheelGate.INSTANCE.open(),
+                new InstantCommand(()->{
+                    TelemetryPacket packet = new TelemetryPacket();
+                    packet.put("STATUS", "GATE ON");
+                    FtcDashboard.getInstance().sendTelemetryPacket(packet);
+                })
+////                Auto.INSTANCE.turnBlu, // to 60 for red; 122 for blue
+////                new Delay(Constants.AutonDelay),
+//            Velauncher.INSTANCE.velaunch,
+//            new InstantCommand(()->{
+//                TelemetryPacket packet = new TelemetryPacket();
+//                packet.put("STATUS", "LAUNCH ON");
+//                FtcDashboard.getInstance().sendTelemetryPacket(packet);
+//            }),
 //            new Delay(Constants.AutonDelay),
-            FlywheelGate.INSTANCE.open(),
-            new InstantCommand(()->{
-                TelemetryPacket packet = new TelemetryPacket();
-                packet.put("STATUS", "GATE ON");
-                FtcDashboard.getInstance().sendTelemetryPacket(packet);
-            })
+
 //                tele,
 //
 //                new ParallelGroup(

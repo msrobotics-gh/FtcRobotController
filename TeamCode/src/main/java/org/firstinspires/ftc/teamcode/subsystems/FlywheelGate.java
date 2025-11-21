@@ -26,8 +26,8 @@ public class FlywheelGate implements Subsystem {
 
 
     public Command open() {
-        ActiveOpMode.telemetry().addLine("Opening");
-        ActiveOpMode.telemetry().update();
+//        ActiveOpMode.telemetry().addLine("Opening");
+//        ActiveOpMode.telemetry().update();
         return new SetPosition(gateServoEx, // SERVO TO MOVE
                 0.0); // IMPLEMENTED SUBSYSTEM
     }
