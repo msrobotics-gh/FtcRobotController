@@ -19,7 +19,13 @@ public class Constants {
     public static int AutonDistance = 72;
 
     public static FollowerConstants followerConstants = new FollowerConstants()
-            .mass(12);
+            .mass(12)
+            // Heading PID tuning for asymmetric mecanum
+            // Reduced from defaults to prevent oscillation and sticking
+            // Default was: Primary P=1.0, Secondary P=5.0 (too aggressive!)
+            .headingPIDF(0.5, 0, 0, 0.01)           // Primary heading PIDF (reduced P)
+            .secondaryHeadingPIDF(2.0, 0, 0.05, 0.01) // Secondary heading PIDF (reduced P and D)
+            .headingErrorThreshold(Math.PI / 20);    // When to switch to secondary PIDF
 //            .forwardZeroPowerAcceleration()
 //            .lateralZeroPowerAcceleration();
 
