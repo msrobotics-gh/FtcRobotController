@@ -21,6 +21,7 @@ import dev.nextftc.core.commands.Command;
 import dev.nextftc.core.commands.delays.Delay;
 import dev.nextftc.core.commands.groups.ParallelGroup;
 import dev.nextftc.core.commands.groups.SequentialGroup;
+import dev.nextftc.core.commands.utility.InstantCommand;
 import dev.nextftc.core.commands.utility.LambdaCommand;
 import dev.nextftc.core.components.SubsystemComponent;
 import dev.nextftc.extensions.pedro.FollowPath;
@@ -73,9 +74,18 @@ public class DriveLaucnh extends NextFTCOpMode {
 //                Auto.INSTANCE.turnBlu, // to 60 for red; 122 for blue
 //                new Delay(Constants.AutonDelay),
             Velauncher.INSTANCE.velaunch,
-            tele,
+            new InstantCommand(()->{
+                TelemetryPacket packet = new TelemetryPacket();
+                packet.put("STATUS", "LAUNCH ON");
+                FtcDashboard.getInstance().sendTelemetryPacket(packet);
+            }),
 //            new Delay(Constants.AutonDelay),
-            FlywheelGate.INSTANCE.open()
+            FlywheelGate.INSTANCE.open(),
+            new InstantCommand(()->{
+                TelemetryPacket packet = new TelemetryPacket();
+                packet.put("STATUS", "GATE ON");
+                FtcDashboard.getInstance().sendTelemetryPacket(packet);
+            })
 //                tele,
 //
 //                new ParallelGroup(
@@ -127,12 +137,12 @@ public class DriveLaucnh extends NextFTCOpMode {
 
     @Override
     public void onUpdate() {
-        TelemetryPacket packet = new TelemetryPacket();
-
-        // Main measurements
-        packet.put("robot x", PedroComponent.follower().getPose().getX());
-        packet.put("robot y", PedroComponent.follower().getPose().getY());
-
-        FtcDashboard.getInstance().sendTelemetryPacket(packet);
+//        TelemetryPacket packet = new TelemetryPacket();
+//
+//        // Main measurements
+//        packet.put("robot x", PedroComponent.follower().getPose().getX());
+//        packet.put("robot y", PedroComponent.follower().getPose().getY());
+//
+//        FtcDashboard.getInstance().sendTelemetryPacket(packet);
     }
 }
