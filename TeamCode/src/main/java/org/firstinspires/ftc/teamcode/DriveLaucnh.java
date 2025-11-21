@@ -21,6 +21,7 @@ import dev.nextftc.core.commands.Command;
 import dev.nextftc.core.commands.delays.Delay;
 import dev.nextftc.core.commands.groups.ParallelGroup;
 import dev.nextftc.core.commands.groups.SequentialGroup;
+import dev.nextftc.core.commands.utility.LambdaCommand;
 import dev.nextftc.core.components.SubsystemComponent;
 import dev.nextftc.extensions.pedro.FollowPath;
 import dev.nextftc.extensions.pedro.PedroComponent;
@@ -31,13 +32,14 @@ import dev.nextftc.ftc.components.BulkReadComponent;
 public class DriveLaucnh extends NextFTCOpMode {
     public DriveLaucnh() {
         addComponents(
-                BulkReadComponent.INSTANCE,
-                new PedroComponent(Constants::createFollower),
-                new SubsystemComponent(FlywheelGate.INSTANCE),
-                new SubsystemComponent(Velauncher.INSTANCE),
-                new SubsystemComponent(Intake.INSTANCE)
+            BulkReadComponent.INSTANCE,
+            new PedroComponent(Constants::createFollower),
+            new SubsystemComponent(FlywheelGate.INSTANCE),
+            new SubsystemComponent(Velauncher.INSTANCE),
+            new SubsystemComponent(Intake.INSTANCE)
         );
     }
+
     private PathChain pathOne;
 
     @Override
@@ -47,55 +49,69 @@ public class DriveLaucnh extends NextFTCOpMode {
         PedroComponent.follower().setStartingPose(start);
 //        final PathChain pathOne;
         pathOne = PedroComponent.follower().pathBuilder()
-                .addPath(new BezierLine(start, enddd))
-                .setLinearHeadingInterpolation(start.getHeading(), enddd.getHeading())
-                .setVelocityConstraint(5)
-                //.setConstantHeadingInterpolation(90.0)
-                .build();
+            .addPath(new BezierLine(start, enddd))
+            .setLinearHeadingInterpolation(start.getHeading(), enddd.getHeading())
+            .setVelocityConstraint(5)
+            //.setConstantHeadingInterpolation(90.0)
+            .build();
         Command pathGo = new FollowPath(pathOne);
 
+        int counter = 0;
 
-         new SequentialGroup(
+
+        Command tele = new LambdaCommand() // lamb da command
+            .setStart(() -> {
+                TelemetryPacket packet = new TelemetryPacket();
+                packet.put("Counter", counter);
+                FtcDashboard.getInstance().sendTelemetryPacket(packet);
+
+            })
+            .setIsDone(() -> true);
+
+
+        new SequentialGroup(
 //                Auto.INSTANCE.turnBlu, // to 60 for red; 122 for blue
 //                new Delay(Constants.AutonDelay),
-                Velauncher.INSTANCE.velaunch,
-                new Delay(Constants.AutonDelay),
-                FlywheelGate.INSTANCE.open(),
-
-                new ParallelGroup(
-                        Intake.INSTANCE.intake, // ball one
-                        Intake.INSTANCE.intakesecond
-                ),
-                new Delay(Constants.AutonDelay),
-                new ParallelGroup(
-                        Intake.INSTANCE.intakeoff, // ball one
-                        Intake.INSTANCE.intakeoff2
-                ),
-                new Delay(Constants.AutonDelay),
-
-                new ParallelGroup(
-                        Intake.INSTANCE.intake, // ball two
-                        Intake.INSTANCE.intakesecond
-                ),
-                new Delay(Constants.AutonDelay),
-                new ParallelGroup(
-                        Intake.INSTANCE.intakeoff, // ball two
-                        Intake.INSTANCE.intakeoff2
-                ),
-                new Delay(Constants.AutonDelay),
-
-//                Intake.INSTANCE.intake, // ball three
-//                Intake.INSTANCE.intakesecond,
+            Velauncher.INSTANCE.velaunch,
+            tele,
+//            new Delay(Constants.AutonDelay),
+            FlywheelGate.INSTANCE.open()
+//                tele,
+//
+//                new ParallelGroup(
+//                        Intake.INSTANCE.intake, // ball one
+//                        Intake.INSTANCE.intakesecond
+//                ),
 //                new Delay(Constants.AutonDelay),
-//                Intake.INSTANCE.intakeoff,
-//                Intake.INSTANCE.intakeoff2,
+//                new ParallelGroup(
+//                        Intake.INSTANCE.intakeoff, // ball one
+//                        Intake.INSTANCE.intakeoff2
+//                ),
 //                new Delay(Constants.AutonDelay),
-
-                new ParallelGroup(
-                        FlywheelGate.INSTANCE.close(),
-                        Velauncher.INSTANCE.unvelaunch
-                ),
-                 pathGo
+//
+//                new ParallelGroup(
+//                        Intake.INSTANCE.intake, // ball two
+//                        Intake.INSTANCE.intakesecond
+//                ),
+//                new Delay(Constants.AutonDelay),
+//                new ParallelGroup(
+//                        Intake.INSTANCE.intakeoff, // ball two
+//                        Intake.INSTANCE.intakeoff2
+//                ),
+//                new Delay(Constants.AutonDelay),
+//
+////                Intake.INSTANCE.intake, // ball three
+////                Intake.INSTANCE.intakesecond,
+////                new Delay(Constants.AutonDelay),
+////                Intake.INSTANCE.intakeoff,
+////                Intake.INSTANCE.intakeoff2,
+////                new Delay(Constants.AutonDelay),
+//
+//                new ParallelGroup(
+//                        FlywheelGate.INSTANCE.close(),
+//                        Velauncher.INSTANCE.unvelaunch
+//                ),
+//                 pathGo
         ).schedule();
 
 

@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode.pedroPathing;
 
+import com.pedropathing.control.PIDFCoefficients;
 import com.pedropathing.follower.Follower;
 import com.pedropathing.follower.FollowerConstants;
 import com.pedropathing.ftc.FollowerBuilder;
@@ -19,7 +20,10 @@ public class Constants {
     public static int AutonDistance = 72;
 
     public static FollowerConstants followerConstants = new FollowerConstants()
-            .mass(12);
+            .mass(12)
+            .headingPIDFCoefficients(new PIDFCoefficients(0.5, 0, 0, 0.01))
+            .secondaryHeadingPIDFCoefficients(new PIDFCoefficients(0.0, 0, 0.05, 0.01))
+            .turnHeadingErrorThreshold(Math.PI / 20);
 //            .forwardZeroPowerAcceleration()
 //            .lateralZeroPowerAcceleration();
 
@@ -31,9 +35,9 @@ public class Constants {
             .hardwareMapName("otos")
             .linearUnit(DistanceUnit.INCH)
             .angleUnit(AngleUnit.RADIANS)
-            .offset(new SparkFunOTOS.Pose2D(-7.5, 0.5, Math.toRadians(90)))
-            .linearScalar(2.325) //tune this
-            .angularScalar(0.9961); //tune this
+            .offset(new SparkFunOTOS.Pose2D(-2.25, 0.5, Math.toRadians(0)))
+            .linearScalar(1.416693); //tune this
+//            .angularScalar(0.9961); //tune this
 
     public static AsymMecanumDriveConstants driveC = AsymMecanumDriveConstants.defaults();
 
