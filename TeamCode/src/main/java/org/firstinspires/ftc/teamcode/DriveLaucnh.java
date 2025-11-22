@@ -43,51 +43,23 @@ public class DriveLaucnh extends NextFTCOpMode {
 
     private PathChain pathOne;
 
-    @Override
-    public void onStartButtonPressed() {
-        final Pose start = new Pose(0, 0, Math.toRadians(90));
-        final Pose enddd = new Pose(0, 6, Math.toRadians(90));
-        PedroComponent.follower().setStartingPose(start);
-//        final PathChain pathOne;
-        pathOne = PedroComponent.follower().pathBuilder()
-            .addPath(new BezierLine(start, enddd))
-            .setLinearHeadingInterpolation(start.getHeading(), enddd.getHeading())
-            .setVelocityConstraint(5)
-            //.setConstantHeadingInterpolation(90.0)
-            .build();
-        Command pathGo = new FollowPath(pathOne);
-
-        int counter = 0;
-
-
-        Command tele = new LambdaCommand() // lamb da command
-            .setStart(() -> {
-                TelemetryPacket packet = new TelemetryPacket();
-                packet.put("Counter", counter);
-                FtcDashboard.getInstance().sendTelemetryPacket(packet);
-
-            })
-            .setIsDone(() -> true);
-
-
-        new SequentialGroup(
-                FlywheelGate.INSTANCE.open(),
-                new InstantCommand(()->{
+    public Command firstRoutine() {
+        return new SequentialGroup(
+                new InstantCommand(() -> {
                     TelemetryPacket packet = new TelemetryPacket();
-                    packet.put("STATUS", "GATE ON");
+                    packet.put("STATUS", "About to open gate");
+                    packet.put("Servo position before", FlywheelGate.INSTANCE.gateServo.getPosition());
+                    FtcDashboard.getInstance().sendTelemetryPacket(packet);
+                }),
+                new Delay(Constants.AutonDelay + 3),
+                FlywheelGate.INSTANCE.open(),
+                new InstantCommand(() -> {
+                    TelemetryPacket packet = new TelemetryPacket();
+                    packet.put("STATUS", "Gate opened");
+                    packet.put("Servo position after", FlywheelGate.INSTANCE.gateServo.getPosition());
                     FtcDashboard.getInstance().sendTelemetryPacket(packet);
                 })
-////                Auto.INSTANCE.turnBlu, // to 60 for red; 122 for blue
-////                new Delay(Constants.AutonDelay),
-//            Velauncher.INSTANCE.velaunch,
-//            new InstantCommand(()->{
-//                TelemetryPacket packet = new TelemetryPacket();
-//                packet.put("STATUS", "LAUNCH ON");
-//                FtcDashboard.getInstance().sendTelemetryPacket(packet);
-//            }),
-//            new Delay(Constants.AutonDelay),
 
-//                tele,
 //
 //                new ParallelGroup(
 //                        Intake.INSTANCE.intake, // ball one
@@ -123,7 +95,36 @@ public class DriveLaucnh extends NextFTCOpMode {
 //                        Velauncher.INSTANCE.unvelaunch
 //                ),
 //                 pathGo
-        ).schedule();
+        );
+    }
+
+    @Override
+    public void onStartButtonPressed() {
+        final Pose start = new Pose(0, 0, Math.toRadians(90));
+        final Pose enddd = new Pose(0, 6, Math.toRadians(90));
+        PedroComponent.follower().setStartingPose(start);
+//        final PathChain pathOne;
+        pathOne = PedroComponent.follower().pathBuilder()
+            .addPath(new BezierLine(start, enddd))
+            .setLinearHeadingInterpolation(start.getHeading(), enddd.getHeading())
+            .setVelocityConstraint(5)
+            //.setConstantHeadingInterpolation(90.0)
+            .build();
+        Command pathGo = new FollowPath(pathOne);
+
+        int counter = 0;
+
+
+        Command tele = new LambdaCommand() // lamb da command
+            .setStart(() -> {
+                TelemetryPacket packet = new TelemetryPacket();
+                packet.put("Counter", counter);
+                FtcDashboard.getInstance().sendTelemetryPacket(packet);
+
+            })
+            .setIsDone(() -> true);
+
+        firstRoutine().invoke();
 
 
 //        pathGo.schedule();
