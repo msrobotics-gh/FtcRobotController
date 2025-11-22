@@ -30,12 +30,12 @@ public class Lift implements Subsystem {
     public static final Lift INSTANCE = new Lift();
 
 
-    public static double setPosition1 = -500;
+    public static double setPosition1 = -10900;
 
-    public static double setPosition2 = -500;
+    public static double setPosition2 = -10900;
     public static double height;
-    public static double maxPos = -11250;
-    public static double maxheight = 12.0;
+    public static double maxPos = -10900;
+    public static double maxheight = 21;
 
     public boolean lifted = false;
 
@@ -90,7 +90,7 @@ public class Lift implements Subsystem {
 
     }
     public Command toLow = new RunToPosition(controlSystem, 0).requires(this);
-    public Command toHigh = new RunToPosition(controlSystem, -11300).requires(this);
+    public Command toHigh = new RunToPosition(controlSystem, -10900).requires(this);
 
     public Command toPos2 = new RunToPosition(controlSystem2, setPosition2).requires(this);
     public Command toPos = new RunToPosition(controlSystem,setPosition1).requires(this);

@@ -43,15 +43,20 @@ public class DriveLaucnh extends NextFTCOpMode {
 
     private PathChain pathOne;
 
+
     public Command firstRoutine() {
+        Command pathGo = new FollowPath(pathOne);
         return new SequentialGroup(
+
+                Velauncher.INSTANCE.velaunch,
+                Intake.INSTANCE.intake,
+                Intake.INSTANCE.intakesecond,
                 new InstantCommand(() -> {
                     TelemetryPacket packet = new TelemetryPacket();
                     packet.put("STATUS", "About to open gate");
                     packet.put("Servo position before", FlywheelGate.INSTANCE.gateServo.getPosition());
                     FtcDashboard.getInstance().sendTelemetryPacket(packet);
                 }),
-                new Delay(Constants.AutonDelay + 3),
                 FlywheelGate.INSTANCE.open(),
                 new InstantCommand(() -> {
                     TelemetryPacket packet = new TelemetryPacket();
@@ -59,6 +64,7 @@ public class DriveLaucnh extends NextFTCOpMode {
                     packet.put("Servo position after", FlywheelGate.INSTANCE.gateServo.getPosition());
                     FtcDashboard.getInstance().sendTelemetryPacket(packet);
                 })
+                //pathGo
 
 //
 //                new ParallelGroup(
@@ -101,7 +107,7 @@ public class DriveLaucnh extends NextFTCOpMode {
     @Override
     public void onStartButtonPressed() {
         final Pose start = new Pose(0, 0, Math.toRadians(90));
-        final Pose enddd = new Pose(0, 6, Math.toRadians(90));
+        final Pose enddd = new Pose(0, 18, Math.toRadians(90));
         PedroComponent.follower().setStartingPose(start);
 //        final PathChain pathOne;
         pathOne = PedroComponent.follower().pathBuilder()

@@ -13,11 +13,6 @@ public class Intake implements Subsystem {
 
     private CRServoEx intake1 = new CRServoEx("intake1");
     private CRServoEx intake2 = new CRServoEx("intake2");
-    private ControlSystem controlSystem = ControlSystem.builder()
-            .posPid(0.005, 0, 0)
-            .elevatorFF(0)
-            .build();
-
 
     public Command intake = new SetPower(intake1,1);
     public Command intakesecond = new SetPower(intake2,1);
@@ -28,8 +23,8 @@ public class Intake implements Subsystem {
 
     @Override
     public void periodic() {
-        intake1.setPower(controlSystem.calculate());
-        intake2.setPower(controlSystem.calculate());
+//        intake1.setPower(controlSystem.calculate());
+//        intake2.setPower(controlSystem.calculate());
     }
 }
 
