@@ -1,20 +1,20 @@
 package org.firstinspires.ftc.teamcode.pedroPathing;
 
-import com.pedropathing.control.PIDFCoefficients;
 import com.pedropathing.follower.Follower;
 import com.pedropathing.follower.FollowerConstants;
 import com.pedropathing.ftc.FollowerBuilder;
-import com.pedropathing.ftc.localization.Encoder;
+import com.pedropathing.ftc.localization.Localizer;
+import com.pedropathing.ftc.localization.constants.DriveEncoderLocalizerConstants;
 import com.pedropathing.ftc.localization.constants.OTOSConstants;
+import com.pedropathing.ftc.localization.localizers.DriveEncoderLocalizer;
 import com.pedropathing.ftc.localization.localizers.OTOSLocalizer;
 import com.pedropathing.paths.PathConstraints;
 import com.qualcomm.hardware.sparkfun.SparkFunOTOS;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
-import org.firstinspires.ftc.teamcode.pedroPathingNew.AsymDriveEncoderConstants;
-import org.firstinspires.ftc.teamcode.pedroPathingNew.AsymDriveEncoderLocalizer;
 import org.firstinspires.ftc.teamcode.pedroPathingNew.AsymMecanumDrive;
 import org.firstinspires.ftc.teamcode.pedroPathingNew.AsymMecanumDriveConstants;
 import org.firstinspires.ftc.teamcode.pedroPathingNew.FusedLocalizer;
@@ -29,43 +29,36 @@ public class ConstantsFused {
     public static double redDegrees  = 60.0;
     public static int AutonDistance = 72;
 
-    // Drive constants
-    public static AsymMecanumDriveConstants driveC = AsymMecanumDriveConstants.defaults();
+    // Drive encoder constants (backup localizer)
+    public static DriveEncoderLocalizerConstants encoderConstants = new DriveEncoderLocalizerConstants()
+            // Motor names (must match your hardware config)
+            .setLeftFrontMotorName("front_left")
+            .setLeftRearMotorName("back_left")
+            .setRightFrontMotorName("front_right")
+            .setRightRearMotorName("back_right")
 
-    // Encoder ticks per revolution for GoBILDA 5203 312 RPM motors
-    private static final double TICKS_PER_REV = 537.7;
-    // Wheel circumference in inches (for 96mm / ~3.78" wheels)
-    private static final double WHEEL_CIRCUMFERENCE_INCHES = driveC.wheelRadiusMeters * 2 * Math.PI * 39.3701;
-    // Ticks to inches conversion
-    private static final double TICKS_TO_INCHES = WHEEL_CIRCUMFERENCE_INCHES / TICKS_PER_REV;
+            // Motor directions (should match AsymMecanumDriveConstants)
+            .setLeftFrontMotorDirection(DcMotorSimple.Direction.FORWARD)
+            .setLeftRearMotorDirection(DcMotorSimple.Direction.REVERSE)
+            .setRightFrontMotorDirection(DcMotorSimple.Direction.REVERSE)
+            .setRightRearMotorDirection(DcMotorSimple.Direction.REVERSE)
 
-    // Asymmetric drive encoder constants (backup localizer)
-    // Motor names and directions use defaults from AsymDriveEncoderConstants
-    // which now match AsymMecanumDriveConstants defaults
-    public static AsymDriveEncoderConstants encoderConstants = new AsymDriveEncoderConstants()
-            // Ticks to inches conversions
-            .forwardTicksToInches(TICKS_TO_INCHES)
+            // Robot geometry (must match AsymMecanumDriveConstants)
+            .setXMultiplier(1.0)    // Tune: forward encoder ticks to inches
+            .setYMultiplier(1.0)    // Tune: lateral encoder ticks to inches
 
-            // Asymmetric strafe multipliers - TUNE THESE!
-            // If robot strafes further left than right, decrease left multiplier
-            // If robot strafes further right than left, decrease right multiplier
-            .strafeTicksToInches(
-                    TICKS_TO_INCHES * 1.0,  // Left strafe multiplier
-                    TICKS_TO_INCHES * 1.0   // Right strafe multiplier
-            )
-
-            .turnTicksToInches(TICKS_TO_INCHES)
-
-            // Robot geometry from AsymMecanumDriveConstants (convert meters to inches)
-            .robotWidth(driveC.halfWidthFront * 2 * 39.3701)
-            .robotLength(driveC.halfLengthX * 2 * 39.3701);
+            // Track widths for mecanum kinematics
+            .setForwardTicksToInches(1.0 / 537.7)  // GoBILDA 5203 312 RPM: 537.7 ticks/rev
+            .setLateralTicksToInches(1.0 / 537.7)
+            .setTrackWidth(AsymMecanumDriveConstants.defaults().halfWidthFront * 2)  // Use front width
+            .setWheelRadius(AsymMecanumDriveConstants.defaults().wheelRadiusMeters * 39.3701); // Convert to inches
 
     public static FollowerConstants followerConstants = new FollowerConstants()
             .mass(12)
             // Heading PID tuning for asymmetric mecanum
-            .headingPIDFCoefficients(new PIDFCoefficients(.5, 0, 0, 0.01))
-            .secondaryHeadingPIDFCoefficients(new PIDFCoefficients(.0, 0, 0.05, 0.01))
-            .turnHeadingErrorThreshold(Math.PI / 20);
+            .headingPIDF(0.5, 0, 0, 0.01)
+            .secondaryHeadingPIDF(2.0, 0, 0.05, 0.01)
+            .headingErrorThreshold(Math.PI / 20);
 
     public static PathConstraints pathConstraints = new PathConstraints(
             0.99, 100, 1, 1
@@ -79,6 +72,8 @@ public class ConstantsFused {
             .linearScalar(2.325)
             .angularScalar(0.9961);
 
+    public static AsymMecanumDriveConstants driveC = AsymMecanumDriveConstants.defaults();
+
     /**
      * Create a follower with fused localization.
      * Combines OTOS (primary) with drive encoders (backup).
@@ -88,7 +83,7 @@ public class ConstantsFused {
 
         // Create individual localizers
         OTOSLocalizer otosLoc = new OTOSLocalizer(hw, otos);
-        AsymDriveEncoderLocalizer encoderLoc = new AsymDriveEncoderLocalizer(hw, encoderConstants);
+        DriveEncoderLocalizer encoderLoc = new DriveEncoderLocalizer(hw, encoderConstants);
 
         // Create fused localizer
         FusedLocalizer fusedLocalizer = new FusedLocalizer(otosLoc, encoderLoc);

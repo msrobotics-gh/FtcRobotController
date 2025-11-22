@@ -1,8 +1,8 @@
 package org.firstinspires.ftc.teamcode.pedroPathingNew;
 
-import com.pedropathing.localization.Localizer;
+import com.pedropathing.ftc.localization.Localizer;
 import com.pedropathing.geometry.Pose;
-import com.pedropathing.math.Vector;
+import com.pedropathing.geometry.Vector;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
@@ -25,7 +25,7 @@ import java.util.List;
  * 2. Outlier Detection: Detect and reject bad OTOS readings
  * 3. AprilTag Corrections: Reset position when tags detected with high confidence
  */
-public class FusedLocalizer implements Localizer {
+public class FusedLocalizer extends Localizer {
 
     // Primary localizers
     private final Localizer otosLocalizer;
@@ -129,23 +129,6 @@ public class FusedLocalizer implements Localizer {
     }
 
     @Override
-    public Vector getVelocityVector() {
-        // Get velocity vectors from sensors
-        Vector otosVel = otosLocalizer.getVelocityVector();
-        Vector encoderVel = encoderLocalizer != null ? encoderLocalizer.getVelocityVector() : otosVel;
-
-        // Blend velocities based on reliability
-        double adaptiveOtosWeight = otosWeight * otosReliability;
-        double adaptiveEncoderWeight = 1.0 - adaptiveOtosWeight;
-
-        // Blend the vectors
-        double x = otosVel.getXComponent() * adaptiveOtosWeight + encoderVel.getXComponent() * adaptiveEncoderWeight;
-        double y = otosVel.getYComponent() * adaptiveOtosWeight + encoderVel.getYComponent() * adaptiveEncoderWeight;
-
-        return new Vector(x, y);
-    }
-
-    @Override
     public void setStartPose(Pose pose) {
         otosLocalizer.setStartPose(pose);
         if (encoderLocalizer != null) {
@@ -163,54 +146,11 @@ public class FusedLocalizer implements Localizer {
     }
 
     @Override
-    public void setPose(Pose pose) {
-        otosLocalizer.setPose(pose);
-        if (encoderLocalizer != null) {
-            encoderLocalizer.setPose(pose);
-        }
-        previousPose = pose;
-    }
-
-    @Override
-    public double getTotalHeading() {
-        return otosLocalizer.getTotalHeading();
-    }
-
-    @Override
-    public double getForwardMultiplier() {
-        return otosLocalizer.getForwardMultiplier();
-    }
-
-    @Override
-    public double getLateralMultiplier() {
-        return otosLocalizer.getLateralMultiplier();
-    }
-
-    @Override
-    public double getTurningMultiplier() {
-        return otosLocalizer.getTurningMultiplier();
-    }
-
-    @Override
-    public void resetIMU() throws InterruptedException {
-        otosLocalizer.resetIMU();
-        if (encoderLocalizer != null) {
-            encoderLocalizer.resetIMU();
-        }
-    }
-
-    @Override
-    public double getIMUHeading() {
-        return otosLocalizer.getIMUHeading();
-    }
-
-    @Override
-    public boolean isNAN() {
-        Pose pose = getPose();
-        return Double.isNaN(pose.getX()) || Double.isNaN(pose.getY()) || Double.isNaN(pose.getHeading());
-    }
-
     public void reset() {
+        otosLocalizer.reset();
+        if (encoderLocalizer != null) {
+            encoderLocalizer.reset();
+        }
         otosReliability = 1.0;
         previousPose = new Pose();
     }

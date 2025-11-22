@@ -85,10 +85,7 @@ public class FusedLocalizationTest extends OpMode {
 
         // Reset on B button
         if (gamepad1.b) {
-            follower.setPose(new com.pedropathing.geometry.Pose(72, 72, 0));
-            if (fusedLocalizer != null) {
-                fusedLocalizer.reset();
-            }
+            follower.setPose(follower.getStartingPose());
             telemetry.addData("Action", "Position Reset!");
         }
 

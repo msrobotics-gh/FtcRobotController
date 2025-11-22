@@ -4,9 +4,6 @@ import com.qualcomm.hardware.sparkfun.SparkFunOTOS;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
-import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
-import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
-
 /**
  * Diagnostic OpMode to verify OTOS offset configuration.
  * This checks if the offset is being properly set and read back from the sensor.
@@ -21,8 +18,8 @@ public class OTOSDiagnostic extends OpMode {
         otos = hardwareMap.get(SparkFunOTOS.class, "otos");
 
         // Configure units
-        otos.setLinearUnit(DistanceUnit.INCH);
-        otos.setAngularUnit(AngleUnit.RADIANS);
+        otos.setLinearUnit(SparkFunOTOS.LinearUnit.INCHES);
+        otos.setAngularUnit(SparkFunOTOS.AngularUnit.RADIANS);
 
         // Set the offset from Constants
         SparkFunOTOS.Pose2D offset = Constants.otos.offset;
