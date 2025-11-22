@@ -6,6 +6,7 @@ import com.acmerobotics.dashboard.FtcDashboard;
 import com.acmerobotics.dashboard.config.Config;
 import com.acmerobotics.dashboard.telemetry.TelemetryPacket;
 import com.qualcomm.hardware.rev.Rev2mDistanceSensor;
+import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DistanceSensor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
@@ -27,14 +28,14 @@ import dev.nextftc.hardware.powerable.SetPower;
 @Config
 public class Lift implements Subsystem {
     public static final Lift INSTANCE = new Lift();
-    public double liftPosition1;
 
-    public double liftPosition2;
 
     public static double setPosition1 = -500;
 
     public static double setPosition2 = -500;
     public static double height;
+    public static double maxPos = -11250;
+    public static double maxheight = 12.0;
 
     public boolean lifted = false;
 
@@ -51,18 +52,26 @@ public class Lift implements Subsystem {
 
     private MotorEx lift_motor2 = new MotorEx("lift_motor2");
 
+    public double liftPosition2;
+
+    public  static double realheight;
+
+    public double liftPosition1;
+
     private DistanceSensor sensorDistance;
 
     @Override
     public void initialize(){
+        lifted = false;
         sensorDistance = ActiveOpMode.hardwareMap().get(DistanceSensor.class, "sensor_distance");
 
         // you can also cast this to a Rev2mDistanceSensor if you want to use added
         // methods associated with the Rev2mDistanceSensor class.
         Rev2mDistanceSensor sensorTimeOfFlight = (Rev2mDistanceSensor) sensorDistance;
-
-        lift_motor.zeroed();
-        lift_motor2.zeroed();
+        lift_motor.getMotor().setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        lift_motor2.getMotor().setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        lift_motor.setCurrentPosition(0);
+        lift_motor2.setCurrentPosition(0);
     }
 
     // you can also cast this to a Rev2mDistanceSensor if you want to use added
@@ -84,6 +93,7 @@ public class Lift implements Subsystem {
     public Command toHigh = new RunToPosition(controlSystem, -11300).requires(this);
 
     public Command toPos2 = new RunToPosition(controlSystem2, setPosition2).requires(this);
+    public Command toPos = new RunToPosition(controlSystem,setPosition1).requires(this);
     public  Command run = new SetPower(lift_motor,-0.5);
     public  Command run2 = new SetPower(lift_motor2,-0.5);
 
@@ -114,15 +124,25 @@ public class Lift implements Subsystem {
 //        controlSystem2.setGoal(new KineticState(0));
 //        buildControllers();
 //    });
-
+    public boolean atMaxHeight() {
+        boolean atmax1 = Math.abs(liftPosition1) >= Math.abs(maxPos);
+        boolean atmax2 = Math.abs(liftPosition2) >= Math.abs(maxPos);
+        boolean atmaxIN = realheight >= maxheight;
+        if (atmax1 && atmax2) {
+            return true;
+        }
+        if (atmaxIN) {
+            return true;
+        }
+        return false;
+    }
     @Override
     public void periodic() {
-
-
+        realheight = sensorDistance.getDistance(DistanceUnit.INCH);
         liftPosition1 = lift_motor.getCurrentPosition();
         liftPosition2 = lift_motor2.getCurrentPosition();
         TelemetryPacket packet = new TelemetryPacket();
-
+        packet.put("lifted?",lifted);
         if (lifted) {
             controlSystem.setGoal(new KineticState(setPosition1));
             controlSystem2.setGoal(new KineticState(setPosition2));
@@ -131,15 +151,21 @@ public class Lift implements Subsystem {
             controlSystem2.setGoal(new KineticState(0));
 
         }
-
-        if (ActiveOpMode.opModeIsActive() && (!(sensorDistance.getDistance(DistanceUnit.INCH) > 12))){ //  && (setPosition1 == 0) && (setPosition2 == 0)
-            lift_motor.setPower(controlSystem.calculate(lift_motor.getState()));
-            lift_motor2.setPower(controlSystem2.calculate(lift_motor2.getState()));
+        packet.put("atMaxHeight",atMaxHeight());
+        packet.put("OpMode",ActiveOpMode.opModeIsActive());
+        if (ActiveOpMode.opModeIsActive() && !atMaxHeight()){ //  && (setPosition1 == 0) && (setPosition2 == 0)
+            double setpower1 = controlSystem.calculate(lift_motor.getState());
+            double setpower2 = controlSystem2.calculate(lift_motor2.getState());
+            packet.put("power1",setpower1);
+            packet.put("power2",setpower2);
+            lift_motor.setPower(setpower1);
+            lift_motor2.setPower(setpower2);
         }
         else {
             lift_motor.setPower(0);
             lift_motor2.setPower(0);
         }
+
 
         packet.put("sensor_distance", sensorDistance.getDeviceName() );
         packet.put("range", String.format("%.01f in", sensorDistance.getDistance(DistanceUnit.INCH)));
