@@ -127,11 +127,11 @@ public class Aimbot extends LinearOpMode {
 
     @Override
     public void runOpMode() {
-        upFlywheel = hardwareMap.get(DcMotor.class, "up");
-        frontLeft = hardwareMap.get(DcMotor.class, "leftTop");
-        frontRight = hardwareMap.get(DcMotor.class, "rightTop");
-        backLeft = hardwareMap.get(DcMotor.class, "leftBottom");
-        backRight = hardwareMap.get(DcMotor.class, "rightBottom");
+        upFlywheel = hardwareMap.get(DcMotor.class, "upp");
+        frontLeft = hardwareMap.get(DcMotor.class, "left_top");
+        frontRight = hardwareMap.get(DcMotor.class, "right_top");
+        backLeft = hardwareMap.get(DcMotor.class, "left_bottom");
+        backRight = hardwareMap.get(DcMotor.class, "right_bottom");
 
 
         initAprilTag();
@@ -262,7 +262,12 @@ public class Aimbot extends LinearOpMode {
                         //turn left
                         //setDrive(0,1,0,1);
                     }*/
-                    power = (detection.robotPose.getPosition().x)/100;
+                    double d = detection.robotPose.getPosition().x;
+                    double g = -9.8;
+                    double a = 1.17475;
+                    double h = 0.23;
+                    double theta = 45;
+                    power = d*Math.sqrt(g)/Math.sqrt(2*(a-h)*Math.pow(Math.cos(theta),2)-2d*Math.cos(theta)*Math.sin(theta));
                     telemetry.addLine(String.format("XYZ %6.1f %6.1f %6.1f  (inch)",
                             detection.robotPose.getPosition().x,
                             detection.robotPose.getPosition().y,
