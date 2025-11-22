@@ -21,12 +21,9 @@ public class Constants {
 
     public static FollowerConstants followerConstants = new FollowerConstants()
             .mass(12)
-            // Heading PID tuning for asymmetric mecanum
-            // Reduced from defaults to prevent oscillation and sticking
-            // Default was: Primary P=1.0, Secondary P=5.0 (too aggressive!)
-            .headingPIDFCoefficients(new PIDFCoefficients(.5, 0, 0, 0.01))           // Primary heading PIDF (reduced P)
-            .secondaryHeadingPIDFCoefficients(new PIDFCoefficients(.0, 0, 0.05, 0.01)) // Secondary heading PIDF (reduced P and D)
-            .turnHeadingErrorThreshold(Math.PI / 20);    // When to switch to secondary PIDF
+            .headingPIDFCoefficients(new PIDFCoefficients(0.5, 0, 0, 0.01))
+            .secondaryHeadingPIDFCoefficients(new PIDFCoefficients(0.0, 0, 0.05, 0.01))
+            .turnHeadingErrorThreshold(Math.PI / 20);
 //            .forwardZeroPowerAcceleration()
 //            .lateralZeroPowerAcceleration();
 
@@ -38,9 +35,9 @@ public class Constants {
             .hardwareMapName("otos")
             .linearUnit(DistanceUnit.INCH)
             .angleUnit(AngleUnit.RADIANS)
-            .offset(new SparkFunOTOS.Pose2D(-7.5, 0.5, Math.toRadians(90)))
-            .linearScalar(2.325) //tune this
-            .angularScalar(0.9961); //tune this
+            .offset(new SparkFunOTOS.Pose2D(-2.25, 0.5, Math.toRadians(0)))
+            .linearScalar(1.416693); //tune this
+//            .angularScalar(0.9961); //tune this
 
     public static AsymMecanumDriveConstants driveC = AsymMecanumDriveConstants.defaults();
 

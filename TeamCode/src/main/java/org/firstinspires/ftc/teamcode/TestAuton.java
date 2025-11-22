@@ -22,7 +22,7 @@ import dev.nextftc.extensions.pedro.PedroComponent;
 import dev.nextftc.ftc.NextFTCOpMode;
 import dev.nextftc.ftc.components.BulkReadComponent;
 
-@Autonomous(name = "simple auton launch")
+@Autonomous(name = "simple auton launch 2")
 public class TestAuton extends NextFTCOpMode {
     public TestAuton() {
         addComponents(
