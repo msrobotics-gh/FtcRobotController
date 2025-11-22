@@ -11,10 +11,10 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 
 import org.firstinspires.ftc.teamcode.pedroPathing.Constants;
 //import org.firstinspires.ftc.teamcode.subsystems.Auto;
-import org.firstinspires.ftc.teamcode.subsystems.Auto;
+//import org.firstinspires.ftc.teamcode.subsystems.Auto;
 import org.firstinspires.ftc.teamcode.subsystems.FlywheelGate;
 import org.firstinspires.ftc.teamcode.subsystems.Intake;
-import org.firstinspires.ftc.teamcode.subsystems.Launcher;
+//import org.firstinspires.ftc.teamcode.subsystems.Launcher;
 import org.firstinspires.ftc.teamcode.subsystems.Velauncher;
 
 import dev.nextftc.core.commands.Command;
@@ -35,30 +35,52 @@ public class DriveLaucnh extends NextFTCOpMode {
         addComponents(
             BulkReadComponent.INSTANCE,
             new PedroComponent(Constants::createFollower),
-            new SubsystemComponent(FlywheelGate.INSTANCE),
-            new SubsystemComponent(Velauncher.INSTANCE),
-            new SubsystemComponent(Intake.INSTANCE)
+            new SubsystemComponent(FlywheelGate.INSTANCE, Velauncher.INSTANCE, Intake.INSTANCE)
         );
     }
 
     private PathChain pathOne;
 
+    public SequentialGroup commandGroup;
+
     @Override
-    public void onStartButtonPressed() {
+    public void onInit() {
         final Pose start = new Pose(0, 0, Math.toRadians(90));
         final Pose enddd = new Pose(0, 6, Math.toRadians(90));
         PedroComponent.follower().setStartingPose(start);
 //        final PathChain pathOne;
         pathOne = PedroComponent.follower().pathBuilder()
-            .addPath(new BezierLine(start, enddd))
-            .setLinearHeadingInterpolation(start.getHeading(), enddd.getHeading())
-            .setVelocityConstraint(5)
-            //.setConstantHeadingInterpolation(90.0)
-            .build();
+                .addPath(new BezierLine(start, enddd))
+                .setLinearHeadingInterpolation(start.getHeading(), enddd.getHeading())
+                .setVelocityConstraint(5)
+                //.setConstantHeadingInterpolation(90.0)
+                .build();
+
+
+
+        commandGroup = new SequentialGroup(
+            FlywheelGate.INSTANCE.openv2,
+            new InstantCommand(()->{
+                TelemetryPacket packet = new TelemetryPacket();
+                packet.put("STATUS", "GATE ON");
+                FtcDashboard.getInstance().sendTelemetryPacket(packet);
+            }),
+            new Delay(Constants.AutonDelay * 8),
+            new InstantCommand(()->{
+                TelemetryPacket packet = new TelemetryPacket();
+                packet.put("STATUS", "GATE OFF");
+                FtcDashboard.getInstance().sendTelemetryPacket(packet);
+            }),
+            FlywheelGate.INSTANCE.closev2
+        );
+    }
+
+
+    @Override
+    public void onStartButtonPressed() {
         Command pathGo = new FollowPath(pathOne);
 
         int counter = 0;
-
 
         Command tele = new LambdaCommand() // lamb da command
             .setStart(() -> {
@@ -70,13 +92,23 @@ public class DriveLaucnh extends NextFTCOpMode {
             .setIsDone(() -> true);
 
 
-        new SequentialGroup(
-                FlywheelGate.INSTANCE.open(),
-                new InstantCommand(()->{
-                    TelemetryPacket packet = new TelemetryPacket();
-                    packet.put("STATUS", "GATE ON");
-                    FtcDashboard.getInstance().sendTelemetryPacket(packet);
-                })
+        commandGroup.schedule();
+    }
+
+    @Override
+    public void onUpdate() {
+//        TelemetryPacket packet = new TelemetryPacket();
+//
+//        // Main measurements
+//        packet.put("robot x", PedroComponent.follower().getPose().getX());
+//        packet.put("robot y", PedroComponent.follower().getPose().getY());
+//
+//        FtcDashboard.getInstance().sendTelemetryPacket(packet);
+    }
+}
+
+
+
 ////                Auto.INSTANCE.turnBlu, // to 60 for red; 122 for blue
 ////                new Delay(Constants.AutonDelay),
 //            Velauncher.INSTANCE.velaunch,
@@ -123,27 +155,3 @@ public class DriveLaucnh extends NextFTCOpMode {
 //                        Velauncher.INSTANCE.unvelaunch
 //                ),
 //                 pathGo
-        ).schedule();
-
-
-//        pathGo.schedule();
-
-        //Velauncher.INSTANCE.velaunch.schedule();
-        //new Delay(0.5).schedule();
-        //FlywheelGate.INSTANCE.open().schedule();
-        //Intake.INSTANCE.intake.schedule();
-        //Intake.INSTANCE.intakesecond.schedule();
-
-    }
-
-    @Override
-    public void onUpdate() {
-//        TelemetryPacket packet = new TelemetryPacket();
-//
-//        // Main measurements
-//        packet.put("robot x", PedroComponent.follower().getPose().getX());
-//        packet.put("robot y", PedroComponent.follower().getPose().getY());
-//
-//        FtcDashboard.getInstance().sendTelemetryPacket(packet);
-    }
-}

@@ -18,7 +18,7 @@ import dev.nextftc.ftc.components.BulkReadComponent;
 import dev.nextftc.hardware.impl.Direction;
 import dev.nextftc.hardware.impl.IMUEx;
 
-@TeleOp(name = "Velocity Lift Drive Launch Meese")
+@TeleOp(name = "Velocity Lift Drive Launch Meese", group = "DEPRECATED")
 @Config
 public class meese extends NextFTCOpMode {
     public meese() {

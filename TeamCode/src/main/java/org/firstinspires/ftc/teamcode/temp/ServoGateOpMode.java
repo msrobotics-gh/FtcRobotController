@@ -13,7 +13,7 @@ import dev.nextftc.core.components.SubsystemComponent;
 import dev.nextftc.ftc.NextFTCOpMode;
 import dev.nextftc.ftc.components.BulkReadComponent;
 
-@TeleOp(name = "ServoGateOpMode")
+@TeleOp(name = "ServoGateOpMode", group = "DEPRECATED")
 public class ServoGateOpMode extends NextFTCOpMode {
 
 

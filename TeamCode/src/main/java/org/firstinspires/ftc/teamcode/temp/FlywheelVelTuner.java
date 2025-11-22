@@ -24,7 +24,7 @@ import dev.nextftc.hardware.impl.MotorEx;
  * - Displays target/measured velocity, error, and power on Dashboard
  */
 @Config
-@TeleOp(name = "FlywheelVelTuner")
+@TeleOp(name = "FlywheelVelTuner", group = "DEPRECATED")
 public class FlywheelVelTuner extends NextFTCOpMode {
 
     public FlywheelVelTuner() {

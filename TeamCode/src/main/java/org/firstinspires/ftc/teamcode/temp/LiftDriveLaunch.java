@@ -25,7 +25,7 @@ import dev.nextftc.hardware.impl.Direction;
 import dev.nextftc.hardware.impl.IMUEx;
 import dev.nextftc.hardware.impl.MotorEx;
 
-@TeleOp(name = "lift drive launch")
+@TeleOp(name = "lift drive launch", group = "DEPRECATED")
 @Config
 public class LiftDriveLaunch extends NextFTCOpMode {
     public LiftDriveLaunch() {

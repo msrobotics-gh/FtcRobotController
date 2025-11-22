@@ -453,18 +453,18 @@ public class Velauncher implements Subsystem {
         packet.put("---Voltage---", "---");
 
         // Voltage compensation telemetry
-        packet.put("Battery_Voltage", currentVoltage);
-        packet.put("Nominal_Voltage", NOMINAL_VOLTAGE);
-        packet.put("Voltage_Ratio", voltageRatio);
-        packet.put("Voltage_Comp_Enabled", VOLTAGE_COMPENSATION_ENABLED);
-        packet.put("kV_Upper_Nominal", kV_UPPER_NOMINAL);
-        packet.put("kV_Upper_Compensated", kV_upper_compensated);
-        packet.put("kV_Lower_Nominal", kV_LOWER_NOMINAL);
-        packet.put("kV_Lower_Compensated", kV_lower_compensated);
-        packet.put("kS_Upper_Nominal", kS_UPPER_NOMINAL);
-        packet.put("kS_Upper_Compensated", kS_upper_compensated);
-        packet.put("kS_Lower_Nominal", kS_LOWER_NOMINAL);
-        packet.put("kS_Lower_Compensated", kS_lower_compensated);
+//        packet.put("Battery_Voltage", currentVoltage);
+//        packet.put("Nominal_Voltage", NOMINAL_VOLTAGE);
+//        packet.put("Voltage_Ratio", voltageRatio);
+//        packet.put("Voltage_Comp_Enabled", VOLTAGE_COMPENSATION_ENABLED);
+//        packet.put("kV_Upper_Nominal", kV_UPPER_NOMINAL);
+//        packet.put("kV_Upper_Compensated", kV_upper_compensated);
+//        packet.put("kV_Lower_Nominal", kV_LOWER_NOMINAL);
+//        packet.put("kV_Lower_Compensated", kV_lower_compensated);
+//        packet.put("kS_Upper_Nominal", kS_UPPER_NOMINAL);
+//        packet.put("kS_Upper_Compensated", kS_upper_compensated);
+//        packet.put("kS_Lower_Nominal", kS_LOWER_NOMINAL);
+//        packet.put("kS_Lower_Compensated", kS_lower_compensated);
 
         FtcDashboard.getInstance().sendTelemetryPacket(packet);
 
