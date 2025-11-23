@@ -11,7 +11,7 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 public class Drivenations_FINAL_COMP_CODE extends LinearOpMode {
 //HAS SLOW MODE FOR ENDGAME (Doesn't work)
 
-    // Declare OpMode members.
+    //VARIABLE DECLARATIONS
 
     private DcMotor leftDrive = null;
     private DcMotor rightDrive = null;
@@ -28,6 +28,7 @@ public class Drivenations_FINAL_COMP_CODE extends LinearOpMode {
     private DcMotor upDrive = null;
     private DcMotor downDrive = null;
 
+//HARDWARE MAP DECLARATIONS
 
     @Override
     public void runOpMode() {
@@ -36,9 +37,6 @@ public class Drivenations_FINAL_COMP_CODE extends LinearOpMode {
         boolean drive1 = gamepad1.y;
         boolean turn = gamepad1.y;
 
-        // Initialize the hardware variables. Note that the strings used here as parameters
-        // to 'get' must correspond to the names assigned during the robot configuration
-        // step (using the FTC Robot Controller app on the phone).
         leftDrive = hardwareMap.get(DcMotor.class, "left_bottom");
         rightDrive = hardwareMap.get(DcMotor.class, "right_bottom");
         frontLeftDrive = hardwareMap.get(DcMotor.class, "left_top");
@@ -55,11 +53,6 @@ public class Drivenations_FINAL_COMP_CODE extends LinearOpMode {
         rightDrive.setDirection(DcMotor.Direction.FORWARD);
         upDrive = hardwareMap.get(DcMotor.class, "up");
         downDrive = hardwareMap.get(DcMotor.class, "down");
-
-
-        // Pushing the left stick forward MUST make robot go forward. So a       // To drive1 forward, most robots need the motor on one side to be reversed, because the axles point in opposite directions.
-        //djust these two lines based on your first test drive1.
-        // Note: The settings here assume direct drive1 on left and right wheels.  Gear Reduction or 90 Deg drives may require direction flips
         leftDrive.setDirection(DcMotor.Direction.FORWARD);
         rightDrive.setDirection(DcMotor.Direction.REVERSE);
         frontLeftDrive.setDirection(DcMotor.Direction.REVERSE);
@@ -69,12 +62,6 @@ public class Drivenations_FINAL_COMP_CODE extends LinearOpMode {
         runtime.reset();
         // run until the end of the match (driver presses STOP)
         while (opModeIsActive()) {
-
-            // Setup a variable for each drive1 wheel to save power level for telemetry
-            // Choose to drive1 using either Tank Mode, or POV Mode
-            // Comment out the method that's not used.  The default below is POV.
-            // POV Mode uses left stick to go forward, and right stick to turn.
-            // - This uses basic math to combine motions and is easier to drive1 straight.
             double drive2 = gamepad1.left_stick_y;
             double strafe = gamepad1.right_stick_x;
             double turn1 = -gamepad1.left_stick_x;
@@ -97,13 +84,6 @@ public class Drivenations_FINAL_COMP_CODE extends LinearOpMode {
             telemetry.addData("Status", "Initialized");
             telemetry.update();
 
-            // Initialize the hardware variables. Note that the strings used here as parameters
-            // to 'get' must correspond to the names assigned during the robot configuration
-            // step (using the FTC Robot Controller app on the phone).
-
-            // To drive1 forward, most robots need the motor on one side to be reversed, because the axles point in opposite directions.
-            // Pushing the left stick forward MUST make robot go forward. So adjust these two lines based on your first test drive1.
-            // Note: The settings here assume direct drive1 on left and right wheels.  Gear Reduction or 90 Deg drives may require direction flips
 
 
             double move = 0;
@@ -112,11 +92,43 @@ public class Drivenations_FINAL_COMP_CODE extends LinearOpMode {
             } else if (true) {
                 move = 0;
             }
+            double go = 0;
+            go = 0;
+            if (gamepad2.left_trigger > 0 || gamepad2.left_trigger < 0) {
+                go = -1 * speed;
+            } else if (true) {
+                go = 0;
+            }
+
+
+
+
 
             // Send calculated power to wheels
             leftIntake.setPower(move);
             rightIntake.setPower(move);
+            leftIntake.setPower(go);
+            rightIntake.setPower(go);
 
+            //SLOWMODE
+            if (gamepad1.b) {   
+                drive2 = 0.4;
+                strafe = 0.4;
+                turn1 = 0.4;
+                leftPower = 0.4;
+                rightPower = 0.4;
+                strafeLeftPower = 0.4;
+                strafeRightPower = 0.4;
+
+            } else if (gamepad1.a) {
+                drive2 = 1;
+                strafe = 1;
+                turn1 = 1;
+                leftPower = 1;
+                rightPower = 1;
+                strafeLeftPower = 1;
+                strafeRightPower = 1;
+            }
             // Show the elapsed game time and wheel power.
             telemetry.addData("Status", "Run Time: " + runtime.toString());
             telemetry.addData("Motors", "left (%.2f), right (%.2f)");
@@ -175,24 +187,6 @@ public class Drivenations_FINAL_COMP_CODE extends LinearOpMode {
             }
             else if (gamepad2.right_bumper) {
 
-            }
-            if (gamepad1.b) {
-                drive2 = 0.4;
-                strafe = 0.4;
-                turn1 = 0.4;
-                leftPower = 0.4;
-                rightPower = 0.4;
-                strafeLeftPower = 0.4;
-                strafeRightPower = 0.4;
-
-            } else if (gamepad1.a) {
-                drive2 = 1;
-                strafe = 1;
-                turn1 = 1;
-                leftPower = 1;
-                rightPower = 1;
-                strafeLeftPower = 1;
-                strafeRightPower = 1;
             }
 
             // Show the elapsed game time and wheel power.
