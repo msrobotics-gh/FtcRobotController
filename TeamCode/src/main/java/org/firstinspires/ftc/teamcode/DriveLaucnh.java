@@ -49,10 +49,10 @@ public class DriveLaucnh extends NextFTCOpMode {
 
     private PathChain pathOne;
 
-    public SequentialGroup commandGroup;
+//    public SequentialGroup commandGroup;
 
     @Override
-    public void onInit() {
+    public void onStartButtonPressed() {
         final Pose start = new Pose(0, 0, Math.toRadians(90));
         final Pose enddd = new Pose(0, 6, Math.toRadians(90));
         PedroComponent.follower().setStartingPose(start);
@@ -69,7 +69,7 @@ public class DriveLaucnh extends NextFTCOpMode {
 
 
 
-        commandGroup = new SequentialGroup(
+        new SequentialGroup(
                 Velauncher.INSTANCE.velaunch,
                 new Delay(Constants.AutonDelay / 2),
                 FlywheelGate.INSTANCE.open(),
@@ -96,28 +96,28 @@ public class DriveLaucnh extends NextFTCOpMode {
                 new Delay(Constants.AutonDelay * 1.5),
                 pathGo
 
-        );
+        ).schedule();
     }
 
 
-    @Override
-    public void onStartButtonPressed() {
+//    @Override
+//    public void onStartButtonPressed() {
+////
+////
+////        int counter = 0;
+////
+////        Command tele = new LambdaCommand() // lamb da command
+////            .setStart(() -> {
+////                TelemetryPacket packet = new TelemetryPacket();
+////                packet.put("Counter", counter);
+////                FtcDashboard.getInstance().sendTelemetryPacket(packet);
+////
+////            })
+////            .setIsDone(() -> true);
 //
 //
-//        int counter = 0;
-//
-//        Command tele = new LambdaCommand() // lamb da command
-//            .setStart(() -> {
-//                TelemetryPacket packet = new TelemetryPacket();
-//                packet.put("Counter", counter);
-//                FtcDashboard.getInstance().sendTelemetryPacket(packet);
-//
-//            })
-//            .setIsDone(() -> true);
-
-
-        commandGroup.schedule();
-    }
+//        commandGroup.schedule();
+//    }
 
     @Override
     public void onUpdate() {
