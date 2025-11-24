@@ -31,7 +31,7 @@ import dev.nextftc.extensions.pedro.TurnBy;
 import dev.nextftc.ftc.NextFTCOpMode;
 import dev.nextftc.ftc.components.BulkReadComponent;
 
-@Autonomous(name = "simple auton launch")
+@Autonomous(name = "AUTONOMOUS BLUE")
 public class DriveLaucnh extends NextFTCOpMode {
     public DriveLaucnh() {
         addComponents(
@@ -54,7 +54,7 @@ public class DriveLaucnh extends NextFTCOpMode {
     @Override
     public void onStartButtonPressed() {
         final Pose start = new Pose(0, 0, Math.toRadians(90));
-        final Pose enddd = new Pose(0, 6, Math.toRadians(90));
+        final Pose enddd = new Pose(0, Constants.AutonDistance, Math.toRadians(90));
         PedroComponent.follower().setStartingPose(start);
 //        final PathChain pathOne;
         pathOne = PedroComponent.follower().pathBuilder()
@@ -65,7 +65,7 @@ public class DriveLaucnh extends NextFTCOpMode {
                 .build();
 
         Command pathGo = new FollowPath(pathOne);
-        Command turnGo = new TurnBy(Angle.fromDeg(-18));
+        Command turnGo = new TurnBy(Angle.fromDeg(Constants.blueDegrees));
 
 
 
