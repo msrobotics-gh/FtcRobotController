@@ -35,7 +35,7 @@ public class TestAuton extends NextFTCOpMode {
     @Override
     public void onStartButtonPressed() {
         final Pose start = new Pose(0, 0, Math.toRadians(90));
-        final Pose enddd = new Pose(0, 6, Math.toRadians(90));
+        final Pose enddd = new Pose(0, Constants.AutonDistance, Math.toRadians(90));
         PedroComponent.follower().setStartingPose(start);
 //        final PathChain pathOne;
         pathOne = PedroComponent.follower().pathBuilder()
