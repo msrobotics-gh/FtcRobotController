@@ -42,7 +42,7 @@ public class ExampleAuton extends NextFTCOpMode {
 
     private Command autonomousRoutine() {
         return new SequentialGroup(
-                FlywheelGate.INSTANCE.openv2,
+                FlywheelGate.INSTANCE.open(),
                 new ParallelGroup(
                         Intake.INSTANCE.intake,
                         Intake.INSTANCE.intakesecond
@@ -52,7 +52,7 @@ public class ExampleAuton extends NextFTCOpMode {
                         Intake.INSTANCE.intakeoff,
                         Intake.INSTANCE.intakeoff2
                 ),
-                FlywheelGate.INSTANCE.closev2,
+                FlywheelGate.INSTANCE.close(),
                 Velauncher.INSTANCE.velaunch
         );
     }
