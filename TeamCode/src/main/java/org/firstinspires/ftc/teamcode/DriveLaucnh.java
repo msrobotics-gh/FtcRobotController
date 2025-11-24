@@ -65,7 +65,7 @@ public class DriveLaucnh extends NextFTCOpMode {
                 .build();
 
         Command pathGo = new FollowPath(pathOne);
-        Command turnGo = new TurnBy(Angle.fromDeg(Constants.blueDegrees));
+//        Command turnGo = new TurnBy(Angle.fromDeg(Constants.blueDegrees));
 
 
 
@@ -93,8 +93,8 @@ public class DriveLaucnh extends NextFTCOpMode {
                 FlywheelGate.INSTANCE.close(),
                 Velauncher.INSTANCE.unvelaunch,
 
-                new Delay(Constants.AutonDelay * 2),
-                turnGo,
+//                new Delay(Constants.AutonDelay * 2),
+//                turnGo,
                 new Delay(Constants.AutonDelay * 1.5),
                 pathGo
 
