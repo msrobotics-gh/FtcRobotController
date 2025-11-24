@@ -73,6 +73,8 @@ public class DriveLaucnh extends NextFTCOpMode {
                 Velauncher.INSTANCE.velaunch,
                 new Delay(Constants.AutonDelay / 2),
                 FlywheelGate.INSTANCE.open(),
+                new Delay(Constants.AutonDelay / 2),
+
 
                 Intake.INSTANCE.intake,
                 Intake.INSTANCE.intakesecond,
