@@ -44,15 +44,15 @@ public class FlywheelGate implements Subsystem {
 
 //    public Command open = new SetPosition(gateServoEx, 0.0);
 
-    public Command openv2 = new LambdaCommand()
-            .setStart(()-> { new SetPosition(gateServoEx, 0.0).start(); })
-            .setIsDone(() -> (gateServoEx.getPosition() < 0.1));
-
-//    public Command close = new SetPosition(gateServoEx, 0.3);
-
-    public Command closev2 = new LambdaCommand()
-            .setStart(()-> { new SetPosition(gateServoEx, 0.3).start(); })
-            .setIsDone(() -> (gateServoEx.getPosition() > 0.29));
+//    public Command openv2 = new LambdaCommand()
+//            .setStart(()-> { new SetPosition(gateServoEx, 0.0).start(); })
+//            .setIsDone(() -> (gateServoEx.getPosition() < 0.1));
+//
+////    public Command close = new SetPosition(gateServoEx, 0.3);
+//
+//    public Command closev2 = new LambdaCommand()
+//            .setStart(()-> { new SetPosition(gateServoEx, 0.3).start(); })
+//            .setIsDone(() -> (gateServoEx.getPosition() > 0.29));
 
     // SetPosition inherits class Command
 }

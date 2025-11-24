@@ -24,8 +24,10 @@ import dev.nextftc.core.commands.groups.SequentialGroup;
 import dev.nextftc.core.commands.utility.InstantCommand;
 import dev.nextftc.core.commands.utility.LambdaCommand;
 import dev.nextftc.core.components.SubsystemComponent;
+import dev.nextftc.core.units.Angle;
 import dev.nextftc.extensions.pedro.FollowPath;
 import dev.nextftc.extensions.pedro.PedroComponent;
+import dev.nextftc.extensions.pedro.TurnBy;
 import dev.nextftc.ftc.NextFTCOpMode;
 import dev.nextftc.ftc.components.BulkReadComponent;
 
@@ -35,8 +37,14 @@ public class DriveLaucnh extends NextFTCOpMode {
         addComponents(
             BulkReadComponent.INSTANCE,
             new PedroComponent(Constants::createFollower),
-            new SubsystemComponent(FlywheelGate.INSTANCE, Velauncher.INSTANCE, Intake.INSTANCE)
+            new SubsystemComponent(FlywheelGate.INSTANCE, Velauncher.INSTANCE)
         );
+    }
+
+    public void telem(String data) {
+        TelemetryPacket packet = new TelemetryPacket();
+        packet.put("TELEMETRY", data);
+        FtcDashboard.getInstance().sendTelemetryPacket(packet);
     }
 
     private PathChain pathOne;
@@ -56,40 +64,56 @@ public class DriveLaucnh extends NextFTCOpMode {
                 //.setConstantHeadingInterpolation(90.0)
                 .build();
 
+        Command pathGo = new FollowPath(pathOne);
+        Command turnGo = new TurnBy(Angle.fromDeg(-18));
+
 
 
         commandGroup = new SequentialGroup(
-            FlywheelGate.INSTANCE.openv2,
-            new InstantCommand(()->{
-                TelemetryPacket packet = new TelemetryPacket();
-                packet.put("STATUS", "GATE ON");
-                FtcDashboard.getInstance().sendTelemetryPacket(packet);
-            }),
-            new Delay(Constants.AutonDelay * 8),
-            new InstantCommand(()->{
-                TelemetryPacket packet = new TelemetryPacket();
-                packet.put("STATUS", "GATE OFF");
-                FtcDashboard.getInstance().sendTelemetryPacket(packet);
-            }),
-            FlywheelGate.INSTANCE.closev2
+                Velauncher.INSTANCE.velaunch,
+                new Delay(Constants.AutonDelay / 2),
+                FlywheelGate.INSTANCE.open(),
+
+                Intake.INSTANCE.intake,
+                Intake.INSTANCE.intakesecond,
+                new Delay(Constants.AutonDelay),
+                Intake.INSTANCE.intakeoff,
+                Intake.INSTANCE.intakeoff2,
+
+                new Delay(Constants.AutonDelay * 2),
+
+                Intake.INSTANCE.intake,
+                Intake.INSTANCE.intakesecond,
+                new Delay(Constants.AutonDelay),
+                Intake.INSTANCE.intakeoff,
+                Intake.INSTANCE.intakeoff2,
+
+                FlywheelGate.INSTANCE.close(),
+                Velauncher.INSTANCE.unvelaunch,
+
+                new Delay(Constants.AutonDelay * 2),
+                turnGo,
+                new Delay(Constants.AutonDelay * 1.5),
+                pathGo
+
         );
     }
 
 
     @Override
     public void onStartButtonPressed() {
-        Command pathGo = new FollowPath(pathOne);
-
-        int counter = 0;
-
-        Command tele = new LambdaCommand() // lamb da command
-            .setStart(() -> {
-                TelemetryPacket packet = new TelemetryPacket();
-                packet.put("Counter", counter);
-                FtcDashboard.getInstance().sendTelemetryPacket(packet);
-
-            })
-            .setIsDone(() -> true);
+//
+//
+//        int counter = 0;
+//
+//        Command tele = new LambdaCommand() // lamb da command
+//            .setStart(() -> {
+//                TelemetryPacket packet = new TelemetryPacket();
+//                packet.put("Counter", counter);
+//                FtcDashboard.getInstance().sendTelemetryPacket(packet);
+//
+//            })
+//            .setIsDone(() -> true);
 
 
         commandGroup.schedule();
