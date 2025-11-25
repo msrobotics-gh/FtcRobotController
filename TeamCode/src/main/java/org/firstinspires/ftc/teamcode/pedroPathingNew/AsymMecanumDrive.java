@@ -67,19 +67,22 @@ public class AsymMecanumDrive extends Drivetrain {
     private double turnScaleFront, turnScaleRear;
 
     private void calculateMovementVectors() {
-        // For asymmetric mecanum, calculate the distance from each wheel to the robot center
-        // This affects the turning moment arm - wheels farther from center contribute more to rotation
+        // For asymmetric mecanum, calculate scaling factors for turning
+        // Wheels farther from center create more torque, so they need LESS power for balanced rotation
+        // Use the average track width as the baseline, then scale relative to that
 
         double halfLength = constants.halfLengthX;
         double halfWidthF = constants.halfWidthFront;
         double halfWidthR = constants.halfWidthRear;
 
+        // Calculate the effective radius for each axle (distance from center to wheel)
         double radiusFront = Math.sqrt(halfLength * halfLength + halfWidthF * halfWidthF);
         double radiusRear = Math.sqrt(halfLength * halfLength + halfWidthR * halfWidthR);
 
+        // Use average radius as baseline, scale inversely for balanced turning
         double avgRadius = (radiusFront + radiusRear) / 2.0;
-        turnScaleFront = avgRadius / radiusFront;
-        turnScaleRear = avgRadius / radiusRear;
+        turnScaleFront = avgRadius / radiusFront;  // < 1.0 for wider front
+        turnScaleRear = avgRadius / radiusRear;    // > 1.0 for narrower rear
 
         // Mecanum wheel force vectors (normalized for 45° rollers)
         // Vector constructor takes (magnitude, theta) where theta is in radians
@@ -117,17 +120,19 @@ public class AsymMecanumDrive extends Drivetrain {
         }
 
         // Calculate wheel powers using asymmetric mecanum kinematics
-        // Scale turning by distance from center (moment arm) for each wheel
-        // Front wheels use radiusFront, rear wheels use radiusRear
-        // For asymetric drivetrain, need to account for different track widths
-        // Wider wheels need less power for the same lateral velocity contribution
-        double strafeScaleFront =  constants.halfWidthRear / constants.halfWidthFront;
+        // For asymmetric drivetrains with different track widths:
+        // - Wider wheels (farther from center) create more torque for the same power
+        // - To prevent rotation during pure strafing, wider wheels need LESS strafe power
+        // - Same principle applies to turning: wider wheels need LESS turn power
+        double strafeScaleFront = constants.halfWidthRear / constants.halfWidthFront;  // < 1.0 for wider front
         double strafeScaleRear = 1.0;
 
+        // Apply balanced turning: scale inversely to radius to prevent rotation about wrong point
+        // Note: Positive Y = strafe right in Pedro Pathing coordinate system
         double lfPower = xRobot - yRobot * strafeScaleFront + turn * turnScaleFront;
         double lrPower = xRobot + yRobot * strafeScaleRear + turn * turnScaleRear;
         double rfPower = xRobot + yRobot * strafeScaleFront - turn * turnScaleFront;
-        double rrPower = xRobot - yRobot *strafeScaleRear - turn * turnScaleRear;
+        double rrPower = xRobot - yRobot * strafeScaleRear - turn * turnScaleRear;
 
         // Find maximum absolute power
         double maxPower = Math.max(
@@ -262,9 +267,9 @@ public class AsymMecanumDrive extends Drivetrain {
     @Override
     public String debugString() {
         return String.format(
-            "AsymMecanumDrive[LF:%.2f LR:%.2f RF:%.2f RR:%.2f | V:%.1f/%.1f | xVel:%.2f yVel:%.2f]",
+            "AsymMecanumDrive[LF:%.2f LR:%.2f RF:%.2f RR:%.2f | V:%.1f/%.1f | TurnScale F:%.3f R:%.3f | xVel:%.2f yVel:%.2f]",
             leftFront.getPower(), leftRear.getPower(), rightFront.getPower(), rightRear.getPower(),
-            getVoltage(), nominalVoltage, xVelocity, yVelocity
+            getVoltage(), nominalVoltage, turnScaleFront, turnScaleRear, xVelocity, yVelocity
         );
     }
 }

@@ -49,6 +49,7 @@ public class DriveLaucnh extends NextFTCOpMode {
 
     private PathChain pathOne;
 
+<<<<<<< HEAD
 //    public SequentialGroup commandGroup;
 
     @Override
@@ -144,8 +145,31 @@ public class DriveLaucnh extends NextFTCOpMode {
 //                FtcDashboard.getInstance().sendTelemetryPacket(packet);
 //            }),
 //            new Delay(Constants.AutonDelay),
+=======
 
-//                tele,
+    public Command firstRoutine() {
+        Command pathGo = new FollowPath(pathOne);
+        return new SequentialGroup(
+
+                Velauncher.INSTANCE.velaunch,
+                Intake.INSTANCE.intake,
+                Intake.INSTANCE.intakesecond,
+                new InstantCommand(() -> {
+                    TelemetryPacket packet = new TelemetryPacket();
+                    packet.put("STATUS", "About to open gate");
+                    packet.put("Servo position before", FlywheelGate.INSTANCE.gateServo.getPosition());
+                    FtcDashboard.getInstance().sendTelemetryPacket(packet);
+                }),
+                FlywheelGate.INSTANCE.open(),
+                new InstantCommand(() -> {
+                    TelemetryPacket packet = new TelemetryPacket();
+                    packet.put("STATUS", "Gate opened");
+                    packet.put("Servo position after", FlywheelGate.INSTANCE.gateServo.getPosition());
+                    FtcDashboard.getInstance().sendTelemetryPacket(packet);
+                })
+                //pathGo
+>>>>>>> 3075e38c8fa1cd71d3abdf0e308b3ed965f4f079
+
 //
 //                new ParallelGroup(
 //                        Intake.INSTANCE.intake, // ball one
@@ -180,4 +204,61 @@ public class DriveLaucnh extends NextFTCOpMode {
 //                        FlywheelGate.INSTANCE.close(),
 //                        Velauncher.INSTANCE.unvelaunch
 //                ),
+<<<<<<< HEAD
 //                 pathGo
+=======
+//                 pathGo
+        );
+    }
+
+    @Override
+    public void onStartButtonPressed() {
+        final Pose start = new Pose(0, 0, Math.toRadians(90));
+        final Pose enddd = new Pose(0, 18, Math.toRadians(90));
+        PedroComponent.follower().setStartingPose(start);
+//        final PathChain pathOne;
+        pathOne = PedroComponent.follower().pathBuilder()
+            .addPath(new BezierLine(start, enddd))
+            .setLinearHeadingInterpolation(start.getHeading(), enddd.getHeading())
+            .setVelocityConstraint(5)
+            //.setConstantHeadingInterpolation(90.0)
+            .build();
+        Command pathGo = new FollowPath(pathOne);
+
+        int counter = 0;
+
+
+        Command tele = new LambdaCommand() // lamb da command
+            .setStart(() -> {
+                TelemetryPacket packet = new TelemetryPacket();
+                packet.put("Counter", counter);
+                FtcDashboard.getInstance().sendTelemetryPacket(packet);
+
+            })
+            .setIsDone(() -> true);
+
+        firstRoutine().invoke();
+
+
+//        pathGo.schedule();
+
+        //Velauncher.INSTANCE.velaunch.schedule();
+        //new Delay(0.5).schedule();
+        //FlywheelGate.INSTANCE.open().schedule();
+        //Intake.INSTANCE.intake.schedule();
+        //Intake.INSTANCE.intakesecond.schedule();
+
+    }
+
+    @Override
+    public void onUpdate() {
+//        TelemetryPacket packet = new TelemetryPacket();
+//
+//        // Main measurements
+//        packet.put("robot x", PedroComponent.follower().getPose().getX());
+//        packet.put("robot y", PedroComponent.follower().getPose().getY());
+//
+//        FtcDashboard.getInstance().sendTelemetryPacket(packet);
+    }
+}
+>>>>>>> 3075e38c8fa1cd71d3abdf0e308b3ed965f4f079

@@ -27,8 +27,13 @@ public class FlywheelGate implements Subsystem {
     public void initialize() {
         gateServo = ActiveOpMode.hardwareMap().get(Servo.class, name);
         gateServoEx = new ServoEx(gateServo);
+<<<<<<< HEAD
         gateServoEx.setPosition(0.3);
+=======
+        gateServoEx.setPosition(0.3);  // Set through ServoEx so cache is updated
+>>>>>>> 3075e38c8fa1cd71d3abdf0e308b3ed965f4f079
     }
+
 
 
     public Command open() {
