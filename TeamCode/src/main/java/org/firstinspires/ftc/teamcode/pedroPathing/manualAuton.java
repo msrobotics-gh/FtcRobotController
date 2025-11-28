@@ -3,6 +3,7 @@ package org.firstinspires.ftc.teamcode.pedroPathing;
 import static dev.nextftc.extensions.pedro.PedroComponent.follower;
 
 import com.acmerobotics.dashboard.config.Config;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
 import org.firstinspires.ftc.teamcode.subsystems.Auto;
@@ -14,6 +15,7 @@ import dev.nextftc.ftc.NextFTCOpMode;
 
 @TeleOp(name = "why do all good ftc libraries have absolutely horrendous documentation", group = "TeleOp")
 @Config
+@Disabled
 public class manualAuton extends NextFTCOpMode {
     public manualAuton() {
         addComponents(

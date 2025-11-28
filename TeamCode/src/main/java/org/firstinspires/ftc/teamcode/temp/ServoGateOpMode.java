@@ -2,6 +2,7 @@ package org.firstinspires.ftc.teamcode.temp;
 
 import static dev.nextftc.bindings.Bindings.button;
 
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
 import org.firstinspires.ftc.teamcode.subsystems.FlywheelGate;
@@ -14,6 +15,7 @@ import dev.nextftc.ftc.NextFTCOpMode;
 import dev.nextftc.ftc.components.BulkReadComponent;
 
 @TeleOp(name = "ServoGateOpMode")
+@Disabled
 public class ServoGateOpMode extends NextFTCOpMode {
 
 

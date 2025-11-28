@@ -29,6 +29,7 @@
 
 package org.firstinspires.ftc.teamcode;
 
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
@@ -47,7 +48,7 @@ import dev.nextftc.hardware.impl.MotorEx;
  * Remove or comment out the @Disabled line to add this OpMode to the Driver Station OpMode list
  */
 @TeleOp(name = "Concept: Ramp Motor Speed", group = "Concept")
-
+@Disabled
 public class MotorSpeedTest extends LinearOpMode {
 
     static final double INCREMENT   = 0.01;     // amount to ramp motor each CYCLE_MS cycle

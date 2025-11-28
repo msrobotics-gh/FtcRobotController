@@ -7,6 +7,7 @@ import com.acmerobotics.dashboard.config.Config;
 import com.pedropathing.follower.Follower;
 import com.pedropathing.geometry.Pose;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
@@ -14,6 +15,7 @@ import org.firstinspires.ftc.teamcode.pedroPathing.Constants;
 
 @Autonomous(name = "dashboard control", group = "Deprecated")
 @Config
+@Disabled
 public class taaa extends OpMode {
     FtcDashboard dashboard = FtcDashboard.getInstance();
     Telemetry dtelemetry = dashboard.getTelemetry();

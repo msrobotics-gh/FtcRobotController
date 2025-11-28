@@ -2,6 +2,7 @@ package org.firstinspires.ftc.teamcode;
 
 import com.acmerobotics.dashboard.config.Config;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 
 import org.firstinspires.ftc.teamcode.pedroPathing.Constants;
 import org.firstinspires.ftc.teamcode.subsystems.Auto;
@@ -19,6 +20,7 @@ import dev.nextftc.ftc.NextFTCOpMode;
 
 @Autonomous(name = "DONT RUN - AUTON RED ALLIANCE", group = "Autonomous")
 @Config
+@Disabled
 public class DriveLaunchRed extends NextFTCOpMode {
     public DriveLaunchRed() {
         addComponents(

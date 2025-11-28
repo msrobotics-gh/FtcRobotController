@@ -130,7 +130,7 @@ public class DriveLaucnh extends NextFTCOpMode {
             })
             .setIsDone(() -> true);
 
-        firstRoutine().invoke();
+        firstRoutine().schedule();
 
 
 //        pathGo.schedule();

@@ -12,6 +12,7 @@ import com.pedropathing.geometry.Pose;
 import com.pedropathing.paths.PathChain;
 import com.pedropathing.paths.PathConstraints;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
@@ -49,6 +50,7 @@ import java.util.List;
  */
 @Autonomous(name = "apriltag 2", group = "Autonomous")
 @Config
+@Disabled
 public class taaaa extends OpMode {
 
     // ========== CONFIGURATION (Dashboard-editable) ==========

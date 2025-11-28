@@ -9,6 +9,7 @@ import com.pedropathing.geometry.BezierLine;
 import com.pedropathing.geometry.Pose;
 import com.pedropathing.util.Timer;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.pedropathing.paths.PathChain;
 
@@ -29,6 +30,7 @@ import java.util.List;
 
 @Autonomous(name = "aimbot >:D", group = "Autonomous")
 @Config
+@Disabled
 public class aimbot extends OpMode {
 
     FtcDashboard dashboard = FtcDashboard.getInstance();

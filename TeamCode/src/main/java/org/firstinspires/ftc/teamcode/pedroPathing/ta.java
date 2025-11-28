@@ -9,12 +9,14 @@ import com.pedropathing.paths.Path;
 import com.pedropathing.paths.PathChain;
 import com.pedropathing.util.Timer;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 
 @Autonomous(name = "bartholomew is back", group = "Autonomous")
 @Config // 7.44688232853678 // 0.1357132846203596 // 0.09280719038382527
+@Disabled
 public class ta extends OpMode {
 
     FtcDashboard dashboard = FtcDashboard.getInstance();
