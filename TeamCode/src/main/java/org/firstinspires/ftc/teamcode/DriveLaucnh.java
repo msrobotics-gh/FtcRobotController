@@ -39,7 +39,7 @@ public class DriveLaucnh extends NextFTCOpMode {
     public int commandNumber = 0;
 
 
-    public Command firstRoutine() {
+    public Command auto() {
         Command pathGo = new FollowPath(pathOne);
         Command incr = new InstantCommand(()->{
             commandNumber++;
@@ -129,7 +129,7 @@ public class DriveLaucnh extends NextFTCOpMode {
 //            })
 //            .setIsDone(() -> true);
 
-        firstRoutine().schedule();
+        auto().schedule();
 
 
 //        pathGo.schedule();
