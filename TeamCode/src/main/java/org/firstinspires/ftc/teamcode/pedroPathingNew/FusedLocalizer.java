@@ -36,7 +36,8 @@ public class FusedLocalizer implements Localizer {
 
     // Fusion parameters
     private double otosWeight = 0.7;           // Trust OTOS 70% by default
-    private double encoderWeight = 0.3;        // Trust encoders 30% by default
+
+    private double encoderWeight = 1.0 - otosWeight;        // Trust encoders 30% by default
     private boolean useAprilTagCorrection = false;
 
     // Outlier detection
@@ -89,7 +90,7 @@ public class FusedLocalizer implements Localizer {
      */
     public void setFusionWeights(double otosWeight) {
         this.otosWeight = Math.max(0.0, Math.min(1.0, otosWeight));
-        this.encoderWeight = 1.0 - this.otosWeight;
+        this.encoderWeight = 1.0 - this.otosWeight; // WOAH ITS HERE AGAIN
     }
 
     @Override
