@@ -1,10 +1,13 @@
 package org.firstinspires.ftc.teamcode.pedroPathing;
 
+import com.pedropathing.control.PIDFCoefficients;
 import com.pedropathing.follower.Follower;
 import com.pedropathing.follower.FollowerConstants;
 import com.pedropathing.ftc.FollowerBuilder;
-import com.pedropathing.ftc.localization.Localizer;
-import com.pedropathing.ftc.localization.constants.DriveEncoderLocalizerConstants;
+import com.pedropathing.ftc.localization.Encoder;
+//import com.pedropathing.ftc.localization.Localizer;
+import com.pedropathing.ftc.localization.constants.DriveEncoderConstants;
+//import com.pedropathing.ftc.localization.constants.DriveEncoderLocalizerConstants;
 import com.pedropathing.ftc.localization.constants.OTOSConstants;
 import com.pedropathing.ftc.localization.localizers.DriveEncoderLocalizer;
 import com.pedropathing.ftc.localization.localizers.OTOSLocalizer;
@@ -30,35 +33,39 @@ public class ConstantsFused {
     public static int AutonDistance = 72;
 
     // Drive encoder constants (backup localizer)
-    public static DriveEncoderLocalizerConstants encoderConstants = new DriveEncoderLocalizerConstants()
+    public static DriveEncoderConstants encoderConstants = new DriveEncoderConstants()
             // Motor names (must match your hardware config)
-            .setLeftFrontMotorName("front_left")
-            .setLeftRearMotorName("back_left")
-            .setRightFrontMotorName("front_right")
-            .setRightRearMotorName("back_right")
+            .leftFrontMotorName("front_left")
+            .leftRearMotorName("back_left")
+            .rightFrontMotorName("front_right")
+            .rightRearMotorName("back_right")
 
             // Motor directions (should match AsymMecanumDriveConstants)
-            .setLeftFrontMotorDirection(DcMotorSimple.Direction.FORWARD)
-            .setLeftRearMotorDirection(DcMotorSimple.Direction.REVERSE)
-            .setRightFrontMotorDirection(DcMotorSimple.Direction.REVERSE)
-            .setRightRearMotorDirection(DcMotorSimple.Direction.REVERSE)
+            .leftFrontEncoderDirection(Encoder.FORWARD)
+            .leftRearEncoderDirection(Encoder.REVERSE)
+            .rightFrontEncoderDirection(Encoder.REVERSE)
+            .rightRearEncoderDirection(Encoder.REVERSE)
 
             // Robot geometry (must match AsymMecanumDriveConstants)
-            .setXMultiplier(1.0)    // Tune: forward encoder ticks to inches
-            .setYMultiplier(1.0)    // Tune: lateral encoder ticks to inches
+//            .xVelocity(1.0)    // Tune: forward encoder ticks to inches
+//            .setYMultiplier(1.0)    // Tune: lateral encoder ticks to inches
 
             // Track widths for mecanum kinematics
-            .setForwardTicksToInches(1.0 / 537.7)  // GoBILDA 5203 312 RPM: 537.7 ticks/rev
-            .setLateralTicksToInches(1.0 / 537.7)
-            .setTrackWidth(AsymMecanumDriveConstants.defaults().halfWidthFront * 2)  // Use front width
-            .setWheelRadius(AsymMecanumDriveConstants.defaults().wheelRadiusMeters * 39.3701); // Convert to inches
+            .forwardTicksToInches(1.0 / 537.7)  // GoBILDA 5203 312 RPM: 537.7 ticks/rev
+            .strafeTicksToInches(1.0 / 537.7)
+//            .setTrackWidth(AsymMecanumDriveConstants.defaults().halfWidthFront * 2)  // Use front width
+//            .setWheelRadius(AsymMecanumDriveConstants.defaults().wheelRadiusMeters * 39.3701); // Convert to inches
+            .robotLength(10.25)
+            .robotWidth(6.5);
+
+
 
     public static FollowerConstants followerConstants = new FollowerConstants()
             .mass(12)
             // Heading PID tuning for asymmetric mecanum
-            .headingPIDF(0.5, 0, 0, 0.01)
-            .secondaryHeadingPIDF(2.0, 0, 0.05, 0.01)
-            .headingErrorThreshold(Math.PI / 20);
+            .headingPIDFCoefficients(new PIDFCoefficients(0.5, 0, 0, 0.01))
+            .secondaryHeadingPIDFCoefficients(new PIDFCoefficients(2.0, 0, 0.05, 0.01))
+            .turnHeadingErrorThreshold(Math.PI / 20);
 
     public static PathConstraints pathConstraints = new PathConstraints(
             0.99, 100, 1, 1

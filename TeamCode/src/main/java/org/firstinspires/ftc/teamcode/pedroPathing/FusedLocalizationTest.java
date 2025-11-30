@@ -1,6 +1,7 @@
 package org.firstinspires.ftc.teamcode.pedroPathing;
 
 import com.pedropathing.follower.Follower;
+import com.pedropathing.geometry.Pose;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
@@ -85,7 +86,7 @@ public class FusedLocalizationTest extends OpMode {
 
         // Reset on B button
         if (gamepad1.b) {
-            follower.setPose(follower.getStartingPose());
+            follower.setPose(new Pose(0,0,0));
             telemetry.addData("Action", "Position Reset!");
         }
 
