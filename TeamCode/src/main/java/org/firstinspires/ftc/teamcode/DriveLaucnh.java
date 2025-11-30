@@ -28,9 +28,7 @@ public class DriveLaucnh extends NextFTCOpMode {
         addComponents(
             BulkReadComponent.INSTANCE,
             new PedroComponent(Constants::createFollower),
-            new SubsystemComponent(FlywheelGate.INSTANCE),
-            new SubsystemComponent(Velauncher.INSTANCE),
-            new SubsystemComponent(Intake.INSTANCE)
+            new SubsystemComponent(FlywheelGate.INSTANCE, Velauncher.INSTANCE, Intake.INSTANCE)
         );
     }
 
