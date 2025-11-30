@@ -41,9 +41,7 @@ public class DriveLaucnh extends NextFTCOpMode {
 
     public Command auto() {
         Command pathGo = new FollowPath(pathOne);
-        Command incr = new InstantCommand(()->{
-            commandNumber++;
-        });
+        Command incr = new InstantCommand(()->commandNumber++);
 
         return new SequentialGroup(
 
@@ -63,7 +61,7 @@ public class DriveLaucnh extends NextFTCOpMode {
                     packet.put("Servo position after", FlywheelGate.INSTANCE.gateServo.getPosition());
                     FtcDashboard.getInstance().sendTelemetryPacket(packet);
                 }), incr
-                //pathGo
+                //pathGo, incr
 
 //
 //                new ParallelGroup(
