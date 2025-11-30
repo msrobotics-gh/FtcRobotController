@@ -9,8 +9,8 @@ import com.pedropathing.ftc.localization.constants.OTOSConstants;
 import com.qualcomm.hardware.sparkfun.SparkFunOTOS;
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
-import org.firstinspires.ftc.teamcode.pedroPathingNew.AsymMecanumDrive;
-import org.firstinspires.ftc.teamcode.pedroPathingNew.AsymMecanumDriveConstants;
+import org.firstinspires.ftc.teamcode.pedroPathing.asymDrive.AsymMecanumDrive;
+import org.firstinspires.ftc.teamcode.pedroPathing.asymDrive.AsymMecanumDriveConstants;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
 public class Constants {

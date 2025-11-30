@@ -27,7 +27,7 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.firstinspires.ftc.teamcode.temp;
+package org.firstinspires.ftc.teamcode.deprecated.temp;
 
 import android.util.Size;
 
@@ -66,9 +66,9 @@ import java.util.List;
  * Use Android Studio to Copy this Class, and Paste it into your team's code folder with a new name.
  * Remove or comment out the @Disabled line to add this OpMode to the Driver Station OpMode list.
  */
-@TeleOp(name = "fml", group = "Concept")
+@TeleOp(name = "AprilTag Localization", group = "Concept")
 @Disabled
-public class aprilTagLocalizationB extends LinearOpMode {
+public class AprilTagLocalization extends LinearOpMode {
 
     private static final boolean USE_WEBCAM = true;  // true for webcam, false for phone camera
 
@@ -236,10 +236,6 @@ public class aprilTagLocalizationB extends LinearOpMode {
                             detection.robotPose.getOrientation().getPitch(AngleUnit.DEGREES),
                             detection.robotPose.getOrientation().getRoll(AngleUnit.DEGREES),
                             detection.robotPose.getOrientation().getYaw(AngleUnit.DEGREES)));
-                    telemetry.addLine(String.format("bearing: %5.2f | yaw: %5.2f",
-                            detection.ftcPose.bearing,
-                            detection.ftcPose.yaw));
-//                    telemetry.addLine("> ", detection.ftcPose.yaw);
                 }
             } else {
                 telemetry.addLine(String.format("\n==== (ID %d) Unknown", detection.id));

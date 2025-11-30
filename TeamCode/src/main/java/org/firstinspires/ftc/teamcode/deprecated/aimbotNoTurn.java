@@ -1,9 +1,9 @@
-package org.firstinspires.ftc.teamcode.pedroPathing;
+package org.firstinspires.ftc.teamcode.deprecated;
 
-import static java.lang.Thread.sleep;
+import android.util.Size;
 
-import com.acmerobotics.dashboard.config.Config;
 import com.acmerobotics.dashboard.FtcDashboard;
+import com.acmerobotics.dashboard.config.Config;
 import com.pedropathing.follower.Follower;
 import com.pedropathing.geometry.BezierLine;
 import com.pedropathing.geometry.Pose;
@@ -11,9 +11,6 @@ import com.pedropathing.util.Timer;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
-import com.pedropathing.paths.PathChain;
-
-import android.util.Size;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
@@ -22,6 +19,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.Pose3D;
 import org.firstinspires.ftc.robotcore.external.navigation.Position;
 import org.firstinspires.ftc.robotcore.external.navigation.YawPitchRollAngles;
+import org.firstinspires.ftc.teamcode.pedroPathing.Constants;
 import org.firstinspires.ftc.vision.VisionPortal;
 import org.firstinspires.ftc.vision.apriltag.AprilTagDetection;
 import org.firstinspires.ftc.vision.apriltag.AprilTagProcessor;
@@ -31,7 +29,7 @@ import java.util.List;
 @Autonomous(name = "aimbot >:D", group = "Autonomous")
 @Config
 @Disabled
-public class aimbot extends OpMode {
+public class aimbotNoTurn extends OpMode {
 
     FtcDashboard dashboard = FtcDashboard.getInstance();
     Telemetry dashboardTelemetry = dashboard.getTelemetry();
@@ -39,11 +37,11 @@ public class aimbot extends OpMode {
     public static double rotation = 0.0;
     public static double rotationTarget = 90.0;
     public static boolean cInterval = true;
-    public static boolean turnDeg = true;
+    public final static boolean turnDeg = true;
 
-    private final int initialX = 72;
-    private final int initialY = 72;
-    private final int initialR = 90;
+    public static int initialX = 72;
+    public static int initialY = 72;
+    public static int initialR = 90;
     public final int initialRotationYaw = 0;
     public static double correctionInterval = 1000.0;
     private double currRobotYaw = 0.0;
@@ -166,7 +164,13 @@ public class aimbot extends OpMode {
         if (turnDeg) {
             dashboardTelemetry.addLine("turning by degrees");
             telemetry.addLine("turning by degrees");
-            follower.turn(rotation, true);
+            follower.followPath(
+                    follower.pathBuilder()
+                            .addPath(new BezierLine(new Pose(initialX, initialY, Math.toRadians(follower.getPose().getHeading())), new Pose(initialX,initialY,Math.toRadians(rotation))))
+                            .setConstantHeadingInterpolation(rotation)
+                            .build()
+            );
+//            follower.turn(rotation, true);
         } else {
             dashboardTelemetry.addLine("turning to degrees");
             telemetry.addLine("turning to degrees");

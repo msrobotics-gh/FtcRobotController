@@ -5,8 +5,6 @@ import com.pedropathing.geometry.Pose;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
-import org.firstinspires.ftc.teamcode.pedroPathingNew.FusedLocalizer;
-
 /**
  * Test OpMode for fused localization.
  * Shows real-time sensor fusion status and reliability metrics.

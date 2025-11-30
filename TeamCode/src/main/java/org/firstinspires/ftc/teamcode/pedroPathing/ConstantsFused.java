@@ -13,14 +13,12 @@ import com.pedropathing.ftc.localization.localizers.DriveEncoderLocalizer;
 import com.pedropathing.ftc.localization.localizers.OTOSLocalizer;
 import com.pedropathing.paths.PathConstraints;
 import com.qualcomm.hardware.sparkfun.SparkFunOTOS;
-import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
-import org.firstinspires.ftc.teamcode.pedroPathingNew.AsymMecanumDrive;
-import org.firstinspires.ftc.teamcode.pedroPathingNew.AsymMecanumDriveConstants;
-import org.firstinspires.ftc.teamcode.pedroPathingNew.FusedLocalizer;
+import org.firstinspires.ftc.teamcode.pedroPathing.asymDrive.AsymMecanumDrive;
+import org.firstinspires.ftc.teamcode.pedroPathing.asymDrive.AsymMecanumDriveConstants;
 
 /**
  * Constants for multi-sensor fusion setup.
