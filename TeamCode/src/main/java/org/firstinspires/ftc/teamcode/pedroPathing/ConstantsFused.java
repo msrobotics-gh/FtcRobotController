@@ -75,7 +75,7 @@ public class ConstantsFused {
             .hardwareMapName("otos")
             .linearUnit(DistanceUnit.INCH)
             .angleUnit(AngleUnit.RADIANS)
-            .offset(new SparkFunOTOS.Pose2D(-7.5, 0.5, Math.toRadians(90)))
+            .offset(new SparkFunOTOS.Pose2D(-7.5, 0.5, Math.toRadians(90))) // AngleUnit.toRadians()?
             .linearScalar(2.325)
             .angularScalar(0.9961);
 
@@ -99,6 +99,7 @@ public class ConstantsFused {
         fusedLocalizer.setFusionWeights(0.7);
 
         // TODO: Enable AprilTag correction if you have a camera
+        // im good
         // fusedLocalizer.enableAprilTagCorrection(aprilTagProcessor);
 
         return new FollowerBuilder(followerConstants, hw)
