@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.pedroPathing;
+package org.firstinspires.ftc.teamcode.autonomous;
 
 import com.pedropathing.control.PIDFCoefficients;
 import com.pedropathing.follower.Follower;
@@ -17,8 +17,8 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
-import org.firstinspires.ftc.teamcode.pedroPathing.asymDrive.AsymMecanumDrive;
-import org.firstinspires.ftc.teamcode.pedroPathing.asymDrive.AsymMecanumDriveConstants;
+import org.firstinspires.ftc.teamcode.autonomous.asymDrive.AsymMecanumDrive;
+import org.firstinspires.ftc.teamcode.autonomous.asymDrive.AsymMecanumDriveConstants;
 
 /**
  * Constants for multi-sensor fusion setup.

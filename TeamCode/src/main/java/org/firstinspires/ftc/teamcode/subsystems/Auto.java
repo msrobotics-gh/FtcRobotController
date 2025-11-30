@@ -1,28 +1,18 @@
 package org.firstinspires.ftc.teamcode.subsystems;
 
-import com.acmerobotics.dashboard.FtcDashboard;
 import com.pedropathing.geometry.BezierLine;
 import com.pedropathing.geometry.Pose;
 import com.pedropathing.paths.PathChain;
-import com.pedropathing.follower.Follower;
 
-import org.firstinspires.ftc.robotcore.external.Const;
-import org.firstinspires.ftc.robotcore.external.Telemetry;
-import org.firstinspires.ftc.teamcode.pedroPathing.Constants;
+import org.firstinspires.ftc.teamcode.autonomous.Constants;
 
-import dev.nextftc.control.ControlSystem;
 import dev.nextftc.core.commands.Command;
-import dev.nextftc.core.commands.CommandManager;
 import dev.nextftc.core.subsystems.Subsystem;
 import dev.nextftc.core.units.Angle;
 import dev.nextftc.extensions.pedro.FollowPath;
 import dev.nextftc.extensions.pedro.TurnTo;
-import dev.nextftc.ftc.ActiveOpMode;
-import dev.nextftc.hardware.controllable.RunToPosition;
-import dev.nextftc.hardware.impl.MotorEx;
-import static dev.nextftc.extensions.pedro.PedroComponent.follower;
 
-import com.qualcomm.robotcore.hardware.HardwareMap;
+import static dev.nextftc.extensions.pedro.PedroComponent.follower;
 
 //
 

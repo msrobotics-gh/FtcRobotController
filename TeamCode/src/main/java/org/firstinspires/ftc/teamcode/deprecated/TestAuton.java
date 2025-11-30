@@ -8,7 +8,7 @@ import com.pedropathing.paths.PathChain;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 
-import org.firstinspires.ftc.teamcode.pedroPathing.Constants;
+import org.firstinspires.ftc.teamcode.autonomous.Constants;
 
 import dev.nextftc.core.commands.Command;
 import dev.nextftc.extensions.pedro.FollowPath;

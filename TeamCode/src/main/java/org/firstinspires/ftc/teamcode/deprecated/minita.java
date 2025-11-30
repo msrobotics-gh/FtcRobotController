@@ -12,7 +12,7 @@ import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
-import org.firstinspires.ftc.teamcode.pedroPathing.Constants;
+import org.firstinspires.ftc.teamcode.autonomous.Constants;
 
 @Autonomous(name = "bartholomew is back again", group = "Deprecated")
 @Config // 7.44688232853678 // 0.1357132846203596 // 0.09280719038382527

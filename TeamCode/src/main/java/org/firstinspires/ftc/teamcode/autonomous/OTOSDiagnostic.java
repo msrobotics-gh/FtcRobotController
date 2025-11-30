@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.pedroPathing;
+package org.firstinspires.ftc.teamcode.autonomous;
 
 import com.qualcomm.hardware.sparkfun.SparkFunOTOS;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
