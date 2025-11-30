@@ -86,7 +86,7 @@ public class FusedLocalizationTest extends OpMode {
 
         // Reset on B button
         if (gamepad1.b) {
-            follower.setPose(new Pose(0,0,0));
+            follower.setPose(new Pose(0,0,0)); // reset to 0,0,forward
             telemetry.addData("Action", "Position Reset!");
         }
 
