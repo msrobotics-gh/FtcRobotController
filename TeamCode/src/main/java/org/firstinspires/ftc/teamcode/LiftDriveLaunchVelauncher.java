@@ -113,6 +113,10 @@ public class LiftDriveLaunchVelauncher extends NextFTCOpMode {
                 .whenTrue(Velauncher.INSTANCE.velaunch)
                 .whenBecomesFalse(Velauncher.INSTANCE.unvelaunch);
 
+        Gamepads.gamepad2().y()
+                .whenTrue(Velauncher.INSTANCE.rVelaunch)
+                .whenBecomesFalse(Velauncher.INSTANCE.rUnvelaunch);
+
 
 
         Gamepads.gamepad2().rightBumper()

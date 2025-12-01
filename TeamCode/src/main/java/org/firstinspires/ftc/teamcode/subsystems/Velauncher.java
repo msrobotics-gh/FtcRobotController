@@ -191,6 +191,9 @@ public class Velauncher implements Subsystem {
     public static double TARGET_RPM_UPPER = 3500;
     public static double TARGET_RPM_LOWER = 2500;
 
+    public static double TARGET_REVERSE_RPM_UPPER = -750;
+    public static double TARGET_REVERSE_RPM_LOWER = -750;
+
     // === Voltage Compensation ===
     public static boolean VOLTAGE_COMPENSATION_ENABLED = true;
     public static double NOMINAL_VOLTAGE = 12.92; // Battery voltage when kV was tuned (set after tuning!)
@@ -255,6 +258,7 @@ public class Velauncher implements Subsystem {
 
     // Flywheel state control
     private boolean flywheelEnabled = false;
+    private boolean flywheelReverseEnabled = false;
 
     // Voltage compensation cycle counter
     private int voltageCompCycleCounter = 0;
@@ -352,6 +356,19 @@ public class Velauncher implements Subsystem {
             })
             .setIsDone(() -> !flywheelEnabled && !atSpeedUpper && !atSpeedLower);
 
+    public  Command rVelaunch = new LambdaCommand()
+            .setStart(() -> {
+                buildControllers();
+                flywheelReverseEnabled = true;
+            })
+            .setIsDone(() -> flywheelEnabled && atSpeedUpper && atSpeedLower);
+
+    public  Command rUnvelaunch = new LambdaCommand() // lamb da command
+            .setStart(() -> {
+                flywheelReverseEnabled = false;
+            })
+            .setIsDone(() -> !flywheelEnabled && !atSpeedUpper && !atSpeedLower);
+
 
 
 
@@ -374,10 +391,16 @@ public class Velauncher implements Subsystem {
         final double targetTpsUpper = rpmToTps(TARGET_RPM_UPPER, TPR_UPPER);
         final double targetTpsLower = rpmToTps(TARGET_RPM_LOWER, TPR_LOWER);
 
+        final double targetTpsReverseUpper = rpmToTps(TARGET_REVERSE_RPM_UPPER, TPR_UPPER);
+        final double targetTpsReverseLower = rpmToTps(TARGET_REVERSE_RPM_LOWER, TPR_LOWER);
+
         // Set goals based on flywheel state
         if (flywheelEnabled) {
             ctrlUpper.setGoal(new KineticState(0.0, targetTpsUpper, 0.0));
             ctrlLower.setGoal(new KineticState(0.0, targetTpsLower, 0.0));
+        } else if (flywheelReverseEnabled) {
+            ctrlUpper.setGoal(new KineticState(0.0, targetTpsReverseUpper, 0.0));
+            ctrlLower.setGoal(new KineticState(0.0, targetTpsReverseLower, 0.0));
         } else {
             ctrlUpper.setGoal(new KineticState(0.0, 0.0, 0.0));
             ctrlLower.setGoal(new KineticState(0.0, 0.0, 0.0));

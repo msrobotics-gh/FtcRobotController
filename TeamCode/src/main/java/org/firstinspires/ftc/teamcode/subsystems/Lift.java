@@ -29,12 +29,11 @@ import dev.nextftc.hardware.powerable.SetPower;
 public class Lift implements Subsystem {
     public static final Lift INSTANCE = new Lift();
 
+    public static double setPosition1 = -10500;
 
-    public static double setPosition1 = -10900;
-
-    public static double setPosition2 = -10900;
+    public static double setPosition2 = -10500;
     public static double height;
-    public static double maxPos = -10900;
+    public static double maxPos = -10550;
     public static double maxheight = 21;
 
     public boolean lifted = false;
