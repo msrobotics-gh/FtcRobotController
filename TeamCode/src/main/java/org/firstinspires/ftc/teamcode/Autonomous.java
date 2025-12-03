@@ -67,10 +67,10 @@ public class Autonomous extends NextFTCOpMode {
     @Override
     public void onStartButtonPressed() {
         final Pose start = new Pose(72, 72, Math.toRadians(90));
-        final Pose enddd = new Pose(72, 72 + (Constants.AutonDistance * 2.5), Math.toRadians(90)); // autondistance is 18
+        final Pose enddd = new Pose(72, 72 + (Constants.AutonDistance * 4), Math.toRadians(90)); // autondistance is 18
 
         PedroComponent.follower().setStartingPose(start);
-        PedroComponent.follower().setMaxPower(0.8);
+        PedroComponent.follower().setMaxPower(0.2);
 
         pathOne = PedroComponent.follower().pathBuilder()
             .addPath(new BezierLine(start, enddd))
