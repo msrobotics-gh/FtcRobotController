@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.deprecated; // make sure this aligns with class location
+package org.firstinspires.ftc.teamcode; // make sure this aligns with class location
 
 import com.acmerobotics.dashboard.FtcDashboard;
 import com.acmerobotics.dashboard.config.Config;
@@ -10,12 +10,13 @@ import com.pedropathing.util.Timer;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 
+import org.firstinspires.ftc.robotcore.external.Const;
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.teamcode.autonomous.Constants;
 
-@Autonomous(name = "drive forward", group = "Autonomous")
+@Autonomous(name = "Autonomous DRIVE", group = "Autonomous")
 @Config // 7.44688232853678 // 0.1357132846203596 // 0.09280719038382527
-public class taaaaaaaaaaaaaaaaa extends OpMode {
+public class SimpleAutonomous extends OpMode {
 
     FtcDashboard dashboard = FtcDashboard.getInstance();
     Telemetry dashboardTelemetry = dashboard.getTelemetry();
@@ -37,8 +38,8 @@ public class taaaaaaaaaaaaaaaaa extends OpMode {
 
     // POSES
 
-    private final Pose pose1 = new Pose(72, 72, Math.toRadians(90));
-    private final Pose pose2 = new Pose(72, 144, Math.toRadians(90)); // forward 48
+    private final Pose pose1 = new Pose(0, 0, Math.toRadians(90));
+    private final Pose pose2 = new Pose(0, Constants.AutonDistance, Math.toRadians(90)); // forward 48
 
     //    private Path;
     private PathChain pathOne;

@@ -17,7 +17,7 @@ public class Constants {
     public static double AutonDelay = 0.5;
     public static double blueDegrees = 122.0;
     public static double redDegrees  = 60.0;
-    public static int AutonDistance = 18;
+    public static int AutonDistance = -6; // aimed backwards by default
 
     public static FollowerConstants followerConstants = new FollowerConstants()
             .mass(12)
@@ -36,8 +36,8 @@ public class Constants {
             .linearUnit(DistanceUnit.INCH)
             .angleUnit(AngleUnit.RADIANS)
             .offset(new SparkFunOTOS.Pose2D(-2.25, 0.5, Math.toRadians(0)))
-            .linearScalar(1.416693); //tune this
-//            .angularScalar(0.9961); //tune this
+            .linearScalar(1.416693) //tune this
+            .angularScalar(0.9961); //tune this
 
     public static AsymMecanumDriveConstants driveC = AsymMecanumDriveConstants.defaults();
 
