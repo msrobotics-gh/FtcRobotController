@@ -14,6 +14,7 @@ import org.firstinspires.ftc.teamcode.subsystems.Velauncher;
 
 import dev.nextftc.core.commands.Command;
 import dev.nextftc.core.commands.delays.Delay;
+import dev.nextftc.core.commands.groups.ParallelGroup;
 import dev.nextftc.core.commands.groups.SequentialGroup;
 import dev.nextftc.core.commands.utility.InstantCommand;
 import dev.nextftc.core.components.SubsystemComponent;
@@ -32,34 +33,51 @@ public class Auton extends NextFTCOpMode {
         );
     }
 
-    private PathChain forward;
+    private PathChain forward, intakeP;
 
     public int commandNumber = 0;
 
 
-    public Command auto(PathChain pathOne) {
+    public Command auto(PathChain pathOne, PathChain pathTwo) {
         Command pathGo = new FollowPath(pathOne);
+        Command pathGo2 = new FollowPath(pathTwo);
         Command incr = new InstantCommand(()->commandNumber++);
-
-        return new SequentialGroup(
-                // reset everything
+        Command reset = new ParallelGroup(
                 Velauncher.INSTANCE.unvelaunch, incr,
                 Intake.INSTANCE.intakeoff, incr,
                 Intake.INSTANCE.intakeoff2, incr,
-                FlywheelGate.INSTANCE.close(), incr,
+                FlywheelGate.INSTANCE.close(), incr
+        );
+        Command start = new ParallelGroup(
+                Velauncher.INSTANCE.velaunch, incr,
+                Intake.INSTANCE.intake, incr,
+                Intake.INSTANCE.intakesecond, incr,
+                FlywheelGate.INSTANCE.open(), incr
+        );
+
+        return new SequentialGroup(
+                // reset everything
+
+                reset, incr,
 
                 new Delay(Constants.AutonDelay), incr,
 
                 // -- autonomous start --
 
-                Velauncher.INSTANCE.velaunch, incr,
-                Intake.INSTANCE.intake, incr,
-                Intake.INSTANCE.intakesecond, incr,
-                FlywheelGate.INSTANCE.open(), incr,
+                start, incr,
 
                 new Delay(Constants.AutonDelay * 12), incr,
 
-                pathGo, incr
+                reset, incr,
+
+                pathGo, incr,
+                new Delay(Constants.AutonDelay * 12), incr,
+                pathGo2, incr,
+
+
+                start, incr
+
+
         );
     }
 
@@ -79,8 +97,14 @@ public class Auton extends NextFTCOpMode {
 //            .setVelocityConstraint(5)
             .build();
 
+        intakeP = PedroComponent.follower().pathBuilder()
+                .addPath(new BezierLine(enddd, intak))
+                .setLinearHeadingInterpolation(enddd.getHeading(), intak.getHeading())
+//            .setVelocityConstraint(5)
+                .build();
+
         new SequentialGroup(
-            auto(forward)
+            auto(forward, intakeP)
         ).schedule();
     }
 
