@@ -32,7 +32,7 @@ public class Auton extends NextFTCOpMode {
         );
     }
 
-    private PathChain pathOne;
+    private PathChain forward;
 
     public int commandNumber = 0;
 
@@ -65,19 +65,23 @@ public class Auton extends NextFTCOpMode {
 
     @Override
     public void onStartButtonPressed() {
-        final Pose start = new Pose(72, 72, Math.toRadians(90));
-        final Pose enddd = new Pose(72, 72 + (Constants.AutonDistance * 4), Math.toRadians(90)); // autondistance is -6
+        final Pose start = new Pose(75, 10, Math.toRadians(119));
+        final Pose enddd = new Pose(75, 10 + (Constants.AutonDistance * 4), Math.toRadians(90));
+        final Pose intak = new Pose(10, 10, Math.toRadians(0));
+        // AutonDistance is one tile, -6
 
         PedroComponent.follower().setStartingPose(start);
         PedroComponent.follower().setMaxPower(0.5);
 
-        pathOne = PedroComponent.follower().pathBuilder()
+        forward = PedroComponent.follower().pathBuilder()
             .addPath(new BezierLine(start, enddd))
             .setLinearHeadingInterpolation(start.getHeading(), enddd.getHeading())
 //            .setVelocityConstraint(5)
             .build();
 
-        auto(pathOne).schedule();
+        new SequentialGroup(
+            auto(forward)
+        ).schedule();
     }
 
     @Override
