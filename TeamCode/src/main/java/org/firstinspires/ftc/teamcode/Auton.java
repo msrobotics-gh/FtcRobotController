@@ -4,11 +4,10 @@ import com.acmerobotics.dashboard.FtcDashboard;
 import com.acmerobotics.dashboard.telemetry.TelemetryPacket;
 import com.pedropathing.geometry.BezierLine;
 import com.pedropathing.geometry.Pose;
-import com.pedropathing.paths.Path;
 import com.pedropathing.paths.PathChain;
+import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 
 import org.firstinspires.ftc.teamcode.autonomous.Constants;
-import org.firstinspires.ftc.teamcode.autonomous.ConstantsFused;
 import org.firstinspires.ftc.teamcode.subsystems.FlywheelGate;
 import org.firstinspires.ftc.teamcode.subsystems.Intake;
 import org.firstinspires.ftc.teamcode.subsystems.Velauncher;
@@ -23,9 +22,9 @@ import dev.nextftc.extensions.pedro.PedroComponent;
 import dev.nextftc.ftc.NextFTCOpMode;
 import dev.nextftc.ftc.components.BulkReadComponent;
 
-@com.qualcomm.robotcore.eventloop.opmode.Autonomous(name = "Autonomous")
-public class Autonomous extends NextFTCOpMode {
-    public Autonomous() {
+@Autonomous(name = "Autonomous")
+public class Auton extends NextFTCOpMode {
+    public Auton() {
         addComponents(
             BulkReadComponent.INSTANCE,
             new PedroComponent(Constants::createFollower),

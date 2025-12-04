@@ -10,13 +10,12 @@ import com.pedropathing.util.Timer;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 
-import org.firstinspires.ftc.robotcore.external.Const;
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.teamcode.autonomous.Constants;
 
-@Autonomous(name = "Autonomous DRIVE", group = "Autonomous")
+@Autonomous(name = "Autonomous SIMPLE", group = "Autonomous")
 @Config // 7.44688232853678 // 0.1357132846203596 // 0.09280719038382527
-public class SimpleAutonomous extends OpMode {
+public class SimpleAuton extends OpMode {
 
     FtcDashboard dashboard = FtcDashboard.getInstance();
     Telemetry dashboardTelemetry = dashboard.getTelemetry();
