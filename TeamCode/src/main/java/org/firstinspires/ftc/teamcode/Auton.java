@@ -22,6 +22,7 @@ import dev.nextftc.extensions.pedro.FollowPath;
 import dev.nextftc.extensions.pedro.PedroComponent;
 import dev.nextftc.ftc.NextFTCOpMode;
 import dev.nextftc.ftc.components.BulkReadComponent;
+import kotlinx.coroutines.selects.SelectUnbiasedKt;
 
 @Autonomous(name = "Autonomous")
 public class Auton extends NextFTCOpMode {
@@ -42,14 +43,16 @@ public class Auton extends NextFTCOpMode {
         Command pathGo = new FollowPath(pathOne);
         Command pathGo2 = new FollowPath(pathTwo);
         Command incr = new InstantCommand(()->commandNumber++);
-        Command reset = new ParallelGroup(
+        Command reset = new SequentialGroup(
                 Velauncher.INSTANCE.unvelaunch, incr,
+                new Delay(Constants.AutonDelay / 2), incr,
                 Intake.INSTANCE.intakeoff, incr,
                 Intake.INSTANCE.intakeoff2, incr,
                 FlywheelGate.INSTANCE.close(), incr
         );
-        Command start = new ParallelGroup(
+        Command start = new SequentialGroup(
                 Velauncher.INSTANCE.velaunch, incr,
+                new Delay(Constants.AutonDelay / 2), incr,
                 Intake.INSTANCE.intake, incr,
                 Intake.INSTANCE.intakesecond, incr,
                 FlywheelGate.INSTANCE.open(), incr
@@ -66,16 +69,16 @@ public class Auton extends NextFTCOpMode {
 
                 start, incr,
 
-                new Delay(Constants.AutonDelay * 12), incr,
+                new Delay(20), incr,
 
                 reset, incr,
 
-                pathGo, incr,
-                new Delay(Constants.AutonDelay * 12), incr,
-                pathGo2, incr,
-
-
-                start, incr
+                pathGo, incr
+//                new Delay(Constants.AutonDelay * 12), incr,
+//                pathGo2, incr,
+//
+//
+//                start, incr
 
 
         );
@@ -84,23 +87,21 @@ public class Auton extends NextFTCOpMode {
     @Override
     public void onStartButtonPressed() {
         final Pose start = new Pose(75, 10, Math.toRadians(119));
-        final Pose enddd = new Pose(75, 10 + (Constants.AutonDistance * 4), Math.toRadians(90));
+        final Pose enddd = new Pose(75, 10 + (Constants.AutonDistance), Math.toRadians(90));
         final Pose intak = new Pose(10, 10, Math.toRadians(0));
         // AutonDistance is one tile, -6
 
         PedroComponent.follower().setStartingPose(start);
-        PedroComponent.follower().setMaxPower(0.5);
+        PedroComponent.follower().setMaxPower(0.2);
 
         forward = PedroComponent.follower().pathBuilder()
             .addPath(new BezierLine(start, enddd))
             .setLinearHeadingInterpolation(start.getHeading(), enddd.getHeading())
-//            .setVelocityConstraint(5)
             .build();
 
         intakeP = PedroComponent.follower().pathBuilder()
                 .addPath(new BezierLine(enddd, intak))
                 .setLinearHeadingInterpolation(enddd.getHeading(), intak.getHeading())
-//            .setVelocityConstraint(5)
                 .build();
 
         new SequentialGroup(

@@ -91,18 +91,18 @@ public class TeOp extends NextFTCOpMode {
                 })
                 .setIsDone(() -> true);
 
-        Command setDoubleSpeed = new LambdaCommand()
-                .setStart(() -> {
-                    driverControlled2.setScalar(2);
-                })
-                .setIsDone(() -> true);
+//        Command setDoubleSpeed = new LambdaCommand()
+//                .setStart(() -> {
+//                    driverControlled2.setScalar(2);
+//                })
+//                .setIsDone(() -> true);
 
         Gamepads.gamepad1().a()
                 .whenBecomesTrue(setHalfSpeed);
         Gamepads.gamepad1().b()
                 .whenBecomesTrue(setFullSpeed);
-        Gamepads.gamepad1().y()
-                .whenBecomesTrue(setDoubleSpeed);
+//        Gamepads.gamepad1().y()
+//                .whenBecomesTrue(setDoubleSpeed);
 
 
 

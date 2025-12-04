@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode.autonomous;
 
+//import com.acmerobotics.dashboard.config.Config;
 import com.pedropathing.control.PIDFCoefficients;
 import com.pedropathing.follower.Follower;
 import com.pedropathing.follower.FollowerConstants;
@@ -17,7 +18,7 @@ public class Constants {
     public static double AutonDelay = 0.5;
     public static double blueDegrees = 122.0;
     public static double redDegrees  = 60.0;
-    public static int AutonDistance = -6; // aimed backwards by default
+    public static int AutonDistance = -25; // inch, aimed backwards by default
 
     public static FollowerConstants followerConstants = new FollowerConstants()
             .mass(12)
