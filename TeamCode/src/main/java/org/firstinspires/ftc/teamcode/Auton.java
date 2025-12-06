@@ -40,13 +40,13 @@ public class Auton extends NextFTCOpMode {
 
     public int commandNumber = 0;
 
-    public static double distanceMultiplier = 1.04166666666666666666666;
+//    public static double distanceMultiplier = 1.04166666666666666666666;
 
-    public static double maximumPower = 0.4;
+//    public static double maximumPower = 0.4;
 
 
     public Command auto(PathChain pathOne, PathChain pathTwo) {
-        Command pathGo = new FollowPath(pathOne, true, maximumPower);
+        Command pathGo = new FollowPath(pathOne);
         Command pathGo2 = new FollowPath(pathTwo);
         Command incr = new InstantCommand(()->commandNumber++);
         Command reset = new SequentialGroup(
@@ -95,11 +95,13 @@ public class Auton extends NextFTCOpMode {
     @Override
     public void onStartButtonPressed() {
         final Pose start = new Pose(75, 10, Math.toRadians(119));
-        final Pose enddd = new Pose(75, 10 + (Constants.AutonDistance * distanceMultiplier), Math.toRadians(90));
+        final Pose enddd = new Pose(75, 10 + (Constants.AutonDistance), Math.toRadians(90));
         final Pose intak = new Pose(10, 10, Math.toRadians(0));
         // AutonDistance is one tile, -6
 
         PedroComponent.follower().setStartingPose(start);
+        PedroComponent.follower().setMaxPower(0.4);
+
 
         forward = PedroComponent.follower().pathBuilder()
             .addPath(new BezierLine(start, enddd))
@@ -107,13 +109,11 @@ public class Auton extends NextFTCOpMode {
             .build();
 
         intakeP = PedroComponent.follower().pathBuilder()
-                .addPath(new BezierLine(enddd, intak))
-                .setLinearHeadingInterpolation(enddd.getHeading(), intak.getHeading())
-                .build();
+            .addPath(new BezierLine(enddd, intak))
+            .setLinearHeadingInterpolation(enddd.getHeading(), intak.getHeading())
+            .build();
 
-        new SequentialGroup(
-            auto(forward, intakeP)
-        ).schedule();
+        auto(forward, intakeP).schedule();
     }
 
     @Override

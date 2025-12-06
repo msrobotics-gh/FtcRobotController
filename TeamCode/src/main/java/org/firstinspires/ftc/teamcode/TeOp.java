@@ -45,20 +45,20 @@ public class TeOp extends NextFTCOpMode {
     private final MotorEx frontRightMotor = new MotorEx("front_right").reversed();
     private final MotorEx backLeftMotor = new MotorEx("back_left").reversed();
     private final MotorEx backRightMotor = new MotorEx("back_right").reversed();
-    public  static double height;
+//    public  static double height;
 
     private IMUEx imu = new IMUEx("imu", Direction.LEFT,Direction.DOWN);
 
-    public double topmotorpower;
-
-    public double bottommotorpower;
-
-    boolean isLeftBumperPressed = false;
-
-    boolean isPressed = false;
-    double startTime;
-
-    public Timer teleopT;
+//    public double topmotorpower;
+//
+//    public double bottommotorpower;
+//
+//    boolean isLeftBumperPressed = false;
+//
+//    boolean isPressed = false;
+//    double startTime;
+//
+//    public Timer teleopT;
 
 
     @Override

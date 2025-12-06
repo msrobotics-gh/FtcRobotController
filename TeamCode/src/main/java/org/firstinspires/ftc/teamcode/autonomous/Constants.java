@@ -18,7 +18,7 @@ public class Constants {
     public static double AutonDelay = 0.5;
     public static double blueDegrees = 122.0;
     public static double redDegrees  = 60.0;
-    public static int AutonDistance = -24; // inch, aimed backwards by default
+    public static int AutonDistance = -25; // inch, aimed backwards by default
 
     public static FollowerConstants followerConstants = new FollowerConstants()
             .mass(12)
