@@ -43,13 +43,15 @@ public class jerryGoGasGasGas extends LinearOpMode {
 
             if (gamepad1.a){
                 slowMode = true;
+                telemetry.addLine("Slowmode: On");
             }else if (gamepad1.b){
                 slowMode = false;
+                telemetry.addLine("Slowmode: Off");
             }
 
             if (slowMode){
-                leftM.setVelocity(targetVelocityL/1.5);
-                rightM.setVelocity(targetVelocityR/1.5);
+                leftM.setVelocity(targetVelocityL/8);
+                rightM.setVelocity(targetVelocityR/8);
             }else{
                 leftM.setVelocity(targetVelocityL);
                 rightM.setVelocity(targetVelocityR);
