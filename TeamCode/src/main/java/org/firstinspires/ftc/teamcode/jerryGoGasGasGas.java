@@ -42,9 +42,17 @@ public class jerryGoGasGasGas extends LinearOpMode {
             rightInput = Math.signum(rightInput) * rightInput * rightInput;
 
 
-            if (gamepad1.right_bumper) {
+            boolean driftMode = gamepad1.right_bumper;
+
+            if (driftMode) {
                 leftM.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
                 rightM.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
+
+                double avg = (leftInput + rightInput) / 2.0;
+                double diff = (leftInput - rightInput) / 2.0;
+                diff *= 1.5;
+                leftInput = Math.max(-1, Math.min(1, avg + diff));
+                rightInput = Math.max(-1, Math.min(1, avg - diff));
             } else {
                 leftM.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
                 rightM.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
@@ -81,6 +89,7 @@ public class jerryGoGasGasGas extends LinearOpMode {
             telemetry.addData("actual R", "%5.2f", rightM.getVelocity());
             telemetry.addLine();
             telemetry.addData("Slow Mode:", slowMode);
+            telemetry.addData("Drift Mode:", driftMode);
             telemetry.addLine();
             telemetry.addData("Battery (V)", hardwareMap.voltageSensor.iterator().next().getVoltage());
             telemetry.addLine();
