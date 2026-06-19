@@ -39,8 +39,21 @@ public class jerryGoGasGasGas extends LinearOpMode {
             double targetVelocityL = leftInput * MAX_TICKS_PER_SECOND;
             double targetVelocityR = rightInput * MAX_TICKS_PER_SECOND;
 
-            leftM.setVelocity(targetVelocityL);
-            rightM.setVelocity(targetVelocityR);
+            boolean slowMode = false;
+
+            if (gamepad1.a){
+                slowMode = true;
+            }else if (gamepad1.b){
+                slowMode = false;
+            }
+
+            if (slowMode){
+                leftM.setVelocity(targetVelocityL/1.5);
+                rightM.setVelocity(targetVelocityR/1.5);
+            }else{
+                leftM.setVelocity(targetVelocityL);
+                rightM.setVelocity(targetVelocityR);
+            }
 
             telemetry.addData("target L", "%5.2f", targetVelocityL);
             telemetry.addData("actual L", "%5.2f", leftM.getVelocity());
@@ -53,6 +66,7 @@ public class jerryGoGasGasGas extends LinearOpMode {
         }
     }
 }
+
 //The Legend of Jerry: Built to Drift
 //
 //Jerry didn’t start out as a legend. In the beginning, he was just a collection of aluminum channels, a scattering of loose zip ties, and a dream.
