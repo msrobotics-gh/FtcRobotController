@@ -1,12 +1,13 @@
 package org.firstinspires.ftc.teamcode;
 
+import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 
-@TeleOp(name="jerry go gas gas gas", group="real")
-public class jerryGoGasGasGas extends LinearOpMode {
+@Autonomous(name="jerry go spinny", group="real")
+public class jerryGoGasGasGasAuto extends LinearOpMode {
     DcMotorEx leftM;
     DcMotorEx rightM;
 
@@ -31,13 +32,13 @@ public class jerryGoGasGasGas extends LinearOpMode {
         waitForStart();
 
         while(opModeIsActive()) {
-            double leftInput = -gamepad1.left_stick_y;
-            double rightInput = -gamepad1.right_stick_y;
+            double leftPower = 1.0;
+            double rightPower = 1.0;
 
             double MAX_TICKS_PER_SECOND = 1800.0;
 
-            double targetVelocityL = leftInput * MAX_TICKS_PER_SECOND;
-            double targetVelocityR = rightInput * MAX_TICKS_PER_SECOND;
+            double targetVelocityL = leftPower * MAX_TICKS_PER_SECOND;
+            double targetVelocityR = rightPower * MAX_TICKS_PER_SECOND;
 
             leftM.setVelocity(targetVelocityL);
             rightM.setVelocity(targetVelocityR);
