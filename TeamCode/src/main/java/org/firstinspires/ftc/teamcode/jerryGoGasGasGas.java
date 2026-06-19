@@ -12,8 +12,12 @@ public class jerryGoGasGasGas extends LinearOpMode {
 
     @Override
     public void runOpMode() {
+        boolean slowMode = false;
+        double MAX_TICKS_PER_SECOND = 2000.0;
+
         leftM = hardwareMap.get(DcMotorEx.class, "l");
         rightM = hardwareMap.get(DcMotorEx.class, "r");
+
 
         leftM.setDirection(DcMotor.Direction.REVERSE);
 
@@ -34,34 +38,52 @@ public class jerryGoGasGasGas extends LinearOpMode {
             double leftInput = -gamepad1.left_stick_y;
             double rightInput = -gamepad1.right_stick_y;
 
-            double MAX_TICKS_PER_SECOND = 1800.0;
+            leftInput = Math.signum(leftInput) * leftInput * leftInput;
+            rightInput = Math.signum(rightInput) * rightInput * rightInput;
+
+
+            if (gamepad1.right_bumper) {
+                leftM.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
+                rightM.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
+            } else {
+                leftM.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+                rightM.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+            }
+
+
+            if (gamepad1.a){
+                slowMode = true;
+            }else if (gamepad1.b){
+                slowMode = false;
+            }
+
+            if (slowMode){
+                if ((leftM.getVelocity() <= 200 && -200 <= leftM.getVelocity()) || (rightM.getVelocity() <= 200 && -200 <= rightM.getVelocity())){
+                    MAX_TICKS_PER_SECOND = 2000.0;
+                }else{
+                    MAX_TICKS_PER_SECOND = 500.0;
+                }
+            }else{
+                MAX_TICKS_PER_SECOND = 2000.0;
+            }
 
             double targetVelocityL = leftInput * MAX_TICKS_PER_SECOND;
             double targetVelocityR = rightInput * MAX_TICKS_PER_SECOND;
 
-            boolean slowMode = false;
+            leftM.setVelocity(targetVelocityL);
+            rightM.setVelocity(targetVelocityR);
 
-            if (gamepad1.a){
-                slowMode = true;
-                telemetry.addLine("Slowmode: On");
-            }else if (gamepad1.b){
-                slowMode = false;
-                telemetry.addLine("Slowmode: Off");
-            }
-
-            if (slowMode){
-                leftM.setVelocity(targetVelocityL/8);
-                rightM.setVelocity(targetVelocityR/8);
-            }else{
-                leftM.setVelocity(targetVelocityL);
-                rightM.setVelocity(targetVelocityR);
-            }
-
+            telemetry.addData("MAX_TICKS", MAX_TICKS_PER_SECOND);
+            telemetry.addLine();
             telemetry.addData("target L", "%5.2f", targetVelocityL);
             telemetry.addData("actual L", "%5.2f", leftM.getVelocity());
             telemetry.addData("target R", "%5.2f", targetVelocityR);
             telemetry.addData("actual R", "%5.2f", rightM.getVelocity());
-
+            telemetry.addLine();
+            telemetry.addData("Slow Mode:", slowMode);
+            telemetry.addLine();
+            telemetry.addData("Battery (V)", hardwareMap.voltageSensor.iterator().next().getVoltage());
+            telemetry.addLine();
             telemetry.addData("L encoder ticks", leftM.getCurrentPosition());
             telemetry.addData("R encoder ticks", rightM.getCurrentPosition());
             telemetry.update();
